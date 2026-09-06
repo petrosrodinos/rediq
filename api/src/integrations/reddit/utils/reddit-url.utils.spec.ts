@@ -1,17 +1,18 @@
 import { BadRequestException } from '@nestjs/common';
+import { SourceType } from 'generated/prisma';
 import { parseRedditUrl } from './reddit-url.utils';
 
 describe('parseRedditUrl', () => {
   it('parses a subreddit URL', () => {
     expect(parseRedditUrl('https://www.reddit.com/r/startups/')).toEqual({
-      sourceType: 'COMMUNITY',
+      sourceType: SourceType.COMMUNITY,
       community: 'startups',
     });
   });
 
   it('parses a subreddit URL without a trailing slash', () => {
     expect(parseRedditUrl('https://reddit.com/r/SaaS')).toEqual({
-      sourceType: 'COMMUNITY',
+      sourceType: SourceType.COMMUNITY,
       community: 'SaaS',
     });
   });
@@ -22,7 +23,7 @@ describe('parseRedditUrl', () => {
         'https://www.reddit.com/r/startups/comments/abc123/example_post/',
       ),
     ).toEqual({
-      sourceType: 'THREAD',
+      sourceType: SourceType.THREAD,
       community: 'startups',
       externalPostId: 'abc123',
     });
@@ -32,7 +33,7 @@ describe('parseRedditUrl', () => {
     expect(
       parseRedditUrl('https://www.reddit.com/r/startups/comments/abc123'),
     ).toEqual({
-      sourceType: 'THREAD',
+      sourceType: SourceType.THREAD,
       community: 'startups',
       externalPostId: 'abc123',
     });

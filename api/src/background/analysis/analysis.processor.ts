@@ -7,7 +7,11 @@ import {
   ANALYSIS_QUEUE_NAME,
   AnalysisQueueJobData,
 } from '@/core/queues/queues.constants';
-import { AnalysisStatus } from 'generated/prisma';
+import {
+  AnalysisStatus,
+  BatchSubmissionStatus,
+  ProcessingMode,
+} from 'generated/prisma';
 import { RedditIngestionService } from './services/reddit-ingestion.service';
 import { EmbeddingsService } from './services/embeddings.service';
 import { KnowledgeExtractionService } from './services/knowledge-extraction.service';
@@ -62,7 +66,7 @@ export class AnalysisProcessor extends WorkerHost {
       await this.updateStatus(
         analysisJobUuid,
         researchProjectId,
-        'COLLECTING_DATA',
+        AnalysisStatus.COLLECTING_DATA,
         {
           started_at: new Date(),
           current_step: 'Collecting Reddit content',
@@ -91,7 +95,7 @@ export class AnalysisProcessor extends WorkerHost {
         },
       );
 
-      await this.updateStatus(analysisJobUuid, researchProjectId, 'FILTERING', {
+      await this.updateStatus(analysisJobUuid, researchProjectId, AnalysisStatus.FILTERING, {
         current_step: 'Filtering content',
       });
 
@@ -113,7 +117,7 @@ export class AnalysisProcessor extends WorkerHost {
       await this.updateStatus(
         analysisJobUuid,
         researchProjectId,
-        'PROCESSING',
+        AnalysisStatus.PROCESSING,
         {
           current_step: 'Deduplicating and ranking content',
         },
@@ -196,7 +200,7 @@ export class AnalysisProcessor extends WorkerHost {
       await this.updateStatus(
         analysisJobUuid,
         researchProjectId,
-        'GENERATING_EMBEDDINGS',
+        AnalysisStatus.GENERATING_EMBEDDINGS,
         {
           current_step: 'Generating embeddings',
         },
@@ -219,7 +223,7 @@ export class AnalysisProcessor extends WorkerHost {
           })),
       ]);
 
-      if (configuration.processing_mode === 'BATCH') {
+      if (configuration.processing_mode === ProcessingMode.BATCH) {
         await this.runBatchExtraction(
           analysisJobUuid,
           researchProjectId,
@@ -229,7 +233,7 @@ export class AnalysisProcessor extends WorkerHost {
         await this.updateStatus(
           analysisJobUuid,
           researchProjectId,
-          'EXTRACTING_KNOWLEDGE',
+          AnalysisStatus.EXTRACTING_KNOWLEDGE,
           {
             current_step: 'Extracting knowledge',
           },
@@ -268,7 +272,7 @@ export class AnalysisProcessor extends WorkerHost {
       await this.updateStatus(
         analysisJobUuid,
         researchProjectId,
-        'SYNTHESIZING',
+        AnalysisStatus.SYNTHESIZING,
         {
           current_step: 'Generating final report',
         },
@@ -283,7 +287,7 @@ export class AnalysisProcessor extends WorkerHost {
       await this.prisma.analysisJob.update({
         where: { id: analysisJobUuid },
         data: {
-          status: 'COMPLETED',
+          status: AnalysisStatus.COMPLETED,
           current_step: null,
           completed_at: new Date(),
         },
@@ -292,7 +296,7 @@ export class AnalysisProcessor extends WorkerHost {
       await this.prisma.researchProject.update({
         where: { id: researchProjectId },
         data: {
-          status: 'COMPLETED',
+          status: AnalysisStatus.COMPLETED,
           posts_analyzed: rankedPosts.length,
           comments_analyzed: rankedComments.length,
         },
@@ -319,7 +323,7 @@ export class AnalysisProcessor extends WorkerHost {
       data: {
         analysis_job_uuid: analysisJobUuid,
         openai_batch_id: `local-${randomUUID()}`,
-        status: 'IN_PROGRESS',
+        status: BatchSubmissionStatus.IN_PROGRESS,
         submitted_at: new Date(),
       },
     });
@@ -327,7 +331,7 @@ export class AnalysisProcessor extends WorkerHost {
     await this.updateStatus(
       analysisJobUuid,
       researchProjectId,
-      'AWAITING_BATCH_COMPLETION',
+      AnalysisStatus.AWAITING_BATCH_COMPLETION,
       {
         current_step: 'Awaiting batch completion',
       },
@@ -338,17 +342,17 @@ export class AnalysisProcessor extends WorkerHost {
         researchProjectId,
         analysisJobUuid,
         chunks,
-        'BATCH',
+        ProcessingMode.BATCH,
       );
 
       await this.prisma.batchSubmission.update({
         where: { id: batchSubmission.id },
-        data: { status: 'COMPLETED', completed_at: new Date() },
+        data: { status: BatchSubmissionStatus.COMPLETED, completed_at: new Date() },
       });
     } catch (error) {
       await this.prisma.batchSubmission.update({
         where: { id: batchSubmission.id },
-        data: { status: 'FAILED', completed_at: new Date() },
+        data: { status: BatchSubmissionStatus.FAILED, completed_at: new Date() },
       });
       throw error;
     }
@@ -381,14 +385,14 @@ export class AnalysisProcessor extends WorkerHost {
       this.prisma.analysisJob.update({
         where: { id: analysisJobId },
         data: {
-          status: 'FAILED',
+          status: AnalysisStatus.FAILED,
           error_message: message,
           completed_at: new Date(),
         },
       }),
       this.prisma.researchProject.update({
         where: { id: researchProjectId },
-        data: { status: 'FAILED' },
+        data: { status: AnalysisStatus.FAILED },
       }),
     ]);
   }

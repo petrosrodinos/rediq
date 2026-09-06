@@ -5,6 +5,7 @@ import {
 } from '@nestjs/common';
 import { PrismaService } from '@/core/databases/prisma/prisma.service';
 import { GcsService } from '@/integrations/storage/gcs/services/gcs.service';
+import { DocumentType } from 'generated/prisma';
 import { CreateDocumentDto } from './dto/create-document.dto';
 import { DocumentsQueryType } from './dto/documents-query.schema';
 
@@ -42,7 +43,7 @@ export class DocumentsService {
         size: file.size,
         url: uploaded.url,
         path: uploaded.path,
-        type: dto.type ?? 'LOGO',
+        type: dto.type ?? DocumentType.LOGO,
       },
     });
   }
@@ -50,7 +51,7 @@ export class DocumentsService {
   async findAll(userId: string, query: DocumentsQueryType) {
     const where = {
       user_uuid: userId,
-      ...(query.type && { type: query.type as any }),
+      ...(query.type && { type: query.type }),
     };
 
     const [items, count] = await Promise.all([

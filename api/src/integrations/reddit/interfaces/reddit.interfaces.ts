@@ -1,7 +1,7 @@
-export type RedditSourceType = 'COMMUNITY' | 'THREAD';
+import { PostSortOrder, SourceType, TopTimeRange } from 'generated/prisma';
 
 export interface RedditUrlInfo {
-  sourceType: RedditSourceType;
+  sourceType: SourceType;
   community: string;
   externalPostId?: string;
 }
@@ -37,18 +37,9 @@ export interface RawRedditComment {
   posted_at: Date;
 }
 
-export type RedditPostSort = 'HOT' | 'TOP' | 'NEW' | 'RISING' | 'CONTROVERSIAL';
-export type RedditTopTimeRange =
-  | 'HOUR'
-  | 'DAY'
-  | 'WEEK'
-  | 'MONTH'
-  | 'YEAR'
-  | 'ALL';
-
 export interface FetchSubredditPostsOptions {
-  sort: RedditPostSort;
-  topTimeRange?: RedditTopTimeRange;
+  sort: PostSortOrder;
+  topTimeRange?: TopTimeRange;
   limit: number;
   minScore?: number;
   includeNsfw?: boolean;

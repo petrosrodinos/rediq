@@ -11,7 +11,7 @@ export class User {
   @ApiProperty({ required: false, nullable: true })
   phone: string | null;
 
-  @ApiProperty({ enum: ['USER', 'ADMIN', 'SUPER_ADMIN', 'SUPPORT'] })
+  @ApiProperty({ enum: AuthRole })
   role: AuthRole;
 
   @ApiProperty()

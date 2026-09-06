@@ -4,7 +4,7 @@ import { LoginEmailDto } from '../dto/login-email.dto';
 import { PrismaService } from '@/core/databases/prisma/prisma.service';
 import * as bcrypt from 'bcrypt';
 import { CreateJwtService } from '@/shared/utils/jwt/jwt.service';
-import { AuthRoles } from '../interfaces/auth.interface';
+import { AuthRole } from 'generated/prisma';
 import { WaitlistDto } from '../dto/waitlist.dto';
 import { ResendMailService } from '@/integrations/notifications/resend/services/mail.service';
 import { EmailConfig } from '@/shared/constants/email';
@@ -36,7 +36,7 @@ export class EmailAuthService {
                 data: {
                     email: dto.email,
                     password: hashedPassword,
-                    role: AuthRoles.USER,
+                    role: AuthRole.USER,
                 },
             });
 
@@ -108,7 +108,7 @@ export class EmailAuthService {
                 data: {
                     email: dto.email,
                     password: '',
-                    role: AuthRoles.USER,
+                    role: AuthRole.USER,
                 },
             });
 

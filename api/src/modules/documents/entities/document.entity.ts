@@ -23,18 +23,7 @@ export class Document {
   @ApiProperty()
   path: string;
 
-  @ApiProperty({
-    enum: [
-      'LOGO',
-      'BANNER',
-      'IMAGE',
-      'VIDEO',
-      'AUDIO',
-      'PDF',
-      'DOCUMENT',
-      'OTHER',
-    ],
-  })
+  @ApiProperty({ enum: DocumentType })
   type: DocumentType;
 
   @ApiProperty()

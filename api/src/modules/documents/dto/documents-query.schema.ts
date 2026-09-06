@@ -1,4 +1,5 @@
 import { z } from 'zod';
+import { DocumentType } from 'generated/prisma';
 
 export const DocumentsQuerySchema = z.object({
   page: z
@@ -9,7 +10,7 @@ export const DocumentsQuerySchema = z.object({
     .string()
     .optional()
     .transform((v) => (v ? parseInt(v, 10) : 10)),
-  type: z.string().optional(),
+  type: z.nativeEnum(DocumentType).optional(),
   order_by: z.enum(['created_at', 'filename']).optional().default('created_at'),
   order_direction: z.enum(['asc', 'desc']).optional().default('desc'),
 });

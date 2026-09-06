@@ -19,7 +19,7 @@ export class KnowledgeInsightsService {
 
     const where = {
       research_project_uuid: researchProjectId,
-      ...(query.type && { type: query.type as any }),
+      ...(query.type && { type: query.type }),
       ...(query.topic_uuid && { topic_uuid: query.topic_uuid }),
       ...(query.min_confidence !== undefined && {
         confidence_score: { gte: query.min_confidence },

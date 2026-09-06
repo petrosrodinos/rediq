@@ -1,4 +1,5 @@
 import { BadRequestException } from '@nestjs/common';
+import { SourceType } from 'generated/prisma';
 import { RedditUrlInfo } from '../interfaces/reddit.interfaces';
 
 const COMMUNITY_URL_REGEX = /reddit\.com\/r\/([A-Za-z0-9_]+)\/?$/i;
@@ -26,7 +27,7 @@ export function parseRedditUrl(url: string): RedditUrlInfo {
   const postMatch = normalized.match(POST_URL_REGEX);
   if (postMatch) {
     return {
-      sourceType: 'THREAD',
+      sourceType: SourceType.THREAD,
       community: postMatch[1],
       externalPostId: postMatch[2],
     };
@@ -35,7 +36,7 @@ export function parseRedditUrl(url: string): RedditUrlInfo {
   const communityMatch = normalized.match(COMMUNITY_URL_REGEX);
   if (communityMatch) {
     return {
-      sourceType: 'COMMUNITY',
+      sourceType: SourceType.COMMUNITY,
       community: communityMatch[1],
     };
   }

@@ -3,7 +3,7 @@ import { z } from 'zod';
 import { PrismaService } from '@/core/databases/prisma/prisma.service';
 import { AiService } from '@/integrations/ai/services/ai.service';
 import { AiModels, AiProviders } from '@/integrations/ai/interfaces/ai.interface';
-import { ProcessingMode } from 'generated/prisma';
+import { InsightType, ProcessingMode } from 'generated/prisma';
 import { chunkArray } from '../utils/ranking.utils';
 import {
   ChunkForExtraction,
@@ -17,7 +17,9 @@ import {
  * instead of gpt-4o.
  */
 function modelForProcessingMode(mode: ProcessingMode) {
-  return mode === 'BATCH' ? AiModels.openai.gpt4oMini : AiModels.openai.gpt4o;
+  return mode === ProcessingMode.BATCH
+    ? AiModels.openai.gpt4oMini
+    : AiModels.openai.gpt4o;
 }
 
 const CHUNKS_PER_BATCH = 8;
@@ -58,7 +60,7 @@ export class KnowledgeExtractionService {
     researchProjectId: string,
     analysisJobId: string,
     chunks: ChunkForExtraction[],
-    processingMode: ProcessingMode = 'STANDARD',
+    processingMode: ProcessingMode = ProcessingMode.STANDARD,
   ): Promise<void> {
     const batches = chunkArray(chunks, CHUNKS_PER_BATCH).slice(0, MAX_BATCHES);
     const model = modelForProcessingMode(processingMode);
@@ -115,7 +117,7 @@ export class KnowledgeExtractionService {
   async clusterTopics(
     researchProjectId: string,
     analysisJobId: string,
-    processingMode: ProcessingMode = 'STANDARD',
+    processingMode: ProcessingMode = ProcessingMode.STANDARD,
   ): Promise<void> {
     const insights = await this.prisma.knowledgeInsight.findMany({
       where: {
@@ -176,7 +178,7 @@ export class KnowledgeExtractionService {
   async synthesizeExecutiveSummary(
     researchProjectId: string,
     analysisJobId: string,
-    processingMode: ProcessingMode = 'STANDARD',
+    processingMode: ProcessingMode = ProcessingMode.STANDARD,
   ): Promise<void> {
     const topInsights = await this.prisma.knowledgeInsight.findMany({
       where: {
@@ -206,7 +208,7 @@ export class KnowledgeExtractionService {
         data: {
           research_project_uuid: researchProjectId,
           analysis_job_uuid: analysisJobId,
-          type: 'KEY_INSIGHT',
+          type: InsightType.KEY_INSIGHT,
           title: 'Executive Summary',
           content: response,
           supporting_count: topInsights.length,

@@ -11,6 +11,7 @@ import {
   ANALYSIS_QUEUE_NAME,
   AnalysisQueueJobData,
 } from '@/core/queues/queues.constants';
+import { AnalysisStatus } from 'generated/prisma';
 import { CreateAnalysisJobDto } from './dto/create-analysis-job.dto';
 import { AnalysisJobsQueryType } from './dto/analysis-jobs-query.schema';
 
@@ -67,14 +68,14 @@ export class AnalysisJobsService {
       data: {
         research_project_uuid: researchProjectId,
         analysis_configuration_uuid: configuration.id,
-        status: 'PENDING',
+        status: AnalysisStatus.PENDING,
       },
       include: ANALYSIS_JOB_INCLUDE,
     });
 
     await this.prisma.researchProject.update({
       where: { id: researchProjectId },
-      data: { status: 'PENDING' },
+      data: { status: AnalysisStatus.PENDING },
     });
 
     await this.analysisQueue.add(ANALYSIS_JOB_NAME, {
@@ -93,7 +94,7 @@ export class AnalysisJobsService {
 
     const where = {
       research_project_uuid: researchProjectId,
-      ...(query.status && { status: query.status as any }),
+      ...(query.status && { status: query.status }),
     };
 
     const [items, count] = await Promise.all([
@@ -132,7 +133,10 @@ export class AnalysisJobsService {
   async cancel(userId: string, id: string) {
     const job = await this.findOne(userId, id);
 
-    if (job.status === 'COMPLETED' || job.status === 'FAILED') {
+    if (
+      job.status === AnalysisStatus.COMPLETED ||
+      job.status === AnalysisStatus.FAILED
+    ) {
       throw new ConflictException(
         `Cannot cancel a job that is already ${job.status.toLowerCase()}`,
       );
@@ -141,7 +145,7 @@ export class AnalysisJobsService {
     return this.prisma.analysisJob.update({
       where: { id: job.id },
       data: {
-        status: 'FAILED',
+        status: AnalysisStatus.FAILED,
         error_message: 'Cancelled by user',
         completed_at: new Date(),
       },

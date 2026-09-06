@@ -1,3 +1,5 @@
+import { InsightType } from 'generated/prisma';
+
 export interface ChunkForExtraction {
   knowledgeChunkId: string;
   content: string;
@@ -5,18 +7,7 @@ export interface ChunkForExtraction {
   commentUuid: string | null;
 }
 
-export const INSIGHT_TYPES = [
-  'KEY_INSIGHT',
-  'PROBLEM',
-  'SOLUTION',
-  'OPINION',
-  'CONSENSUS',
-  'CONTRADICTION',
-  'USER_EXPERIENCE',
-  'PRODUCT_MENTION',
-  'FAQ',
-  'STATISTIC',
-  'TREND',
-  'RECOMMENDATION',
-  'ARGUMENT',
-] as const;
+export const INSIGHT_TYPES = Object.values(InsightType) as [
+  InsightType,
+  ...InsightType[],
+];

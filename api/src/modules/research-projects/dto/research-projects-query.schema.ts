@@ -1,4 +1,5 @@
 import { z } from 'zod';
+import { AnalysisStatus } from 'generated/prisma';
 
 export const ResearchProjectsQuerySchema = z.object({
   page: z
@@ -10,7 +11,7 @@ export const ResearchProjectsQuerySchema = z.object({
     .optional()
     .transform((v) => (v ? parseInt(v, 10) : 10)),
   search: z.string().optional(),
-  status: z.string().optional(),
+  status: z.nativeEnum(AnalysisStatus).optional(),
   order_by: z
     .enum(['created_at', 'updated_at', 'name'])
     .optional()

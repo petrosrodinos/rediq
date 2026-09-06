@@ -1,5 +1,6 @@
 import { BadGatewayException, Injectable, Logger } from '@nestjs/common';
 import axios, { AxiosError } from 'axios';
+import { PostSortOrder, TopTimeRange } from 'generated/prisma';
 import { RedditConfig } from '../config/reddit.config';
 import { parseRedditUrl } from '../utils/reddit-url.utils';
 import {
@@ -10,21 +11,21 @@ import {
   RedditUrlInfo,
 } from '../interfaces/reddit.interfaces';
 
-const SORT_MAP: Record<string, string> = {
-  HOT: 'hot',
-  TOP: 'top',
-  NEW: 'new',
-  RISING: 'rising',
-  CONTROVERSIAL: 'controversial',
+const SORT_MAP: Record<PostSortOrder, string> = {
+  [PostSortOrder.HOT]: 'hot',
+  [PostSortOrder.TOP]: 'top',
+  [PostSortOrder.NEW]: 'new',
+  [PostSortOrder.RISING]: 'rising',
+  [PostSortOrder.CONTROVERSIAL]: 'controversial',
 };
 
-const TIME_RANGE_MAP: Record<string, string> = {
-  HOUR: 'hour',
-  DAY: 'day',
-  WEEK: 'week',
-  MONTH: 'month',
-  YEAR: 'year',
-  ALL: 'all',
+const TIME_RANGE_MAP: Record<TopTimeRange, string> = {
+  [TopTimeRange.HOUR]: 'hour',
+  [TopTimeRange.DAY]: 'day',
+  [TopTimeRange.WEEK]: 'week',
+  [TopTimeRange.MONTH]: 'month',
+  [TopTimeRange.YEAR]: 'year',
+  [TopTimeRange.ALL]: 'all',
 };
 
 const MAX_LISTING_PAGES = 20;

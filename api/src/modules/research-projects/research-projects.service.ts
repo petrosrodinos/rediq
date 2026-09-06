@@ -62,7 +62,7 @@ export class ResearchProjectsService {
       ...(query.search && {
         name: { contains: query.search, mode: 'insensitive' as const },
       }),
-      ...(query.status && { status: query.status as any }),
+      ...(query.status && { status: query.status }),
     };
 
     const [items, count] = await Promise.all([

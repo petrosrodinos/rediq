@@ -1,7 +1,11 @@
 import { Injectable, Logger } from '@nestjs/common';
 import { PrismaService } from '@/core/databases/prisma/prisma.service';
 import { RedditService } from '@/integrations/reddit/services/reddit.service';
-import { AnalysisConfiguration, ResearchSource } from 'generated/prisma';
+import {
+  AnalysisConfiguration,
+  ResearchSource,
+  SourceType,
+} from 'generated/prisma';
 import {
   RawRedditComment,
   RawRedditPost,
@@ -37,7 +41,7 @@ export class RedditIngestionService {
     const postIds: string[] = [];
     const commentIds: string[] = [];
 
-    if (source.source_type === 'THREAD') {
+    if (source.source_type === SourceType.THREAD) {
       const { post, comments } = await this.redditService.fetchPostWithComments(
         source.community,
         source.external_post_id!,
