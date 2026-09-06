@@ -123,9 +123,233 @@ exports.Prisma.DocumentScalarFieldEnum = {
   created_at: 'created_at'
 };
 
+exports.Prisma.ResearchProjectScalarFieldEnum = {
+  id: 'id',
+  user_uuid: 'user_uuid',
+  name: 'name',
+  status: 'status',
+  posts_analyzed: 'posts_analyzed',
+  comments_analyzed: 'comments_analyzed',
+  created_at: 'created_at',
+  updated_at: 'updated_at'
+};
+
+exports.Prisma.ResearchSourceScalarFieldEnum = {
+  id: 'id',
+  research_project_uuid: 'research_project_uuid',
+  platform: 'platform',
+  source_type: 'source_type',
+  url: 'url',
+  community: 'community',
+  external_post_id: 'external_post_id',
+  created_at: 'created_at',
+  updated_at: 'updated_at'
+};
+
+exports.Prisma.AnalysisConfigurationScalarFieldEnum = {
+  id: 'id',
+  research_project_uuid: 'research_project_uuid',
+  processing_mode: 'processing_mode',
+  sort_order: 'sort_order',
+  top_time_range: 'top_time_range',
+  max_posts: 'max_posts',
+  max_comments_per_post: 'max_comments_per_post',
+  max_comments: 'max_comments',
+  max_comment_depth: 'max_comment_depth',
+  min_post_score: 'min_post_score',
+  min_comment_score: 'min_comment_score',
+  include_replies: 'include_replies',
+  include_nsfw: 'include_nsfw',
+  include_controversial: 'include_controversial',
+  analyze_deleted_when_unavailable: 'analyze_deleted_when_unavailable',
+  prioritize_engagement: 'prioritize_engagement',
+  prioritize_recent: 'prioritize_recent',
+  prioritize_popular: 'prioritize_popular',
+  prioritize_top_comments: 'prioritize_top_comments',
+  analyze_entire_discussion: 'analyze_entire_discussion',
+  created_at: 'created_at',
+  updated_at: 'updated_at'
+};
+
+exports.Prisma.AnalysisJobScalarFieldEnum = {
+  id: 'id',
+  research_project_uuid: 'research_project_uuid',
+  analysis_configuration_uuid: 'analysis_configuration_uuid',
+  status: 'status',
+  current_step: 'current_step',
+  posts_processed: 'posts_processed',
+  posts_total: 'posts_total',
+  comments_processed: 'comments_processed',
+  comments_total: 'comments_total',
+  error_message: 'error_message',
+  started_at: 'started_at',
+  completed_at: 'completed_at',
+  created_at: 'created_at',
+  updated_at: 'updated_at'
+};
+
+exports.Prisma.BatchSubmissionScalarFieldEnum = {
+  id: 'id',
+  analysis_job_uuid: 'analysis_job_uuid',
+  openai_batch_id: 'openai_batch_id',
+  status: 'status',
+  request_file_id: 'request_file_id',
+  response_file_id: 'response_file_id',
+  error_file_id: 'error_file_id',
+  submitted_at: 'submitted_at',
+  completed_at: 'completed_at',
+  created_at: 'created_at',
+  updated_at: 'updated_at'
+};
+
+exports.Prisma.PostScalarFieldEnum = {
+  id: 'id',
+  research_project_uuid: 'research_project_uuid',
+  platform: 'platform',
+  external_id: 'external_id',
+  community: 'community',
+  title: 'title',
+  author: 'author',
+  body: 'body',
+  url: 'url',
+  permalink: 'permalink',
+  score: 'score',
+  upvote_ratio: 'upvote_ratio',
+  num_comments: 'num_comments',
+  flair: 'flair',
+  is_nsfw: 'is_nsfw',
+  is_deleted: 'is_deleted',
+  is_removed: 'is_removed',
+  posted_at: 'posted_at',
+  fetched_at: 'fetched_at',
+  created_at: 'created_at',
+  updated_at: 'updated_at'
+};
+
+exports.Prisma.CommentScalarFieldEnum = {
+  id: 'id',
+  research_project_uuid: 'research_project_uuid',
+  post_uuid: 'post_uuid',
+  external_id: 'external_id',
+  parent_external_id: 'parent_external_id',
+  parent_comment_uuid: 'parent_comment_uuid',
+  author: 'author',
+  body: 'body',
+  score: 'score',
+  depth: 'depth',
+  permalink: 'permalink',
+  is_deleted: 'is_deleted',
+  is_removed: 'is_removed',
+  posted_at: 'posted_at',
+  fetched_at: 'fetched_at',
+  created_at: 'created_at',
+  updated_at: 'updated_at'
+};
+
+exports.Prisma.KnowledgeChunkScalarFieldEnum = {
+  id: 'id',
+  research_project_uuid: 'research_project_uuid',
+  analysis_job_uuid: 'analysis_job_uuid',
+  post_uuid: 'post_uuid',
+  comment_uuid: 'comment_uuid',
+  content: 'content',
+  token_count: 'token_count',
+  chunk_index: 'chunk_index',
+  created_at: 'created_at',
+  updated_at: 'updated_at'
+};
+
+exports.Prisma.EmbeddingScalarFieldEnum = {
+  id: 'id',
+  research_project_uuid: 'research_project_uuid',
+  model: 'model',
+  dimensions: 'dimensions',
+  vector: 'vector',
+  created_at: 'created_at',
+  post_uuid: 'post_uuid',
+  comment_uuid: 'comment_uuid',
+  knowledge_chunk_uuid: 'knowledge_chunk_uuid',
+  knowledge_insight_uuid: 'knowledge_insight_uuid'
+};
+
+exports.Prisma.KnowledgeInsightScalarFieldEnum = {
+  id: 'id',
+  research_project_uuid: 'research_project_uuid',
+  analysis_job_uuid: 'analysis_job_uuid',
+  topic_uuid: 'topic_uuid',
+  type: 'type',
+  title: 'title',
+  content: 'content',
+  confidence_score: 'confidence_score',
+  supporting_count: 'supporting_count',
+  metadata: 'metadata',
+  created_at: 'created_at',
+  updated_at: 'updated_at'
+};
+
+exports.Prisma.TopicScalarFieldEnum = {
+  id: 'id',
+  research_project_uuid: 'research_project_uuid',
+  name: 'name',
+  summary: 'summary',
+  created_at: 'created_at',
+  updated_at: 'updated_at'
+};
+
+exports.Prisma.CitationScalarFieldEnum = {
+  id: 'id',
+  knowledge_insight_uuid: 'knowledge_insight_uuid',
+  post_uuid: 'post_uuid',
+  comment_uuid: 'comment_uuid',
+  knowledge_chunk_uuid: 'knowledge_chunk_uuid',
+  excerpt: 'excerpt',
+  created_at: 'created_at'
+};
+
+exports.Prisma.ConversationScalarFieldEnum = {
+  id: 'id',
+  research_project_uuid: 'research_project_uuid',
+  user_uuid: 'user_uuid',
+  title: 'title',
+  mode: 'mode',
+  created_at: 'created_at',
+  updated_at: 'updated_at'
+};
+
+exports.Prisma.ConversationMessageScalarFieldEnum = {
+  id: 'id',
+  conversation_uuid: 'conversation_uuid',
+  role: 'role',
+  content: 'content',
+  created_at: 'created_at'
+};
+
+exports.Prisma.MessageCitationScalarFieldEnum = {
+  id: 'id',
+  conversation_message_uuid: 'conversation_message_uuid',
+  post_uuid: 'post_uuid',
+  comment_uuid: 'comment_uuid',
+  knowledge_insight_uuid: 'knowledge_insight_uuid',
+  excerpt: 'excerpt',
+  created_at: 'created_at'
+};
+
+exports.Prisma.SavedInsightScalarFieldEnum = {
+  id: 'id',
+  user_uuid: 'user_uuid',
+  research_project_uuid: 'research_project_uuid',
+  knowledge_insight_uuid: 'knowledge_insight_uuid',
+  created_at: 'created_at'
+};
+
 exports.Prisma.SortOrder = {
   asc: 'asc',
   desc: 'desc'
+};
+
+exports.Prisma.NullableJsonNullValueInput = {
+  DbNull: Prisma.DbNull,
+  JsonNull: Prisma.JsonNull
 };
 
 exports.Prisma.QueryMode = {
@@ -136,6 +360,12 @@ exports.Prisma.QueryMode = {
 exports.Prisma.NullsOrder = {
   first: 'first',
   last: 'last'
+};
+
+exports.Prisma.JsonNullValueFilter = {
+  DbNull: Prisma.DbNull,
+  JsonNull: Prisma.JsonNull,
+  AnyNull: Prisma.AnyNull
 };
 exports.AuthRole = exports.$Enums.AuthRole = {
   USER: 'USER',
@@ -155,10 +385,107 @@ exports.DocumentType = exports.$Enums.DocumentType = {
   OTHER: 'OTHER'
 };
 
+exports.SourcePlatform = exports.$Enums.SourcePlatform = {
+  REDDIT: 'REDDIT'
+};
+
+exports.SourceType = exports.$Enums.SourceType = {
+  COMMUNITY: 'COMMUNITY',
+  THREAD: 'THREAD'
+};
+
+exports.PostSortOrder = exports.$Enums.PostSortOrder = {
+  HOT: 'HOT',
+  TOP: 'TOP',
+  NEW: 'NEW',
+  RISING: 'RISING',
+  CONTROVERSIAL: 'CONTROVERSIAL'
+};
+
+exports.TopTimeRange = exports.$Enums.TopTimeRange = {
+  HOUR: 'HOUR',
+  DAY: 'DAY',
+  WEEK: 'WEEK',
+  MONTH: 'MONTH',
+  YEAR: 'YEAR',
+  ALL: 'ALL'
+};
+
+exports.ProcessingMode = exports.$Enums.ProcessingMode = {
+  STANDARD: 'STANDARD',
+  BATCH: 'BATCH'
+};
+
+exports.AnalysisStatus = exports.$Enums.AnalysisStatus = {
+  PENDING: 'PENDING',
+  COLLECTING_DATA: 'COLLECTING_DATA',
+  FILTERING: 'FILTERING',
+  PROCESSING: 'PROCESSING',
+  GENERATING_EMBEDDINGS: 'GENERATING_EMBEDDINGS',
+  EXTRACTING_KNOWLEDGE: 'EXTRACTING_KNOWLEDGE',
+  AWAITING_BATCH_COMPLETION: 'AWAITING_BATCH_COMPLETION',
+  SYNTHESIZING: 'SYNTHESIZING',
+  COMPLETED: 'COMPLETED',
+  FAILED: 'FAILED'
+};
+
+exports.BatchSubmissionStatus = exports.$Enums.BatchSubmissionStatus = {
+  VALIDATING: 'VALIDATING',
+  IN_PROGRESS: 'IN_PROGRESS',
+  FINALIZING: 'FINALIZING',
+  COMPLETED: 'COMPLETED',
+  FAILED: 'FAILED',
+  EXPIRED: 'EXPIRED',
+  CANCELLED: 'CANCELLED'
+};
+
+exports.InsightType = exports.$Enums.InsightType = {
+  KEY_INSIGHT: 'KEY_INSIGHT',
+  PROBLEM: 'PROBLEM',
+  SOLUTION: 'SOLUTION',
+  OPINION: 'OPINION',
+  CONSENSUS: 'CONSENSUS',
+  CONTRADICTION: 'CONTRADICTION',
+  USER_EXPERIENCE: 'USER_EXPERIENCE',
+  PRODUCT_MENTION: 'PRODUCT_MENTION',
+  FAQ: 'FAQ',
+  STATISTIC: 'STATISTIC',
+  TREND: 'TREND',
+  RECOMMENDATION: 'RECOMMENDATION',
+  ARGUMENT: 'ARGUMENT'
+};
+
+exports.ConversationMode = exports.$Enums.ConversationMode = {
+  GROUNDED: 'GROUNDED',
+  EXTERNAL_ALLOWED: 'EXTERNAL_ALLOWED'
+};
+
+exports.MessageRole = exports.$Enums.MessageRole = {
+  USER: 'USER',
+  ASSISTANT: 'ASSISTANT',
+  SYSTEM: 'SYSTEM'
+};
+
 exports.Prisma.ModelName = {
   User: 'User',
   PasswordResetToken: 'PasswordResetToken',
-  Document: 'Document'
+  Document: 'Document',
+  ResearchProject: 'ResearchProject',
+  ResearchSource: 'ResearchSource',
+  AnalysisConfiguration: 'AnalysisConfiguration',
+  AnalysisJob: 'AnalysisJob',
+  BatchSubmission: 'BatchSubmission',
+  Post: 'Post',
+  Comment: 'Comment',
+  KnowledgeChunk: 'KnowledgeChunk',
+  Embedding: 'Embedding',
+  KnowledgeInsight: 'KnowledgeInsight',
+  Topic: 'Topic',
+  Citation: 'Citation',
+  Conversation: 'Conversation',
+  ConversationMessage: 'ConversationMessage',
+  MessageCitation: 'MessageCitation',
+  SavedInsight: 'SavedInsight'
 };
 /**
  * Create the Client
@@ -168,10 +495,10 @@ const config = {
   "clientVersion": "7.2.0",
   "engineVersion": "0c8ef2ce45c83248ab3df073180d5eda9e8be7a3",
   "activeProvider": "postgresql",
-  "inlineSchema": "// This is your Prisma schema file,\n// learn more about it in the docs: https://pris.ly/d/prisma-schema\n\n// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?\n// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init\n\ngenerator client {\n  provider = \"prisma-client-js\"\n  output   = \"../src/generated/prisma\"\n}\n\ndatasource db {\n  provider = \"postgresql\"\n}\n\nenum AuthRole {\n  USER\n  ADMIN\n  SUPER_ADMIN\n  SUPPORT\n}\n\nenum DocumentType {\n  LOGO\n  BANNER\n  IMAGE\n  VIDEO\n  AUDIO\n  PDF\n  DOCUMENT\n  OTHER\n}\n\nmodel User {\n  id       String  @id @default(uuid())\n  email    String  @unique\n  phone    String? @unique\n  password String\n\n  role       AuthRole\n  created_at DateTime @default(now())\n  updated_at DateTime @updatedAt\n\n  password_reset_tokens PasswordResetToken[]\n\n  @@index([email])\n  @@index([phone])\n  @@index([id])\n  @@map(\"users\")\n}\n\nmodel PasswordResetToken {\n  id         String    @id @default(uuid())\n  token_hash String    @unique\n  user_uuid  String\n  expires_at DateTime\n  used_at    DateTime?\n  created_at DateTime  @default(now())\n\n  user User @relation(fields: [user_uuid], references: [id], onDelete: Cascade)\n\n  @@index([user_uuid])\n  @@index([expires_at])\n  @@map(\"password_reset_tokens\")\n}\n\nmodel Document {\n  id         String       @id @default(uuid())\n  user_uuid  String\n  filename   String\n  mimetype   String\n  size       Int\n  url        String\n  path       String\n  type       DocumentType @default(LOGO)\n  created_at DateTime     @default(now())\n\n  @@index([user_uuid])\n  @@index([id])\n  @@map(\"documents\")\n}\n"
+  "inlineSchema": "// This is your Prisma schema file,\n// learn more about it in the docs: https://pris.ly/d/prisma-schema\n\n// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?\n// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init\n\ngenerator client {\n  provider = \"prisma-client-js\"\n  output   = \"../src/generated/prisma\"\n}\n\ndatasource db {\n  provider = \"postgresql\"\n}\n\n// ---------------------------------------------------------------------------\n// Enums\n// ---------------------------------------------------------------------------\n\nenum AuthRole {\n  USER\n  ADMIN\n  SUPER_ADMIN\n  SUPPORT\n}\n\nenum DocumentType {\n  LOGO\n  BANNER\n  IMAGE\n  VIDEO\n  AUDIO\n  PDF\n  DOCUMENT\n  OTHER\n}\n\nenum SourcePlatform {\n  REDDIT\n}\n\nenum SourceType {\n  COMMUNITY\n  THREAD\n}\n\nenum PostSortOrder {\n  HOT\n  TOP\n  NEW\n  RISING\n  CONTROVERSIAL\n}\n\nenum TopTimeRange {\n  HOUR\n  DAY\n  WEEK\n  MONTH\n  YEAR\n  ALL\n}\n\nenum ProcessingMode {\n  STANDARD\n  BATCH\n}\n\nenum AnalysisStatus {\n  PENDING\n  COLLECTING_DATA\n  FILTERING\n  PROCESSING\n  GENERATING_EMBEDDINGS\n  EXTRACTING_KNOWLEDGE\n  AWAITING_BATCH_COMPLETION\n  SYNTHESIZING\n  COMPLETED\n  FAILED\n}\n\nenum BatchSubmissionStatus {\n  VALIDATING\n  IN_PROGRESS\n  FINALIZING\n  COMPLETED\n  FAILED\n  EXPIRED\n  CANCELLED\n}\n\nenum InsightType {\n  KEY_INSIGHT\n  PROBLEM\n  SOLUTION\n  OPINION\n  CONSENSUS\n  CONTRADICTION\n  USER_EXPERIENCE\n  PRODUCT_MENTION\n  FAQ\n  STATISTIC\n  TREND\n  RECOMMENDATION\n  ARGUMENT\n}\n\nenum ConversationMode {\n  GROUNDED\n  EXTERNAL_ALLOWED\n}\n\nenum MessageRole {\n  USER\n  ASSISTANT\n  SYSTEM\n}\n\n// ---------------------------------------------------------------------------\n// Identity\n// ---------------------------------------------------------------------------\n\nmodel User {\n  id       String  @id @default(uuid())\n  email    String  @unique\n  phone    String? @unique\n  password String\n\n  role       AuthRole\n  created_at DateTime @default(now())\n  updated_at DateTime @updatedAt\n\n  password_reset_tokens PasswordResetToken[]\n  research_projects     ResearchProject[]\n  conversations         Conversation[]\n  saved_insights        SavedInsight[]\n\n  @@index([email])\n  @@index([phone])\n  @@index([id])\n  @@map(\"users\")\n}\n\nmodel PasswordResetToken {\n  id         String    @id @default(uuid())\n  token_hash String    @unique\n  user_uuid  String\n  expires_at DateTime\n  used_at    DateTime?\n  created_at DateTime  @default(now())\n\n  user User @relation(fields: [user_uuid], references: [id], onDelete: Cascade)\n\n  @@index([user_uuid])\n  @@index([expires_at])\n  @@map(\"password_reset_tokens\")\n}\n\nmodel Document {\n  id         String       @id @default(uuid())\n  user_uuid  String\n  filename   String\n  mimetype   String\n  size       Int\n  url        String\n  path       String\n  type       DocumentType @default(LOGO)\n  created_at DateTime     @default(now())\n\n  @@index([user_uuid])\n  @@index([id])\n  @@map(\"documents\")\n}\n\n// ---------------------------------------------------------------------------\n// Research Projects\n// ---------------------------------------------------------------------------\n\nmodel ResearchProject {\n  id                String         @id @default(uuid())\n  user_uuid         String\n  name              String\n  status            AnalysisStatus @default(PENDING)\n  posts_analyzed    Int            @default(0)\n  comments_analyzed Int            @default(0)\n  created_at        DateTime       @default(now())\n  updated_at        DateTime       @updatedAt\n\n  user User @relation(fields: [user_uuid], references: [id], onDelete: Cascade)\n\n  source                  ResearchSource?\n  analysis_configurations AnalysisConfiguration[]\n  analysis_jobs           AnalysisJob[]\n  posts                   Post[]\n  comments                Comment[]\n  knowledge_chunks        KnowledgeChunk[]\n  knowledge_insights      KnowledgeInsight[]\n  topics                  Topic[]\n  embeddings              Embedding[]\n  conversations           Conversation[]\n  saved_insights          SavedInsight[]\n\n  @@index([user_uuid])\n  @@index([status])\n  @@map(\"research_projects\")\n}\n\nmodel ResearchSource {\n  id                    String         @id @default(uuid())\n  research_project_uuid String         @unique\n  platform              SourcePlatform @default(REDDIT)\n  source_type           SourceType\n  url                   String\n  community             String\n  external_post_id      String?\n  created_at            DateTime       @default(now())\n  updated_at            DateTime       @updatedAt\n\n  research_project ResearchProject @relation(fields: [research_project_uuid], references: [id], onDelete: Cascade)\n\n  @@index([research_project_uuid])\n  @@map(\"research_sources\")\n}\n\nmodel AnalysisConfiguration {\n  id                    String         @id @default(uuid())\n  research_project_uuid String\n  processing_mode       ProcessingMode @default(STANDARD)\n\n  sort_order     PostSortOrder @default(HOT)\n  top_time_range TopTimeRange?\n\n  max_posts             Int?\n  max_comments_per_post Int?\n  max_comments          Int?\n  max_comment_depth     Int?\n  min_post_score        Int?\n  min_comment_score     Int?\n\n  include_replies                  Boolean @default(true)\n  include_nsfw                     Boolean @default(false)\n  include_controversial            Boolean @default(true)\n  analyze_deleted_when_unavailable Boolean @default(false)\n  prioritize_engagement            Boolean @default(false)\n  prioritize_recent                Boolean @default(false)\n  prioritize_popular               Boolean @default(false)\n  prioritize_top_comments          Boolean @default(true)\n  analyze_entire_discussion        Boolean @default(false)\n\n  created_at DateTime @default(now())\n  updated_at DateTime @updatedAt\n\n  research_project ResearchProject @relation(fields: [research_project_uuid], references: [id], onDelete: Cascade)\n  analysis_job     AnalysisJob?\n\n  @@index([research_project_uuid])\n  @@map(\"analysis_configurations\")\n}\n\nmodel AnalysisJob {\n  id                          String         @id @default(uuid())\n  research_project_uuid       String\n  analysis_configuration_uuid String         @unique\n  status                      AnalysisStatus @default(PENDING)\n\n  current_step       String?\n  posts_processed    Int     @default(0)\n  posts_total        Int     @default(0)\n  comments_processed Int     @default(0)\n  comments_total     Int     @default(0)\n\n  error_message String?\n  started_at    DateTime?\n  completed_at  DateTime?\n  created_at    DateTime  @default(now())\n  updated_at    DateTime  @updatedAt\n\n  research_project ResearchProject       @relation(fields: [research_project_uuid], references: [id], onDelete: Cascade)\n  configuration    AnalysisConfiguration @relation(fields: [analysis_configuration_uuid], references: [id], onDelete: Cascade)\n\n  batch_submissions  BatchSubmission[]\n  knowledge_chunks   KnowledgeChunk[]\n  knowledge_insights KnowledgeInsight[]\n\n  @@index([research_project_uuid])\n  @@index([status])\n  @@map(\"analysis_jobs\")\n}\n\nmodel BatchSubmission {\n  id                String                @id @default(uuid())\n  analysis_job_uuid String\n  openai_batch_id   String                @unique\n  status            BatchSubmissionStatus @default(VALIDATING)\n\n  request_file_id  String?\n  response_file_id String?\n  error_file_id    String?\n\n  submitted_at DateTime?\n  completed_at DateTime?\n  created_at   DateTime  @default(now())\n  updated_at   DateTime  @updatedAt\n\n  analysis_job AnalysisJob @relation(fields: [analysis_job_uuid], references: [id], onDelete: Cascade)\n\n  @@index([analysis_job_uuid])\n  @@index([status])\n  @@map(\"batch_submissions\")\n}\n\n// ---------------------------------------------------------------------------\n// Source Content\n// ---------------------------------------------------------------------------\n\nmodel Post {\n  id                    String         @id @default(uuid())\n  research_project_uuid String\n  platform              SourcePlatform @default(REDDIT)\n  external_id           String\n  community             String\n  title                 String\n  author                String?\n  body                  String?\n  url                   String\n  permalink             String\n  score                 Int            @default(0)\n  upvote_ratio          Float?\n  num_comments          Int            @default(0)\n  flair                 String?\n  is_nsfw               Boolean        @default(false)\n  is_deleted            Boolean        @default(false)\n  is_removed            Boolean        @default(false)\n  posted_at             DateTime\n  fetched_at            DateTime       @default(now())\n  created_at            DateTime       @default(now())\n  updated_at            DateTime       @updatedAt\n\n  research_project ResearchProject @relation(fields: [research_project_uuid], references: [id], onDelete: Cascade)\n\n  comments          Comment[]\n  knowledge_chunks  KnowledgeChunk[]\n  citations         Citation[]\n  message_citations MessageCitation[]\n  embedding         Embedding?\n\n  @@unique([research_project_uuid, external_id])\n  @@index([research_project_uuid])\n  @@index([community])\n  @@index([score])\n  @@map(\"posts\")\n}\n\nmodel Comment {\n  id                    String   @id @default(uuid())\n  research_project_uuid String\n  post_uuid             String\n  external_id           String\n  parent_external_id    String?\n  parent_comment_uuid   String?\n  author                String?\n  body                  String?\n  score                 Int      @default(0)\n  depth                 Int      @default(0)\n  permalink             String\n  is_deleted            Boolean  @default(false)\n  is_removed            Boolean  @default(false)\n  posted_at             DateTime\n  fetched_at            DateTime @default(now())\n  created_at            DateTime @default(now())\n  updated_at            DateTime @updatedAt\n\n  research_project ResearchProject @relation(fields: [research_project_uuid], references: [id], onDelete: Cascade)\n  post             Post            @relation(fields: [post_uuid], references: [id], onDelete: Cascade)\n  parent_comment   Comment?        @relation(\"CommentReplies\", fields: [parent_comment_uuid], references: [id], onDelete: SetNull)\n  replies          Comment[]       @relation(\"CommentReplies\")\n\n  knowledge_chunks  KnowledgeChunk[]\n  citations         Citation[]\n  message_citations MessageCitation[]\n  embedding         Embedding?\n\n  @@unique([research_project_uuid, external_id])\n  @@index([research_project_uuid])\n  @@index([post_uuid])\n  @@index([parent_comment_uuid])\n  @@index([score])\n  @@map(\"comments\")\n}\n\n// ---------------------------------------------------------------------------\n// Knowledge Layer\n// ---------------------------------------------------------------------------\n\nmodel KnowledgeChunk {\n  id                    String   @id @default(uuid())\n  research_project_uuid String\n  analysis_job_uuid     String\n  post_uuid             String?\n  comment_uuid          String?\n  content               String\n  token_count           Int?\n  chunk_index           Int      @default(0)\n  created_at            DateTime @default(now())\n  updated_at            DateTime @updatedAt\n\n  research_project ResearchProject @relation(fields: [research_project_uuid], references: [id], onDelete: Cascade)\n  analysis_job     AnalysisJob     @relation(fields: [analysis_job_uuid], references: [id], onDelete: Cascade)\n  post             Post?           @relation(fields: [post_uuid], references: [id], onDelete: SetNull)\n  comment          Comment?        @relation(fields: [comment_uuid], references: [id], onDelete: SetNull)\n\n  embedding Embedding?\n  citations Citation[]\n\n  @@index([research_project_uuid])\n  @@index([analysis_job_uuid])\n  @@index([post_uuid])\n  @@index([comment_uuid])\n  @@map(\"knowledge_chunks\")\n}\n\nmodel Embedding {\n  id                    String   @id @default(uuid())\n  research_project_uuid String\n  model                 String\n  dimensions            Int\n  vector                Float[]\n  created_at            DateTime @default(now())\n\n  post_uuid              String? @unique\n  comment_uuid           String? @unique\n  knowledge_chunk_uuid   String? @unique\n  knowledge_insight_uuid String? @unique\n\n  research_project  ResearchProject   @relation(fields: [research_project_uuid], references: [id], onDelete: Cascade)\n  post              Post?             @relation(fields: [post_uuid], references: [id], onDelete: Cascade)\n  comment           Comment?          @relation(fields: [comment_uuid], references: [id], onDelete: Cascade)\n  knowledge_chunk   KnowledgeChunk?   @relation(fields: [knowledge_chunk_uuid], references: [id], onDelete: Cascade)\n  knowledge_insight KnowledgeInsight? @relation(fields: [knowledge_insight_uuid], references: [id], onDelete: Cascade)\n\n  @@index([research_project_uuid])\n  @@map(\"embeddings\")\n}\n\nmodel KnowledgeInsight {\n  id                    String      @id @default(uuid())\n  research_project_uuid String\n  analysis_job_uuid     String?\n  topic_uuid            String?\n  type                  InsightType\n  title                 String\n  content               String\n  confidence_score      Float?\n  supporting_count      Int         @default(0)\n  metadata              Json?\n  created_at            DateTime    @default(now())\n  updated_at            DateTime    @updatedAt\n\n  research_project ResearchProject @relation(fields: [research_project_uuid], references: [id], onDelete: Cascade)\n  analysis_job     AnalysisJob?    @relation(fields: [analysis_job_uuid], references: [id], onDelete: SetNull)\n  topic            Topic?          @relation(fields: [topic_uuid], references: [id], onDelete: SetNull)\n\n  citations         Citation[]\n  saved_insights    SavedInsight[]\n  message_citations MessageCitation[]\n  embedding         Embedding?\n\n  @@index([research_project_uuid])\n  @@index([analysis_job_uuid])\n  @@index([topic_uuid])\n  @@index([type])\n  @@map(\"knowledge_insights\")\n}\n\nmodel Topic {\n  id                    String   @id @default(uuid())\n  research_project_uuid String\n  name                  String\n  summary               String?\n  created_at            DateTime @default(now())\n  updated_at            DateTime @updatedAt\n\n  research_project   ResearchProject    @relation(fields: [research_project_uuid], references: [id], onDelete: Cascade)\n  knowledge_insights KnowledgeInsight[]\n\n  @@index([research_project_uuid])\n  @@map(\"topics\")\n}\n\nmodel Citation {\n  id                     String   @id @default(uuid())\n  knowledge_insight_uuid String\n  post_uuid              String?\n  comment_uuid           String?\n  knowledge_chunk_uuid   String?\n  excerpt                String?\n  created_at             DateTime @default(now())\n\n  knowledge_insight KnowledgeInsight @relation(fields: [knowledge_insight_uuid], references: [id], onDelete: Cascade)\n  post              Post?            @relation(fields: [post_uuid], references: [id], onDelete: Cascade)\n  comment           Comment?         @relation(fields: [comment_uuid], references: [id], onDelete: Cascade)\n  knowledge_chunk   KnowledgeChunk?  @relation(fields: [knowledge_chunk_uuid], references: [id], onDelete: SetNull)\n\n  @@index([knowledge_insight_uuid])\n  @@index([post_uuid])\n  @@index([comment_uuid])\n  @@map(\"citations\")\n}\n\n// ---------------------------------------------------------------------------\n// AI Research Agent\n// ---------------------------------------------------------------------------\n\nmodel Conversation {\n  id                    String           @id @default(uuid())\n  research_project_uuid String\n  user_uuid             String\n  title                 String?\n  mode                  ConversationMode @default(GROUNDED)\n  created_at            DateTime         @default(now())\n  updated_at            DateTime         @updatedAt\n\n  research_project ResearchProject       @relation(fields: [research_project_uuid], references: [id], onDelete: Cascade)\n  user             User                  @relation(fields: [user_uuid], references: [id], onDelete: Cascade)\n  messages         ConversationMessage[]\n\n  @@index([research_project_uuid])\n  @@index([user_uuid])\n  @@map(\"conversations\")\n}\n\nmodel ConversationMessage {\n  id                String      @id @default(uuid())\n  conversation_uuid String\n  role              MessageRole\n  content           String\n  created_at        DateTime    @default(now())\n\n  conversation Conversation      @relation(fields: [conversation_uuid], references: [id], onDelete: Cascade)\n  citations    MessageCitation[]\n\n  @@index([conversation_uuid])\n  @@map(\"conversation_messages\")\n}\n\nmodel MessageCitation {\n  id                        String   @id @default(uuid())\n  conversation_message_uuid String\n  post_uuid                 String?\n  comment_uuid              String?\n  knowledge_insight_uuid    String?\n  excerpt                   String?\n  created_at                DateTime @default(now())\n\n  conversation_message ConversationMessage @relation(fields: [conversation_message_uuid], references: [id], onDelete: Cascade)\n  post                 Post?               @relation(fields: [post_uuid], references: [id], onDelete: Cascade)\n  comment              Comment?            @relation(fields: [comment_uuid], references: [id], onDelete: Cascade)\n  knowledge_insight    KnowledgeInsight?   @relation(fields: [knowledge_insight_uuid], references: [id], onDelete: Cascade)\n\n  @@index([conversation_message_uuid])\n  @@map(\"message_citations\")\n}\n\nmodel SavedInsight {\n  id                     String   @id @default(uuid())\n  user_uuid              String\n  research_project_uuid  String\n  knowledge_insight_uuid String\n  created_at             DateTime @default(now())\n\n  user              User             @relation(fields: [user_uuid], references: [id], onDelete: Cascade)\n  research_project  ResearchProject  @relation(fields: [research_project_uuid], references: [id], onDelete: Cascade)\n  knowledge_insight KnowledgeInsight @relation(fields: [knowledge_insight_uuid], references: [id], onDelete: Cascade)\n\n  @@unique([user_uuid, knowledge_insight_uuid])\n  @@index([user_uuid])\n  @@index([research_project_uuid])\n  @@map(\"saved_insights\")\n}\n"
 }
 
-config.runtimeDataModel = JSON.parse("{\"models\":{\"User\":{\"fields\":[{\"name\":\"id\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"email\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"phone\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"password\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"role\",\"kind\":\"enum\",\"type\":\"AuthRole\"},{\"name\":\"created_at\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"updated_at\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"password_reset_tokens\",\"kind\":\"object\",\"type\":\"PasswordResetToken\",\"relationName\":\"PasswordResetTokenToUser\"}],\"dbName\":\"users\"},\"PasswordResetToken\":{\"fields\":[{\"name\":\"id\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"token_hash\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"user_uuid\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"expires_at\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"used_at\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"created_at\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"user\",\"kind\":\"object\",\"type\":\"User\",\"relationName\":\"PasswordResetTokenToUser\"}],\"dbName\":\"password_reset_tokens\"},\"Document\":{\"fields\":[{\"name\":\"id\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"user_uuid\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"filename\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"mimetype\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"size\",\"kind\":\"scalar\",\"type\":\"Int\"},{\"name\":\"url\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"path\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"type\",\"kind\":\"enum\",\"type\":\"DocumentType\"},{\"name\":\"created_at\",\"kind\":\"scalar\",\"type\":\"DateTime\"}],\"dbName\":\"documents\"}},\"enums\":{},\"types\":{}}")
+config.runtimeDataModel = JSON.parse("{\"models\":{\"User\":{\"fields\":[{\"name\":\"id\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"email\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"phone\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"password\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"role\",\"kind\":\"enum\",\"type\":\"AuthRole\"},{\"name\":\"created_at\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"updated_at\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"password_reset_tokens\",\"kind\":\"object\",\"type\":\"PasswordResetToken\",\"relationName\":\"PasswordResetTokenToUser\"},{\"name\":\"research_projects\",\"kind\":\"object\",\"type\":\"ResearchProject\",\"relationName\":\"ResearchProjectToUser\"},{\"name\":\"conversations\",\"kind\":\"object\",\"type\":\"Conversation\",\"relationName\":\"ConversationToUser\"},{\"name\":\"saved_insights\",\"kind\":\"object\",\"type\":\"SavedInsight\",\"relationName\":\"SavedInsightToUser\"}],\"dbName\":\"users\"},\"PasswordResetToken\":{\"fields\":[{\"name\":\"id\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"token_hash\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"user_uuid\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"expires_at\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"used_at\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"created_at\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"user\",\"kind\":\"object\",\"type\":\"User\",\"relationName\":\"PasswordResetTokenToUser\"}],\"dbName\":\"password_reset_tokens\"},\"Document\":{\"fields\":[{\"name\":\"id\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"user_uuid\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"filename\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"mimetype\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"size\",\"kind\":\"scalar\",\"type\":\"Int\"},{\"name\":\"url\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"path\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"type\",\"kind\":\"enum\",\"type\":\"DocumentType\"},{\"name\":\"created_at\",\"kind\":\"scalar\",\"type\":\"DateTime\"}],\"dbName\":\"documents\"},\"ResearchProject\":{\"fields\":[{\"name\":\"id\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"user_uuid\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"name\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"status\",\"kind\":\"enum\",\"type\":\"AnalysisStatus\"},{\"name\":\"posts_analyzed\",\"kind\":\"scalar\",\"type\":\"Int\"},{\"name\":\"comments_analyzed\",\"kind\":\"scalar\",\"type\":\"Int\"},{\"name\":\"created_at\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"updated_at\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"user\",\"kind\":\"object\",\"type\":\"User\",\"relationName\":\"ResearchProjectToUser\"},{\"name\":\"source\",\"kind\":\"object\",\"type\":\"ResearchSource\",\"relationName\":\"ResearchProjectToResearchSource\"},{\"name\":\"analysis_configurations\",\"kind\":\"object\",\"type\":\"AnalysisConfiguration\",\"relationName\":\"AnalysisConfigurationToResearchProject\"},{\"name\":\"analysis_jobs\",\"kind\":\"object\",\"type\":\"AnalysisJob\",\"relationName\":\"AnalysisJobToResearchProject\"},{\"name\":\"posts\",\"kind\":\"object\",\"type\":\"Post\",\"relationName\":\"PostToResearchProject\"},{\"name\":\"comments\",\"kind\":\"object\",\"type\":\"Comment\",\"relationName\":\"CommentToResearchProject\"},{\"name\":\"knowledge_chunks\",\"kind\":\"object\",\"type\":\"KnowledgeChunk\",\"relationName\":\"KnowledgeChunkToResearchProject\"},{\"name\":\"knowledge_insights\",\"kind\":\"object\",\"type\":\"KnowledgeInsight\",\"relationName\":\"KnowledgeInsightToResearchProject\"},{\"name\":\"topics\",\"kind\":\"object\",\"type\":\"Topic\",\"relationName\":\"ResearchProjectToTopic\"},{\"name\":\"embeddings\",\"kind\":\"object\",\"type\":\"Embedding\",\"relationName\":\"EmbeddingToResearchProject\"},{\"name\":\"conversations\",\"kind\":\"object\",\"type\":\"Conversation\",\"relationName\":\"ConversationToResearchProject\"},{\"name\":\"saved_insights\",\"kind\":\"object\",\"type\":\"SavedInsight\",\"relationName\":\"ResearchProjectToSavedInsight\"}],\"dbName\":\"research_projects\"},\"ResearchSource\":{\"fields\":[{\"name\":\"id\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"research_project_uuid\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"platform\",\"kind\":\"enum\",\"type\":\"SourcePlatform\"},{\"name\":\"source_type\",\"kind\":\"enum\",\"type\":\"SourceType\"},{\"name\":\"url\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"community\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"external_post_id\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"created_at\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"updated_at\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"research_project\",\"kind\":\"object\",\"type\":\"ResearchProject\",\"relationName\":\"ResearchProjectToResearchSource\"}],\"dbName\":\"research_sources\"},\"AnalysisConfiguration\":{\"fields\":[{\"name\":\"id\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"research_project_uuid\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"processing_mode\",\"kind\":\"enum\",\"type\":\"ProcessingMode\"},{\"name\":\"sort_order\",\"kind\":\"enum\",\"type\":\"PostSortOrder\"},{\"name\":\"top_time_range\",\"kind\":\"enum\",\"type\":\"TopTimeRange\"},{\"name\":\"max_posts\",\"kind\":\"scalar\",\"type\":\"Int\"},{\"name\":\"max_comments_per_post\",\"kind\":\"scalar\",\"type\":\"Int\"},{\"name\":\"max_comments\",\"kind\":\"scalar\",\"type\":\"Int\"},{\"name\":\"max_comment_depth\",\"kind\":\"scalar\",\"type\":\"Int\"},{\"name\":\"min_post_score\",\"kind\":\"scalar\",\"type\":\"Int\"},{\"name\":\"min_comment_score\",\"kind\":\"scalar\",\"type\":\"Int\"},{\"name\":\"include_replies\",\"kind\":\"scalar\",\"type\":\"Boolean\"},{\"name\":\"include_nsfw\",\"kind\":\"scalar\",\"type\":\"Boolean\"},{\"name\":\"include_controversial\",\"kind\":\"scalar\",\"type\":\"Boolean\"},{\"name\":\"analyze_deleted_when_unavailable\",\"kind\":\"scalar\",\"type\":\"Boolean\"},{\"name\":\"prioritize_engagement\",\"kind\":\"scalar\",\"type\":\"Boolean\"},{\"name\":\"prioritize_recent\",\"kind\":\"scalar\",\"type\":\"Boolean\"},{\"name\":\"prioritize_popular\",\"kind\":\"scalar\",\"type\":\"Boolean\"},{\"name\":\"prioritize_top_comments\",\"kind\":\"scalar\",\"type\":\"Boolean\"},{\"name\":\"analyze_entire_discussion\",\"kind\":\"scalar\",\"type\":\"Boolean\"},{\"name\":\"created_at\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"updated_at\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"research_project\",\"kind\":\"object\",\"type\":\"ResearchProject\",\"relationName\":\"AnalysisConfigurationToResearchProject\"},{\"name\":\"analysis_job\",\"kind\":\"object\",\"type\":\"AnalysisJob\",\"relationName\":\"AnalysisConfigurationToAnalysisJob\"}],\"dbName\":\"analysis_configurations\"},\"AnalysisJob\":{\"fields\":[{\"name\":\"id\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"research_project_uuid\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"analysis_configuration_uuid\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"status\",\"kind\":\"enum\",\"type\":\"AnalysisStatus\"},{\"name\":\"current_step\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"posts_processed\",\"kind\":\"scalar\",\"type\":\"Int\"},{\"name\":\"posts_total\",\"kind\":\"scalar\",\"type\":\"Int\"},{\"name\":\"comments_processed\",\"kind\":\"scalar\",\"type\":\"Int\"},{\"name\":\"comments_total\",\"kind\":\"scalar\",\"type\":\"Int\"},{\"name\":\"error_message\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"started_at\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"completed_at\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"created_at\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"updated_at\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"research_project\",\"kind\":\"object\",\"type\":\"ResearchProject\",\"relationName\":\"AnalysisJobToResearchProject\"},{\"name\":\"configuration\",\"kind\":\"object\",\"type\":\"AnalysisConfiguration\",\"relationName\":\"AnalysisConfigurationToAnalysisJob\"},{\"name\":\"batch_submissions\",\"kind\":\"object\",\"type\":\"BatchSubmission\",\"relationName\":\"AnalysisJobToBatchSubmission\"},{\"name\":\"knowledge_chunks\",\"kind\":\"object\",\"type\":\"KnowledgeChunk\",\"relationName\":\"AnalysisJobToKnowledgeChunk\"},{\"name\":\"knowledge_insights\",\"kind\":\"object\",\"type\":\"KnowledgeInsight\",\"relationName\":\"AnalysisJobToKnowledgeInsight\"}],\"dbName\":\"analysis_jobs\"},\"BatchSubmission\":{\"fields\":[{\"name\":\"id\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"analysis_job_uuid\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"openai_batch_id\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"status\",\"kind\":\"enum\",\"type\":\"BatchSubmissionStatus\"},{\"name\":\"request_file_id\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"response_file_id\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"error_file_id\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"submitted_at\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"completed_at\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"created_at\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"updated_at\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"analysis_job\",\"kind\":\"object\",\"type\":\"AnalysisJob\",\"relationName\":\"AnalysisJobToBatchSubmission\"}],\"dbName\":\"batch_submissions\"},\"Post\":{\"fields\":[{\"name\":\"id\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"research_project_uuid\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"platform\",\"kind\":\"enum\",\"type\":\"SourcePlatform\"},{\"name\":\"external_id\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"community\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"title\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"author\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"body\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"url\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"permalink\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"score\",\"kind\":\"scalar\",\"type\":\"Int\"},{\"name\":\"upvote_ratio\",\"kind\":\"scalar\",\"type\":\"Float\"},{\"name\":\"num_comments\",\"kind\":\"scalar\",\"type\":\"Int\"},{\"name\":\"flair\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"is_nsfw\",\"kind\":\"scalar\",\"type\":\"Boolean\"},{\"name\":\"is_deleted\",\"kind\":\"scalar\",\"type\":\"Boolean\"},{\"name\":\"is_removed\",\"kind\":\"scalar\",\"type\":\"Boolean\"},{\"name\":\"posted_at\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"fetched_at\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"created_at\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"updated_at\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"research_project\",\"kind\":\"object\",\"type\":\"ResearchProject\",\"relationName\":\"PostToResearchProject\"},{\"name\":\"comments\",\"kind\":\"object\",\"type\":\"Comment\",\"relationName\":\"CommentToPost\"},{\"name\":\"knowledge_chunks\",\"kind\":\"object\",\"type\":\"KnowledgeChunk\",\"relationName\":\"KnowledgeChunkToPost\"},{\"name\":\"citations\",\"kind\":\"object\",\"type\":\"Citation\",\"relationName\":\"CitationToPost\"},{\"name\":\"message_citations\",\"kind\":\"object\",\"type\":\"MessageCitation\",\"relationName\":\"MessageCitationToPost\"},{\"name\":\"embedding\",\"kind\":\"object\",\"type\":\"Embedding\",\"relationName\":\"EmbeddingToPost\"}],\"dbName\":\"posts\"},\"Comment\":{\"fields\":[{\"name\":\"id\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"research_project_uuid\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"post_uuid\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"external_id\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"parent_external_id\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"parent_comment_uuid\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"author\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"body\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"score\",\"kind\":\"scalar\",\"type\":\"Int\"},{\"name\":\"depth\",\"kind\":\"scalar\",\"type\":\"Int\"},{\"name\":\"permalink\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"is_deleted\",\"kind\":\"scalar\",\"type\":\"Boolean\"},{\"name\":\"is_removed\",\"kind\":\"scalar\",\"type\":\"Boolean\"},{\"name\":\"posted_at\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"fetched_at\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"created_at\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"updated_at\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"research_project\",\"kind\":\"object\",\"type\":\"ResearchProject\",\"relationName\":\"CommentToResearchProject\"},{\"name\":\"post\",\"kind\":\"object\",\"type\":\"Post\",\"relationName\":\"CommentToPost\"},{\"name\":\"parent_comment\",\"kind\":\"object\",\"type\":\"Comment\",\"relationName\":\"CommentReplies\"},{\"name\":\"replies\",\"kind\":\"object\",\"type\":\"Comment\",\"relationName\":\"CommentReplies\"},{\"name\":\"knowledge_chunks\",\"kind\":\"object\",\"type\":\"KnowledgeChunk\",\"relationName\":\"CommentToKnowledgeChunk\"},{\"name\":\"citations\",\"kind\":\"object\",\"type\":\"Citation\",\"relationName\":\"CitationToComment\"},{\"name\":\"message_citations\",\"kind\":\"object\",\"type\":\"MessageCitation\",\"relationName\":\"CommentToMessageCitation\"},{\"name\":\"embedding\",\"kind\":\"object\",\"type\":\"Embedding\",\"relationName\":\"CommentToEmbedding\"}],\"dbName\":\"comments\"},\"KnowledgeChunk\":{\"fields\":[{\"name\":\"id\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"research_project_uuid\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"analysis_job_uuid\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"post_uuid\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"comment_uuid\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"content\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"token_count\",\"kind\":\"scalar\",\"type\":\"Int\"},{\"name\":\"chunk_index\",\"kind\":\"scalar\",\"type\":\"Int\"},{\"name\":\"created_at\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"updated_at\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"research_project\",\"kind\":\"object\",\"type\":\"ResearchProject\",\"relationName\":\"KnowledgeChunkToResearchProject\"},{\"name\":\"analysis_job\",\"kind\":\"object\",\"type\":\"AnalysisJob\",\"relationName\":\"AnalysisJobToKnowledgeChunk\"},{\"name\":\"post\",\"kind\":\"object\",\"type\":\"Post\",\"relationName\":\"KnowledgeChunkToPost\"},{\"name\":\"comment\",\"kind\":\"object\",\"type\":\"Comment\",\"relationName\":\"CommentToKnowledgeChunk\"},{\"name\":\"embedding\",\"kind\":\"object\",\"type\":\"Embedding\",\"relationName\":\"EmbeddingToKnowledgeChunk\"},{\"name\":\"citations\",\"kind\":\"object\",\"type\":\"Citation\",\"relationName\":\"CitationToKnowledgeChunk\"}],\"dbName\":\"knowledge_chunks\"},\"Embedding\":{\"fields\":[{\"name\":\"id\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"research_project_uuid\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"model\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"dimensions\",\"kind\":\"scalar\",\"type\":\"Int\"},{\"name\":\"vector\",\"kind\":\"scalar\",\"type\":\"Float\"},{\"name\":\"created_at\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"post_uuid\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"comment_uuid\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"knowledge_chunk_uuid\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"knowledge_insight_uuid\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"research_project\",\"kind\":\"object\",\"type\":\"ResearchProject\",\"relationName\":\"EmbeddingToResearchProject\"},{\"name\":\"post\",\"kind\":\"object\",\"type\":\"Post\",\"relationName\":\"EmbeddingToPost\"},{\"name\":\"comment\",\"kind\":\"object\",\"type\":\"Comment\",\"relationName\":\"CommentToEmbedding\"},{\"name\":\"knowledge_chunk\",\"kind\":\"object\",\"type\":\"KnowledgeChunk\",\"relationName\":\"EmbeddingToKnowledgeChunk\"},{\"name\":\"knowledge_insight\",\"kind\":\"object\",\"type\":\"KnowledgeInsight\",\"relationName\":\"EmbeddingToKnowledgeInsight\"}],\"dbName\":\"embeddings\"},\"KnowledgeInsight\":{\"fields\":[{\"name\":\"id\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"research_project_uuid\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"analysis_job_uuid\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"topic_uuid\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"type\",\"kind\":\"enum\",\"type\":\"InsightType\"},{\"name\":\"title\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"content\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"confidence_score\",\"kind\":\"scalar\",\"type\":\"Float\"},{\"name\":\"supporting_count\",\"kind\":\"scalar\",\"type\":\"Int\"},{\"name\":\"metadata\",\"kind\":\"scalar\",\"type\":\"Json\"},{\"name\":\"created_at\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"updated_at\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"research_project\",\"kind\":\"object\",\"type\":\"ResearchProject\",\"relationName\":\"KnowledgeInsightToResearchProject\"},{\"name\":\"analysis_job\",\"kind\":\"object\",\"type\":\"AnalysisJob\",\"relationName\":\"AnalysisJobToKnowledgeInsight\"},{\"name\":\"topic\",\"kind\":\"object\",\"type\":\"Topic\",\"relationName\":\"KnowledgeInsightToTopic\"},{\"name\":\"citations\",\"kind\":\"object\",\"type\":\"Citation\",\"relationName\":\"CitationToKnowledgeInsight\"},{\"name\":\"saved_insights\",\"kind\":\"object\",\"type\":\"SavedInsight\",\"relationName\":\"KnowledgeInsightToSavedInsight\"},{\"name\":\"message_citations\",\"kind\":\"object\",\"type\":\"MessageCitation\",\"relationName\":\"KnowledgeInsightToMessageCitation\"},{\"name\":\"embedding\",\"kind\":\"object\",\"type\":\"Embedding\",\"relationName\":\"EmbeddingToKnowledgeInsight\"}],\"dbName\":\"knowledge_insights\"},\"Topic\":{\"fields\":[{\"name\":\"id\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"research_project_uuid\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"name\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"summary\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"created_at\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"updated_at\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"research_project\",\"kind\":\"object\",\"type\":\"ResearchProject\",\"relationName\":\"ResearchProjectToTopic\"},{\"name\":\"knowledge_insights\",\"kind\":\"object\",\"type\":\"KnowledgeInsight\",\"relationName\":\"KnowledgeInsightToTopic\"}],\"dbName\":\"topics\"},\"Citation\":{\"fields\":[{\"name\":\"id\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"knowledge_insight_uuid\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"post_uuid\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"comment_uuid\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"knowledge_chunk_uuid\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"excerpt\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"created_at\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"knowledge_insight\",\"kind\":\"object\",\"type\":\"KnowledgeInsight\",\"relationName\":\"CitationToKnowledgeInsight\"},{\"name\":\"post\",\"kind\":\"object\",\"type\":\"Post\",\"relationName\":\"CitationToPost\"},{\"name\":\"comment\",\"kind\":\"object\",\"type\":\"Comment\",\"relationName\":\"CitationToComment\"},{\"name\":\"knowledge_chunk\",\"kind\":\"object\",\"type\":\"KnowledgeChunk\",\"relationName\":\"CitationToKnowledgeChunk\"}],\"dbName\":\"citations\"},\"Conversation\":{\"fields\":[{\"name\":\"id\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"research_project_uuid\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"user_uuid\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"title\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"mode\",\"kind\":\"enum\",\"type\":\"ConversationMode\"},{\"name\":\"created_at\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"updated_at\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"research_project\",\"kind\":\"object\",\"type\":\"ResearchProject\",\"relationName\":\"ConversationToResearchProject\"},{\"name\":\"user\",\"kind\":\"object\",\"type\":\"User\",\"relationName\":\"ConversationToUser\"},{\"name\":\"messages\",\"kind\":\"object\",\"type\":\"ConversationMessage\",\"relationName\":\"ConversationToConversationMessage\"}],\"dbName\":\"conversations\"},\"ConversationMessage\":{\"fields\":[{\"name\":\"id\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"conversation_uuid\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"role\",\"kind\":\"enum\",\"type\":\"MessageRole\"},{\"name\":\"content\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"created_at\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"conversation\",\"kind\":\"object\",\"type\":\"Conversation\",\"relationName\":\"ConversationToConversationMessage\"},{\"name\":\"citations\",\"kind\":\"object\",\"type\":\"MessageCitation\",\"relationName\":\"ConversationMessageToMessageCitation\"}],\"dbName\":\"conversation_messages\"},\"MessageCitation\":{\"fields\":[{\"name\":\"id\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"conversation_message_uuid\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"post_uuid\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"comment_uuid\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"knowledge_insight_uuid\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"excerpt\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"created_at\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"conversation_message\",\"kind\":\"object\",\"type\":\"ConversationMessage\",\"relationName\":\"ConversationMessageToMessageCitation\"},{\"name\":\"post\",\"kind\":\"object\",\"type\":\"Post\",\"relationName\":\"MessageCitationToPost\"},{\"name\":\"comment\",\"kind\":\"object\",\"type\":\"Comment\",\"relationName\":\"CommentToMessageCitation\"},{\"name\":\"knowledge_insight\",\"kind\":\"object\",\"type\":\"KnowledgeInsight\",\"relationName\":\"KnowledgeInsightToMessageCitation\"}],\"dbName\":\"message_citations\"},\"SavedInsight\":{\"fields\":[{\"name\":\"id\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"user_uuid\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"research_project_uuid\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"knowledge_insight_uuid\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"created_at\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"user\",\"kind\":\"object\",\"type\":\"User\",\"relationName\":\"SavedInsightToUser\"},{\"name\":\"research_project\",\"kind\":\"object\",\"type\":\"ResearchProject\",\"relationName\":\"ResearchProjectToSavedInsight\"},{\"name\":\"knowledge_insight\",\"kind\":\"object\",\"type\":\"KnowledgeInsight\",\"relationName\":\"KnowledgeInsightToSavedInsight\"}],\"dbName\":\"saved_insights\"}},\"enums\":{},\"types\":{}}")
 defineDmmfProperty(exports.Prisma, config.runtimeDataModel)
 config.compilerWasm = {
   getRuntime: async () => require('./query_compiler_bg.js'),

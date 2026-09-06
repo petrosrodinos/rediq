@@ -13,6 +13,10 @@ datasource db {
   provider = "postgresql"
 }
 
+// ---------------------------------------------------------------------------
+// Enums
+// ---------------------------------------------------------------------------
+
 enum AuthRole {
   USER
   ADMIN
@@ -31,17 +35,105 @@ enum DocumentType {
   OTHER
 }
 
-model User {
-  id                  String  @id @default(uuid())
-  email     String   @unique
-  phone     String?   @unique
-  password  String
+enum SourcePlatform {
+  REDDIT
+}
 
-  role      AuthRole
+enum SourceType {
+  COMMUNITY
+  THREAD
+}
+
+enum PostSortOrder {
+  HOT
+  TOP
+  NEW
+  RISING
+  CONTROVERSIAL
+}
+
+enum TopTimeRange {
+  HOUR
+  DAY
+  WEEK
+  MONTH
+  YEAR
+  ALL
+}
+
+enum ProcessingMode {
+  STANDARD
+  BATCH
+}
+
+enum AnalysisStatus {
+  PENDING
+  COLLECTING_DATA
+  FILTERING
+  PROCESSING
+  GENERATING_EMBEDDINGS
+  EXTRACTING_KNOWLEDGE
+  AWAITING_BATCH_COMPLETION
+  SYNTHESIZING
+  COMPLETED
+  FAILED
+}
+
+enum BatchSubmissionStatus {
+  VALIDATING
+  IN_PROGRESS
+  FINALIZING
+  COMPLETED
+  FAILED
+  EXPIRED
+  CANCELLED
+}
+
+enum InsightType {
+  KEY_INSIGHT
+  PROBLEM
+  SOLUTION
+  OPINION
+  CONSENSUS
+  CONTRADICTION
+  USER_EXPERIENCE
+  PRODUCT_MENTION
+  FAQ
+  STATISTIC
+  TREND
+  RECOMMENDATION
+  ARGUMENT
+}
+
+enum ConversationMode {
+  GROUNDED
+  EXTERNAL_ALLOWED
+}
+
+enum MessageRole {
+  USER
+  ASSISTANT
+  SYSTEM
+}
+
+// ---------------------------------------------------------------------------
+// Identity
+// ---------------------------------------------------------------------------
+
+model User {
+  id       String  @id @default(uuid())
+  email    String  @unique
+  phone    String? @unique
+  password String
+
+  role       AuthRole
   created_at DateTime @default(now())
   updated_at DateTime @updatedAt
 
   password_reset_tokens PasswordResetToken[]
+  research_projects     ResearchProject[]
+  conversations         Conversation[]
+  saved_insights        SavedInsight[]
 
   @@index([email])
   @@index([phone])
@@ -50,7 +142,7 @@ model User {
 }
 
 model PasswordResetToken {
-  id         String  @id @default(uuid())
+  id         String    @id @default(uuid())
   token_hash String    @unique
   user_uuid  String
   expires_at DateTime
@@ -65,20 +157,423 @@ model PasswordResetToken {
 }
 
 model Document {
-  id                 String  @id @default(uuid())
-  user_uuid          String
-  filename           String
-  mimetype           String
-  size               Int
-  url                String
-  path               String
-  type               DocumentType  @default(LOGO)
-  created_at         DateTime      @default(now())
+  id         String       @id @default(uuid())
+  user_uuid  String
+  filename   String
+  mimetype   String
+  size       Int
+  url        String
+  path       String
+  type       DocumentType @default(LOGO)
+  created_at DateTime     @default(now())
 
   @@index([user_uuid])
   @@index([id])
   @@map("documents")
 }
 
+// ---------------------------------------------------------------------------
+// Research Projects
+// ---------------------------------------------------------------------------
 
+model ResearchProject {
+  id                String         @id @default(uuid())
+  user_uuid         String
+  name              String
+  status            AnalysisStatus @default(PENDING)
+  posts_analyzed    Int            @default(0)
+  comments_analyzed Int            @default(0)
+  created_at        DateTime       @default(now())
+  updated_at        DateTime       @updatedAt
 
+  user User @relation(fields: [user_uuid], references: [id], onDelete: Cascade)
+
+  source                  ResearchSource?
+  analysis_configurations AnalysisConfiguration[]
+  analysis_jobs           AnalysisJob[]
+  posts                   Post[]
+  comments                Comment[]
+  knowledge_chunks        KnowledgeChunk[]
+  knowledge_insights      KnowledgeInsight[]
+  topics                  Topic[]
+  embeddings              Embedding[]
+  conversations           Conversation[]
+  saved_insights          SavedInsight[]
+
+  @@index([user_uuid])
+  @@index([status])
+  @@map("research_projects")
+}
+
+model ResearchSource {
+  id                    String         @id @default(uuid())
+  research_project_uuid String         @unique
+  platform              SourcePlatform @default(REDDIT)
+  source_type           SourceType
+  url                   String
+  community             String
+  external_post_id      String?
+  created_at            DateTime       @default(now())
+  updated_at            DateTime       @updatedAt
+
+  research_project ResearchProject @relation(fields: [research_project_uuid], references: [id], onDelete: Cascade)
+
+  @@index([research_project_uuid])
+  @@map("research_sources")
+}
+
+model AnalysisConfiguration {
+  id                    String         @id @default(uuid())
+  research_project_uuid String
+  processing_mode       ProcessingMode @default(STANDARD)
+
+  sort_order     PostSortOrder @default(HOT)
+  top_time_range TopTimeRange?
+
+  max_posts             Int?
+  max_comments_per_post Int?
+  max_comments          Int?
+  max_comment_depth     Int?
+  min_post_score        Int?
+  min_comment_score     Int?
+
+  include_replies                  Boolean @default(true)
+  include_nsfw                     Boolean @default(false)
+  include_controversial            Boolean @default(true)
+  analyze_deleted_when_unavailable Boolean @default(false)
+  prioritize_engagement            Boolean @default(false)
+  prioritize_recent                Boolean @default(false)
+  prioritize_popular               Boolean @default(false)
+  prioritize_top_comments          Boolean @default(true)
+  analyze_entire_discussion        Boolean @default(false)
+
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
+
+  research_project ResearchProject @relation(fields: [research_project_uuid], references: [id], onDelete: Cascade)
+  analysis_job     AnalysisJob?
+
+  @@index([research_project_uuid])
+  @@map("analysis_configurations")
+}
+
+model AnalysisJob {
+  id                          String         @id @default(uuid())
+  research_project_uuid       String
+  analysis_configuration_uuid String         @unique
+  status                      AnalysisStatus @default(PENDING)
+
+  current_step       String?
+  posts_processed    Int     @default(0)
+  posts_total        Int     @default(0)
+  comments_processed Int     @default(0)
+  comments_total     Int     @default(0)
+
+  error_message String?
+  started_at    DateTime?
+  completed_at  DateTime?
+  created_at    DateTime  @default(now())
+  updated_at    DateTime  @updatedAt
+
+  research_project ResearchProject       @relation(fields: [research_project_uuid], references: [id], onDelete: Cascade)
+  configuration    AnalysisConfiguration @relation(fields: [analysis_configuration_uuid], references: [id], onDelete: Cascade)
+
+  batch_submissions  BatchSubmission[]
+  knowledge_chunks   KnowledgeChunk[]
+  knowledge_insights KnowledgeInsight[]
+
+  @@index([research_project_uuid])
+  @@index([status])
+  @@map("analysis_jobs")
+}
+
+model BatchSubmission {
+  id                String                @id @default(uuid())
+  analysis_job_uuid String
+  openai_batch_id   String                @unique
+  status            BatchSubmissionStatus @default(VALIDATING)
+
+  request_file_id  String?
+  response_file_id String?
+  error_file_id    String?
+
+  submitted_at DateTime?
+  completed_at DateTime?
+  created_at   DateTime  @default(now())
+  updated_at   DateTime  @updatedAt
+
+  analysis_job AnalysisJob @relation(fields: [analysis_job_uuid], references: [id], onDelete: Cascade)
+
+  @@index([analysis_job_uuid])
+  @@index([status])
+  @@map("batch_submissions")
+}
+
+// ---------------------------------------------------------------------------
+// Source Content
+// ---------------------------------------------------------------------------
+
+model Post {
+  id                    String         @id @default(uuid())
+  research_project_uuid String
+  platform              SourcePlatform @default(REDDIT)
+  external_id           String
+  community             String
+  title                 String
+  author                String?
+  body                  String?
+  url                   String
+  permalink             String
+  score                 Int            @default(0)
+  upvote_ratio          Float?
+  num_comments          Int            @default(0)
+  flair                 String?
+  is_nsfw               Boolean        @default(false)
+  is_deleted            Boolean        @default(false)
+  is_removed            Boolean        @default(false)
+  posted_at             DateTime
+  fetched_at            DateTime       @default(now())
+  created_at            DateTime       @default(now())
+  updated_at            DateTime       @updatedAt
+
+  research_project ResearchProject @relation(fields: [research_project_uuid], references: [id], onDelete: Cascade)
+
+  comments          Comment[]
+  knowledge_chunks  KnowledgeChunk[]
+  citations         Citation[]
+  message_citations MessageCitation[]
+  embedding         Embedding?
+
+  @@unique([research_project_uuid, external_id])
+  @@index([research_project_uuid])
+  @@index([community])
+  @@index([score])
+  @@map("posts")
+}
+
+model Comment {
+  id                    String   @id @default(uuid())
+  research_project_uuid String
+  post_uuid             String
+  external_id           String
+  parent_external_id    String?
+  parent_comment_uuid   String?
+  author                String?
+  body                  String?
+  score                 Int      @default(0)
+  depth                 Int      @default(0)
+  permalink             String
+  is_deleted            Boolean  @default(false)
+  is_removed            Boolean  @default(false)
+  posted_at             DateTime
+  fetched_at            DateTime @default(now())
+  created_at            DateTime @default(now())
+  updated_at            DateTime @updatedAt
+
+  research_project ResearchProject @relation(fields: [research_project_uuid], references: [id], onDelete: Cascade)
+  post             Post            @relation(fields: [post_uuid], references: [id], onDelete: Cascade)
+  parent_comment   Comment?        @relation("CommentReplies", fields: [parent_comment_uuid], references: [id], onDelete: SetNull)
+  replies          Comment[]       @relation("CommentReplies")
+
+  knowledge_chunks  KnowledgeChunk[]
+  citations         Citation[]
+  message_citations MessageCitation[]
+  embedding         Embedding?
+
+  @@unique([research_project_uuid, external_id])
+  @@index([research_project_uuid])
+  @@index([post_uuid])
+  @@index([parent_comment_uuid])
+  @@index([score])
+  @@map("comments")
+}
+
+// ---------------------------------------------------------------------------
+// Knowledge Layer
+// ---------------------------------------------------------------------------
+
+model KnowledgeChunk {
+  id                    String   @id @default(uuid())
+  research_project_uuid String
+  analysis_job_uuid     String
+  post_uuid             String?
+  comment_uuid          String?
+  content               String
+  token_count           Int?
+  chunk_index           Int      @default(0)
+  created_at            DateTime @default(now())
+  updated_at            DateTime @updatedAt
+
+  research_project ResearchProject @relation(fields: [research_project_uuid], references: [id], onDelete: Cascade)
+  analysis_job     AnalysisJob     @relation(fields: [analysis_job_uuid], references: [id], onDelete: Cascade)
+  post             Post?           @relation(fields: [post_uuid], references: [id], onDelete: SetNull)
+  comment          Comment?        @relation(fields: [comment_uuid], references: [id], onDelete: SetNull)
+
+  embedding Embedding?
+  citations Citation[]
+
+  @@index([research_project_uuid])
+  @@index([analysis_job_uuid])
+  @@index([post_uuid])
+  @@index([comment_uuid])
+  @@map("knowledge_chunks")
+}
+
+model Embedding {
+  id                    String   @id @default(uuid())
+  research_project_uuid String
+  model                 String
+  dimensions            Int
+  vector                Float[]
+  created_at            DateTime @default(now())
+
+  post_uuid              String? @unique
+  comment_uuid           String? @unique
+  knowledge_chunk_uuid   String? @unique
+  knowledge_insight_uuid String? @unique
+
+  research_project  ResearchProject   @relation(fields: [research_project_uuid], references: [id], onDelete: Cascade)
+  post              Post?             @relation(fields: [post_uuid], references: [id], onDelete: Cascade)
+  comment           Comment?          @relation(fields: [comment_uuid], references: [id], onDelete: Cascade)
+  knowledge_chunk   KnowledgeChunk?   @relation(fields: [knowledge_chunk_uuid], references: [id], onDelete: Cascade)
+  knowledge_insight KnowledgeInsight? @relation(fields: [knowledge_insight_uuid], references: [id], onDelete: Cascade)
+
+  @@index([research_project_uuid])
+  @@map("embeddings")
+}
+
+model KnowledgeInsight {
+  id                    String      @id @default(uuid())
+  research_project_uuid String
+  analysis_job_uuid     String?
+  topic_uuid            String?
+  type                  InsightType
+  title                 String
+  content               String
+  confidence_score      Float?
+  supporting_count      Int         @default(0)
+  metadata              Json?
+  created_at            DateTime    @default(now())
+  updated_at            DateTime    @updatedAt
+
+  research_project ResearchProject @relation(fields: [research_project_uuid], references: [id], onDelete: Cascade)
+  analysis_job     AnalysisJob?    @relation(fields: [analysis_job_uuid], references: [id], onDelete: SetNull)
+  topic            Topic?          @relation(fields: [topic_uuid], references: [id], onDelete: SetNull)
+
+  citations         Citation[]
+  saved_insights    SavedInsight[]
+  message_citations MessageCitation[]
+  embedding         Embedding?
+
+  @@index([research_project_uuid])
+  @@index([analysis_job_uuid])
+  @@index([topic_uuid])
+  @@index([type])
+  @@map("knowledge_insights")
+}
+
+model Topic {
+  id                    String   @id @default(uuid())
+  research_project_uuid String
+  name                  String
+  summary               String?
+  created_at            DateTime @default(now())
+  updated_at            DateTime @updatedAt
+
+  research_project   ResearchProject    @relation(fields: [research_project_uuid], references: [id], onDelete: Cascade)
+  knowledge_insights KnowledgeInsight[]
+
+  @@index([research_project_uuid])
+  @@map("topics")
+}
+
+model Citation {
+  id                     String   @id @default(uuid())
+  knowledge_insight_uuid String
+  post_uuid              String?
+  comment_uuid           String?
+  knowledge_chunk_uuid   String?
+  excerpt                String?
+  created_at             DateTime @default(now())
+
+  knowledge_insight KnowledgeInsight @relation(fields: [knowledge_insight_uuid], references: [id], onDelete: Cascade)
+  post              Post?            @relation(fields: [post_uuid], references: [id], onDelete: Cascade)
+  comment           Comment?         @relation(fields: [comment_uuid], references: [id], onDelete: Cascade)
+  knowledge_chunk   KnowledgeChunk?  @relation(fields: [knowledge_chunk_uuid], references: [id], onDelete: SetNull)
+
+  @@index([knowledge_insight_uuid])
+  @@index([post_uuid])
+  @@index([comment_uuid])
+  @@map("citations")
+}
+
+// ---------------------------------------------------------------------------
+// AI Research Agent
+// ---------------------------------------------------------------------------
+
+model Conversation {
+  id                    String           @id @default(uuid())
+  research_project_uuid String
+  user_uuid             String
+  title                 String?
+  mode                  ConversationMode @default(GROUNDED)
+  created_at            DateTime         @default(now())
+  updated_at            DateTime         @updatedAt
+
+  research_project ResearchProject       @relation(fields: [research_project_uuid], references: [id], onDelete: Cascade)
+  user             User                  @relation(fields: [user_uuid], references: [id], onDelete: Cascade)
+  messages         ConversationMessage[]
+
+  @@index([research_project_uuid])
+  @@index([user_uuid])
+  @@map("conversations")
+}
+
+model ConversationMessage {
+  id                String      @id @default(uuid())
+  conversation_uuid String
+  role              MessageRole
+  content           String
+  created_at        DateTime    @default(now())
+
+  conversation Conversation      @relation(fields: [conversation_uuid], references: [id], onDelete: Cascade)
+  citations    MessageCitation[]
+
+  @@index([conversation_uuid])
+  @@map("conversation_messages")
+}
+
+model MessageCitation {
+  id                        String   @id @default(uuid())
+  conversation_message_uuid String
+  post_uuid                 String?
+  comment_uuid              String?
+  knowledge_insight_uuid    String?
+  excerpt                   String?
+  created_at                DateTime @default(now())
+
+  conversation_message ConversationMessage @relation(fields: [conversation_message_uuid], references: [id], onDelete: Cascade)
+  post                 Post?               @relation(fields: [post_uuid], references: [id], onDelete: Cascade)
+  comment              Comment?            @relation(fields: [comment_uuid], references: [id], onDelete: Cascade)
+  knowledge_insight    KnowledgeInsight?   @relation(fields: [knowledge_insight_uuid], references: [id], onDelete: Cascade)
+
+  @@index([conversation_message_uuid])
+  @@map("message_citations")
+}
+
+model SavedInsight {
+  id                     String   @id @default(uuid())
+  user_uuid              String
+  research_project_uuid  String
+  knowledge_insight_uuid String
+  created_at             DateTime @default(now())
+
+  user              User             @relation(fields: [user_uuid], references: [id], onDelete: Cascade)
+  research_project  ResearchProject  @relation(fields: [research_project_uuid], references: [id], onDelete: Cascade)
+  knowledge_insight KnowledgeInsight @relation(fields: [knowledge_insight_uuid], references: [id], onDelete: Cascade)
+
+  @@unique([user_uuid, knowledge_insight_uuid])
+  @@index([user_uuid])
+  @@index([research_project_uuid])
+  @@map("saved_insights")
+}

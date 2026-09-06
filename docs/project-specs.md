@@ -710,7 +710,6 @@ Design a production-quality schema.
 At minimum, consider entities such as:
 
 - User
-- Membership
 - ResearchProject
 - ResearchSource
 - RedditPost
@@ -731,15 +730,15 @@ Design relationships appropriately.
 
 `AnalysisConfiguration` should include a `processingMode: 'standard' | 'batch'` field (see Section 22). When an `AnalysisJob` runs in batch mode, it should be linked to one or more `BatchSubmission` records tracking the OpenAI batch id, submission/completion timestamps, status, and request/response file references, so a job can be resumed or reconciled if the worker restarts while a batch is in flight.
 
-The system should support multiple users and organizations from the beginning.
+The system should support multiple users from the beginning.
 
 ---
 
 
 
-# 18. Multi-Tenancy
+# 18. Multi-User Authorization
 
-The application must be multi-user
+The application must be multi-user.
 
 Implement proper authorization and ownership checks in NestJS.
 
@@ -1242,7 +1241,7 @@ Provide:
 7. AI integration
 8. RAG pipeline
 9. Authentication
-10. Multi-tenant authorization
+10. Multi-user authorization
 11. Background analysis jobs
 12. Research dashboard
 13. Knowledge report UI

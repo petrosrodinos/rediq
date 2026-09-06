@@ -151,9 +151,233 @@ exports.Prisma.DocumentScalarFieldEnum = {
   created_at: 'created_at'
 };
 
+exports.Prisma.ResearchProjectScalarFieldEnum = {
+  id: 'id',
+  user_uuid: 'user_uuid',
+  name: 'name',
+  status: 'status',
+  posts_analyzed: 'posts_analyzed',
+  comments_analyzed: 'comments_analyzed',
+  created_at: 'created_at',
+  updated_at: 'updated_at'
+};
+
+exports.Prisma.ResearchSourceScalarFieldEnum = {
+  id: 'id',
+  research_project_uuid: 'research_project_uuid',
+  platform: 'platform',
+  source_type: 'source_type',
+  url: 'url',
+  community: 'community',
+  external_post_id: 'external_post_id',
+  created_at: 'created_at',
+  updated_at: 'updated_at'
+};
+
+exports.Prisma.AnalysisConfigurationScalarFieldEnum = {
+  id: 'id',
+  research_project_uuid: 'research_project_uuid',
+  processing_mode: 'processing_mode',
+  sort_order: 'sort_order',
+  top_time_range: 'top_time_range',
+  max_posts: 'max_posts',
+  max_comments_per_post: 'max_comments_per_post',
+  max_comments: 'max_comments',
+  max_comment_depth: 'max_comment_depth',
+  min_post_score: 'min_post_score',
+  min_comment_score: 'min_comment_score',
+  include_replies: 'include_replies',
+  include_nsfw: 'include_nsfw',
+  include_controversial: 'include_controversial',
+  analyze_deleted_when_unavailable: 'analyze_deleted_when_unavailable',
+  prioritize_engagement: 'prioritize_engagement',
+  prioritize_recent: 'prioritize_recent',
+  prioritize_popular: 'prioritize_popular',
+  prioritize_top_comments: 'prioritize_top_comments',
+  analyze_entire_discussion: 'analyze_entire_discussion',
+  created_at: 'created_at',
+  updated_at: 'updated_at'
+};
+
+exports.Prisma.AnalysisJobScalarFieldEnum = {
+  id: 'id',
+  research_project_uuid: 'research_project_uuid',
+  analysis_configuration_uuid: 'analysis_configuration_uuid',
+  status: 'status',
+  current_step: 'current_step',
+  posts_processed: 'posts_processed',
+  posts_total: 'posts_total',
+  comments_processed: 'comments_processed',
+  comments_total: 'comments_total',
+  error_message: 'error_message',
+  started_at: 'started_at',
+  completed_at: 'completed_at',
+  created_at: 'created_at',
+  updated_at: 'updated_at'
+};
+
+exports.Prisma.BatchSubmissionScalarFieldEnum = {
+  id: 'id',
+  analysis_job_uuid: 'analysis_job_uuid',
+  openai_batch_id: 'openai_batch_id',
+  status: 'status',
+  request_file_id: 'request_file_id',
+  response_file_id: 'response_file_id',
+  error_file_id: 'error_file_id',
+  submitted_at: 'submitted_at',
+  completed_at: 'completed_at',
+  created_at: 'created_at',
+  updated_at: 'updated_at'
+};
+
+exports.Prisma.PostScalarFieldEnum = {
+  id: 'id',
+  research_project_uuid: 'research_project_uuid',
+  platform: 'platform',
+  external_id: 'external_id',
+  community: 'community',
+  title: 'title',
+  author: 'author',
+  body: 'body',
+  url: 'url',
+  permalink: 'permalink',
+  score: 'score',
+  upvote_ratio: 'upvote_ratio',
+  num_comments: 'num_comments',
+  flair: 'flair',
+  is_nsfw: 'is_nsfw',
+  is_deleted: 'is_deleted',
+  is_removed: 'is_removed',
+  posted_at: 'posted_at',
+  fetched_at: 'fetched_at',
+  created_at: 'created_at',
+  updated_at: 'updated_at'
+};
+
+exports.Prisma.CommentScalarFieldEnum = {
+  id: 'id',
+  research_project_uuid: 'research_project_uuid',
+  post_uuid: 'post_uuid',
+  external_id: 'external_id',
+  parent_external_id: 'parent_external_id',
+  parent_comment_uuid: 'parent_comment_uuid',
+  author: 'author',
+  body: 'body',
+  score: 'score',
+  depth: 'depth',
+  permalink: 'permalink',
+  is_deleted: 'is_deleted',
+  is_removed: 'is_removed',
+  posted_at: 'posted_at',
+  fetched_at: 'fetched_at',
+  created_at: 'created_at',
+  updated_at: 'updated_at'
+};
+
+exports.Prisma.KnowledgeChunkScalarFieldEnum = {
+  id: 'id',
+  research_project_uuid: 'research_project_uuid',
+  analysis_job_uuid: 'analysis_job_uuid',
+  post_uuid: 'post_uuid',
+  comment_uuid: 'comment_uuid',
+  content: 'content',
+  token_count: 'token_count',
+  chunk_index: 'chunk_index',
+  created_at: 'created_at',
+  updated_at: 'updated_at'
+};
+
+exports.Prisma.EmbeddingScalarFieldEnum = {
+  id: 'id',
+  research_project_uuid: 'research_project_uuid',
+  model: 'model',
+  dimensions: 'dimensions',
+  vector: 'vector',
+  created_at: 'created_at',
+  post_uuid: 'post_uuid',
+  comment_uuid: 'comment_uuid',
+  knowledge_chunk_uuid: 'knowledge_chunk_uuid',
+  knowledge_insight_uuid: 'knowledge_insight_uuid'
+};
+
+exports.Prisma.KnowledgeInsightScalarFieldEnum = {
+  id: 'id',
+  research_project_uuid: 'research_project_uuid',
+  analysis_job_uuid: 'analysis_job_uuid',
+  topic_uuid: 'topic_uuid',
+  type: 'type',
+  title: 'title',
+  content: 'content',
+  confidence_score: 'confidence_score',
+  supporting_count: 'supporting_count',
+  metadata: 'metadata',
+  created_at: 'created_at',
+  updated_at: 'updated_at'
+};
+
+exports.Prisma.TopicScalarFieldEnum = {
+  id: 'id',
+  research_project_uuid: 'research_project_uuid',
+  name: 'name',
+  summary: 'summary',
+  created_at: 'created_at',
+  updated_at: 'updated_at'
+};
+
+exports.Prisma.CitationScalarFieldEnum = {
+  id: 'id',
+  knowledge_insight_uuid: 'knowledge_insight_uuid',
+  post_uuid: 'post_uuid',
+  comment_uuid: 'comment_uuid',
+  knowledge_chunk_uuid: 'knowledge_chunk_uuid',
+  excerpt: 'excerpt',
+  created_at: 'created_at'
+};
+
+exports.Prisma.ConversationScalarFieldEnum = {
+  id: 'id',
+  research_project_uuid: 'research_project_uuid',
+  user_uuid: 'user_uuid',
+  title: 'title',
+  mode: 'mode',
+  created_at: 'created_at',
+  updated_at: 'updated_at'
+};
+
+exports.Prisma.ConversationMessageScalarFieldEnum = {
+  id: 'id',
+  conversation_uuid: 'conversation_uuid',
+  role: 'role',
+  content: 'content',
+  created_at: 'created_at'
+};
+
+exports.Prisma.MessageCitationScalarFieldEnum = {
+  id: 'id',
+  conversation_message_uuid: 'conversation_message_uuid',
+  post_uuid: 'post_uuid',
+  comment_uuid: 'comment_uuid',
+  knowledge_insight_uuid: 'knowledge_insight_uuid',
+  excerpt: 'excerpt',
+  created_at: 'created_at'
+};
+
+exports.Prisma.SavedInsightScalarFieldEnum = {
+  id: 'id',
+  user_uuid: 'user_uuid',
+  research_project_uuid: 'research_project_uuid',
+  knowledge_insight_uuid: 'knowledge_insight_uuid',
+  created_at: 'created_at'
+};
+
 exports.Prisma.SortOrder = {
   asc: 'asc',
   desc: 'desc'
+};
+
+exports.Prisma.NullableJsonNullValueInput = {
+  DbNull: Prisma.DbNull,
+  JsonNull: Prisma.JsonNull
 };
 
 exports.Prisma.QueryMode = {
@@ -164,6 +388,12 @@ exports.Prisma.QueryMode = {
 exports.Prisma.NullsOrder = {
   first: 'first',
   last: 'last'
+};
+
+exports.Prisma.JsonNullValueFilter = {
+  DbNull: Prisma.DbNull,
+  JsonNull: Prisma.JsonNull,
+  AnyNull: Prisma.AnyNull
 };
 exports.AuthRole = exports.$Enums.AuthRole = {
   USER: 'USER',
@@ -183,10 +413,107 @@ exports.DocumentType = exports.$Enums.DocumentType = {
   OTHER: 'OTHER'
 };
 
+exports.AnalysisStatus = exports.$Enums.AnalysisStatus = {
+  PENDING: 'PENDING',
+  COLLECTING_DATA: 'COLLECTING_DATA',
+  FILTERING: 'FILTERING',
+  PROCESSING: 'PROCESSING',
+  GENERATING_EMBEDDINGS: 'GENERATING_EMBEDDINGS',
+  EXTRACTING_KNOWLEDGE: 'EXTRACTING_KNOWLEDGE',
+  AWAITING_BATCH_COMPLETION: 'AWAITING_BATCH_COMPLETION',
+  SYNTHESIZING: 'SYNTHESIZING',
+  COMPLETED: 'COMPLETED',
+  FAILED: 'FAILED'
+};
+
+exports.SourcePlatform = exports.$Enums.SourcePlatform = {
+  REDDIT: 'REDDIT'
+};
+
+exports.SourceType = exports.$Enums.SourceType = {
+  COMMUNITY: 'COMMUNITY',
+  THREAD: 'THREAD'
+};
+
+exports.ProcessingMode = exports.$Enums.ProcessingMode = {
+  STANDARD: 'STANDARD',
+  BATCH: 'BATCH'
+};
+
+exports.PostSortOrder = exports.$Enums.PostSortOrder = {
+  HOT: 'HOT',
+  TOP: 'TOP',
+  NEW: 'NEW',
+  RISING: 'RISING',
+  CONTROVERSIAL: 'CONTROVERSIAL'
+};
+
+exports.TopTimeRange = exports.$Enums.TopTimeRange = {
+  HOUR: 'HOUR',
+  DAY: 'DAY',
+  WEEK: 'WEEK',
+  MONTH: 'MONTH',
+  YEAR: 'YEAR',
+  ALL: 'ALL'
+};
+
+exports.BatchSubmissionStatus = exports.$Enums.BatchSubmissionStatus = {
+  VALIDATING: 'VALIDATING',
+  IN_PROGRESS: 'IN_PROGRESS',
+  FINALIZING: 'FINALIZING',
+  COMPLETED: 'COMPLETED',
+  FAILED: 'FAILED',
+  EXPIRED: 'EXPIRED',
+  CANCELLED: 'CANCELLED'
+};
+
+exports.InsightType = exports.$Enums.InsightType = {
+  KEY_INSIGHT: 'KEY_INSIGHT',
+  PROBLEM: 'PROBLEM',
+  SOLUTION: 'SOLUTION',
+  OPINION: 'OPINION',
+  CONSENSUS: 'CONSENSUS',
+  CONTRADICTION: 'CONTRADICTION',
+  USER_EXPERIENCE: 'USER_EXPERIENCE',
+  PRODUCT_MENTION: 'PRODUCT_MENTION',
+  FAQ: 'FAQ',
+  STATISTIC: 'STATISTIC',
+  TREND: 'TREND',
+  RECOMMENDATION: 'RECOMMENDATION',
+  ARGUMENT: 'ARGUMENT'
+};
+
+exports.ConversationMode = exports.$Enums.ConversationMode = {
+  GROUNDED: 'GROUNDED',
+  EXTERNAL_ALLOWED: 'EXTERNAL_ALLOWED'
+};
+
+exports.MessageRole = exports.$Enums.MessageRole = {
+  USER: 'USER',
+  ASSISTANT: 'ASSISTANT',
+  SYSTEM: 'SYSTEM'
+};
+
 exports.Prisma.ModelName = {
   User: 'User',
   PasswordResetToken: 'PasswordResetToken',
-  Document: 'Document'
+  Document: 'Document',
+  ResearchProject: 'ResearchProject',
+  ResearchSource: 'ResearchSource',
+  AnalysisConfiguration: 'AnalysisConfiguration',
+  AnalysisJob: 'AnalysisJob',
+  BatchSubmission: 'BatchSubmission',
+  Post: 'Post',
+  Comment: 'Comment',
+  KnowledgeChunk: 'KnowledgeChunk',
+  Embedding: 'Embedding',
+  KnowledgeInsight: 'KnowledgeInsight',
+  Topic: 'Topic',
+  Citation: 'Citation',
+  Conversation: 'Conversation',
+  ConversationMessage: 'ConversationMessage',
+  MessageCitation: 'MessageCitation',
+  SavedInsight: 'SavedInsight'
 };
 
 /**
