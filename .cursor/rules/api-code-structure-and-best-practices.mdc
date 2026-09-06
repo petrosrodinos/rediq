@@ -270,6 +270,58 @@ findAll(@Query(new ZodValidationPipe(FeatureQuerySchema)) query: FeatureQueryTyp
 - Use `Promise.all()` to run independent queries (e.g., data + count) in parallel
 - Use `$transaction()` when multiple writes must be atomic
 
+### Prisma Enums — never magic strings
+
+Every enum defined in `prisma/schema.prisma` is generated into `generated/prisma` as a const object + matching type (e.g. `AnalysisStatus`, `AuthRole`, `DocumentType`, `ProcessingMode`, `SourceType`). Because these are plain string-literal unions under the hood, a raw string like `'COMPLETED'` or `'ADMIN'` will type-check in most places Prisma expects the enum — **that does not make it acceptable**. It silently reintroduces the exact bug class this rule exists to prevent: a typo (`'COMPLETE'` instead of `'COMPLETED'`) compiles fine and fails at runtime.
+
+**Wrong — magic string literal:**
+
+```ts
+await this.prisma.analysisJob.update({
+  where: { id },
+  data: { status: 'COMPLETED' },
+});
+
+if (job.status === 'FAILED') { ... }
+
+const role = AuthRoles.ADMIN; // a hand-rolled const object duplicating Prisma's AuthRole
+```
+
+**Correct — import and reference the generated enum:**
+
+```ts
+import { AnalysisStatus } from 'generated/prisma';
+
+await this.prisma.analysisJob.update({
+  where: { id },
+  data: { status: AnalysisStatus.COMPLETED },
+});
+
+if (job.status === AnalysisStatus.FAILED) { ... }
+```
+
+**Hard bans (agents must not generate):**
+
+- A string literal (`'PENDING'`, `'ADMIN'`, `'BATCH'`, etc.) anywhere a Prisma enum type is expected — `data: {}` payloads, `where` filters, equality checks, default parameter values, and `@Roles(...)` decorator arguments all count.
+- A hand-rolled `const X = { A: 'A', B: 'B' } as const` object (or TS `enum`) whose members duplicate an existing Prisma enum's values — e.g. redeclaring `AuthRole` as `AuthRoles` in application code. If you're tempted to write this, the enum already exists in `generated/prisma`; import it instead.
+- A literal array duplicating enum members for a Zod schema (`z.enum(['PENDING', 'FAILED', ...])`) or Swagger doc (`@ApiProperty({ enum: ['A', 'B'] })`) when a Prisma enum already exists for that field.
+
+**Correct patterns for common spots:**
+
+| Spot | Use |
+| --- | --- |
+| Zod query/body schema field backed by a Prisma enum | `z.nativeEnum(AnalysisStatus).optional()` — never `z.string()` or `z.enum([...])` with hand-copied values |
+| class-validator DTO field | `@IsEnum(ProcessingMode)` on a field typed `ProcessingMode` |
+| Swagger response entity field | `@ApiProperty({ enum: DocumentType })` — pass the enum object itself, not a literal array of its values |
+| `@Roles(...)` guard decorator | `@Roles(AuthRole.ADMIN)` — the decorator's param type should be `AuthRole[]`, not `string[]` |
+| A `Record<...>` keyed by enum values (e.g. mapping to an external API's own vocabulary) | `Record<PrismaEnum, string>` with computed keys (`[PrismaEnum.X]: '...'`), not `Record<string, string>` with bare string keys |
+
+**Before finishing any task that touches a field backed by a Prisma enum:**
+
+1. Grep for the field's string values in the file you're editing and anywhere else you introduce them — every match should resolve through the enum, not a literal.
+2. If you find a local type alias or const object whose values mirror a Prisma enum (`type Foo = 'A' | 'B'`, `const Foos = { A: 'A', B: 'B' }`), delete it and import the Prisma enum instead — check its usages first so the replacement is exhaustive.
+3. If a `z.string()`/`z.enum([...])` field is actually enum-backed, switch it to `z.nativeEnum(...)` and remove any `as any` cast the service used to work around the loose typing.
+
 ### Pagination Pattern
 
 Return a consistent shape for all paginated list endpoints:
@@ -415,6 +467,8 @@ const ConfigModule = ConfigModule.forRoot({
 | Use `$transaction()` for multi-write atomicity       | Make multi-step writes without a transaction    |
 | Return paginated lists as `{ data, pagination }`     | Return raw arrays for paginated endpoints       |
 | Use Prisma-generated enums from `generated/prisma`   | Redeclare enums that Prisma already provides    |
+| Reference enum members (`AnalysisStatus.COMPLETED`)  | Use magic string literals (`'COMPLETED'`) for enum-backed fields |
+| Use `z.nativeEnum(PrismaEnum)` for enum-backed query/body fields | Use `z.string()` or a hand-copied `z.enum([...])` for them |
 | Delete sensitive fields before returning data        | Return DB records with hashed passwords or keys |
 | Use `@ApiProperty` on all DTO fields                 | Leave Swagger decorators off DTO fields         |
 
