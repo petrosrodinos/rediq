@@ -1,5 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { IsString, MinLength } from 'class-validator';
+import { IsOptional, IsString, MinLength } from 'class-validator';
 
 export class CreateSavedInsightDto {
   @ApiProperty({ description: 'The research project the insight belongs to' })
@@ -11,4 +11,13 @@ export class CreateSavedInsightDto {
   @IsString()
   @MinLength(1)
   knowledge_insight_uuid: string;
+
+  @ApiProperty({
+    required: false,
+    nullable: true,
+    description: 'A collection to file this saved insight under',
+  })
+  @IsOptional()
+  @IsString()
+  collection_uuid?: string | null;
 }

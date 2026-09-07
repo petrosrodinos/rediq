@@ -20,6 +20,15 @@ export class ResearchProject {
   @ApiProperty()
   comments_analyzed: number;
 
+  @ApiProperty({ required: false, nullable: true })
+  sentiment_positive_pct: number | null;
+
+  @ApiProperty({ required: false, nullable: true })
+  sentiment_neutral_pct: number | null;
+
+  @ApiProperty({ required: false, nullable: true })
+  sentiment_negative_pct: number | null;
+
   @ApiProperty()
   created_at: Date;
 

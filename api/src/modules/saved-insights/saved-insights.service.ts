@@ -5,6 +5,7 @@ import {
 } from '@nestjs/common';
 import { PrismaService } from '@/core/databases/prisma/prisma.service';
 import { CreateSavedInsightDto } from './dto/create-saved-insight.dto';
+import { UpdateSavedInsightDto } from './dto/update-saved-insight.dto';
 import { SavedInsightQueryType } from './dto/saved-insight-query.schema';
 
 const SAVED_INSIGHT_INCLUDE = {
@@ -30,12 +31,17 @@ export class SavedInsightsService {
 
     if (!insight) throw new NotFoundException('Knowledge insight not found');
 
+    if (dto.collection_uuid) {
+      await this.ensureCollectionOwnership(userId, dto.collection_uuid);
+    }
+
     try {
       return await this.prisma.savedInsight.create({
         data: {
           user_uuid: userId,
           research_project_uuid: dto.research_project_uuid,
           knowledge_insight_uuid: dto.knowledge_insight_uuid,
+          collection_uuid: dto.collection_uuid ?? null,
         },
         include: SAVED_INSIGHT_INCLUDE,
       });
@@ -52,6 +58,9 @@ export class SavedInsightsService {
       user_uuid: userId,
       ...(query.research_project_uuid && {
         research_project_uuid: query.research_project_uuid,
+      }),
+      ...(query.collection_uuid && {
+        collection_uuid: query.collection_uuid,
       }),
     };
 
@@ -79,6 +88,23 @@ export class SavedInsightsService {
     };
   }
 
+  async update(userId: string, id: string, dto: UpdateSavedInsightDto) {
+    const savedInsight = await this.prisma.savedInsight.findFirst({
+      where: { id, user_uuid: userId },
+    });
+    if (!savedInsight) throw new NotFoundException('Saved insight not found');
+
+    if (dto.collection_uuid) {
+      await this.ensureCollectionOwnership(userId, dto.collection_uuid);
+    }
+
+    return this.prisma.savedInsight.update({
+      where: { id },
+      data: { collection_uuid: dto.collection_uuid ?? null },
+      include: SAVED_INSIGHT_INCLUDE,
+    });
+  }
+
   async remove(userId: string, id: string) {
     const savedInsight = await this.prisma.savedInsight.findFirst({
       where: { id, user_uuid: userId },
@@ -89,5 +115,13 @@ export class SavedInsightsService {
     await this.prisma.savedInsight.delete({ where: { id } });
 
     return { success: true };
+  }
+
+  private async ensureCollectionOwnership(userId: string, id: string) {
+    const collection = await this.prisma.savedInsightCollection.findFirst({
+      where: { id, user_uuid: userId },
+    });
+    if (!collection) throw new NotFoundException('Collection not found');
+    return collection;
   }
 }

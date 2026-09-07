@@ -23,8 +23,10 @@ import { KnowledgeChunksModule } from './modules/knowledge-chunks/knowledge-chun
 import { SearchModule } from './modules/search/search.module';
 import { ConversationsModule } from './modules/conversations/conversations.module';
 import { SavedInsightsModule } from './modules/saved-insights/saved-insights.module';
+import { SavedSearchesModule } from './modules/saved-searches/saved-searches.module';
 import { ExportModule } from './modules/export/export.module';
 import { AnalysisPipelineModule } from './background/analysis/analysis-pipeline.module';
+import { AdminModule } from './modules/admin/admin.module';
 
 @Module({
   imports: [
@@ -51,8 +53,10 @@ import { AnalysisPipelineModule } from './background/analysis/analysis-pipeline.
     SearchModule,
     ConversationsModule,
     SavedInsightsModule,
+    SavedSearchesModule,
     ExportModule,
     AnalysisPipelineModule,
+    AdminModule,
   ],
   controllers: [AppController],
   providers: [AppService],

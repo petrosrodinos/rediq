@@ -6,6 +6,7 @@ import {
     createAnalysisJob,
     getAnalysisJob,
     getAnalysisJobBatchSubmissions,
+    getAnalysisJobEvents,
     getAnalysisJobs,
 } from "../services/analysis-jobs.services";
 import type {
@@ -13,6 +14,7 @@ import type {
     AnalysisJobQueryType,
     BatchSubmissionQueryType,
     CreateAnalysisJobDto,
+    JobEventQueryType,
 } from "../interfaces/analysis-jobs.interfaces";
 
 const TERMINAL_ANALYSIS_STATUSES: AnalysisStatusType[] = [AnalysisStatus.COMPLETED, AnalysisStatus.FAILED];
@@ -99,5 +101,14 @@ export const useGetAnalysisJobBatchSubmissions = (id: string, query?: BatchSubmi
         queryKey: ["analysis-jobs", id, "batch-submissions", query],
         queryFn: () => getAnalysisJobBatchSubmissions(id, query),
         enabled: !!id,
+    });
+};
+
+export const useGetAnalysisJobEvents = (id: string, query?: JobEventQueryType, options?: { jobStatus?: AnalysisStatusType }) => {
+    return useQuery({
+        queryKey: ["analysis-jobs", id, "events", query],
+        queryFn: () => getAnalysisJobEvents(id, query),
+        enabled: !!id,
+        refetchInterval: options?.jobStatus && !TERMINAL_ANALYSIS_STATUSES.includes(options.jobStatus) ? JOB_POLL_INTERVAL_MS : false,
     });
 };

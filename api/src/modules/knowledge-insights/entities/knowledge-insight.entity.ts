@@ -1,4 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger';
+import { SentimentLabel } from 'generated/prisma';
 
 export class KnowledgeInsight {
   @ApiProperty()
@@ -27,6 +28,12 @@ export class KnowledgeInsight {
 
   @ApiProperty()
   supporting_count: number;
+
+  @ApiProperty({ required: false, nullable: true, enum: SentimentLabel })
+  sentiment?: SentimentLabel | null;
+
+  @ApiProperty({ required: false, nullable: true })
+  sentiment_score?: number | null;
 
   @ApiProperty({ required: false, nullable: true })
   metadata?: Record<string, any> | null;

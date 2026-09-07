@@ -57,3 +57,12 @@ export const deleteResearchProject = async (id: string): Promise<ResearchProject
         throw new Error("Failed to delete research project. Please try again.");
     }
 };
+
+export const recalculateResearchProjectSentiment = async (id: string): Promise<ResearchProject> => {
+    try {
+        const response = await axiosInstance.post(ApiRoutes.research_projects.recalculate_sentiment(id));
+        return response.data;
+    } catch (error) {
+        throw new Error("Failed to recalculate sentiment. Please try again.");
+    }
+};

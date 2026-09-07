@@ -7,6 +7,8 @@ import type {
     BatchSubmissionListResponse,
     BatchSubmissionQueryType,
     CreateAnalysisJobDto,
+    JobEventListResponse,
+    JobEventQueryType,
 } from "../interfaces/analysis-jobs.interfaces";
 
 export const createAnalysisJob = async (
@@ -62,5 +64,14 @@ export const getAnalysisJobBatchSubmissions = async (
         return response.data;
     } catch (error) {
         throw new Error("Failed to fetch analysis job batch submissions. Please try again.");
+    }
+};
+
+export const getAnalysisJobEvents = async (id: string, query?: JobEventQueryType): Promise<JobEventListResponse> => {
+    try {
+        const response = await axiosInstance.get(ApiRoutes.analysis_jobs.events(id), { params: query });
+        return response.data;
+    } catch (error) {
+        throw new Error("Failed to fetch the analysis job's event log. Please try again.");
     }
 };

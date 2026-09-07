@@ -5,6 +5,7 @@ import {
     deleteResearchProject,
     getResearchProject,
     getResearchProjects,
+    recalculateResearchProjectSentiment,
     updateResearchProject,
 } from "../services/research-projects.services";
 import type {
@@ -68,6 +69,26 @@ export const useUpdateResearchProject = () => {
         onError: (error: Error) => {
             toast({
                 title: "Could not update research project",
+                description: error.message,
+                duration: 3000,
+                variant: "error",
+            });
+        },
+    });
+};
+
+export const useRecalculateResearchProjectSentiment = () => {
+    const queryClient = useQueryClient();
+
+    return useMutation({
+        mutationFn: (id: string) => recalculateResearchProjectSentiment(id),
+        onSuccess: (_data, id) => {
+            queryClient.invalidateQueries({ queryKey: ["research-projects", id] });
+            queryClient.invalidateQueries({ queryKey: ["research-projects"] });
+        },
+        onError: (error: Error) => {
+            toast({
+                title: "Could not recalculate sentiment",
                 description: error.message,
                 duration: 3000,
                 variant: "error",

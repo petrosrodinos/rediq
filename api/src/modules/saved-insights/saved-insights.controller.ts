@@ -4,6 +4,7 @@ import {
   Delete,
   Get,
   Param,
+  Patch,
   Post,
   Query,
   UseGuards,
@@ -19,6 +20,7 @@ import { CurrentUser } from '@/shared/decorators/current-user.decorator';
 import { ZodValidationPipe } from '@/shared/pipes/zod.validation.pipe';
 import { SavedInsightsService } from './saved-insights.service';
 import { CreateSavedInsightDto } from './dto/create-saved-insight.dto';
+import { UpdateSavedInsightDto } from './dto/update-saved-insight.dto';
 import {
   SavedInsightQuerySchema,
   SavedInsightQueryType,
@@ -52,6 +54,18 @@ export class SavedInsightsController {
     query: SavedInsightQueryType,
   ) {
     return this.savedInsightsService.findAll(userId, query);
+  }
+
+  @Patch(':id')
+  @ApiOperation({ summary: 'Move a saved insight into (or out of) a collection' })
+  @ApiResponse({ status: 200, description: 'Saved insight updated' })
+  @ApiResponse({ status: 404, description: 'Saved insight or collection not found' })
+  update(
+    @CurrentUser('id') userId: string,
+    @Param('id') id: string,
+    @Body() dto: UpdateSavedInsightDto,
+  ) {
+    return this.savedInsightsService.update(userId, id, dto);
   }
 
   @Delete(':id')

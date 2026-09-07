@@ -23,6 +23,15 @@ export class BatchSubmission {
   @ApiProperty({ required: false, nullable: true })
   error_file_id: string | null;
 
+  @ApiProperty()
+  prompt_tokens: number;
+
+  @ApiProperty()
+  completion_tokens: number;
+
+  @ApiProperty({ required: false, nullable: true })
+  cost_usd: number | null;
+
   @ApiProperty({ required: false, nullable: true })
   submitted_at: Date | null;
 

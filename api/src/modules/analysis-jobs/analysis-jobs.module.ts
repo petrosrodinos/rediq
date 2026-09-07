@@ -8,6 +8,7 @@ import {
 } from './analysis-jobs.controller';
 import { AnalysisJobsService } from './analysis-jobs.service';
 import { BatchSubmissionsService } from './batch-submissions.service';
+import { JobEventsService } from './job-events.service';
 
 @Module({
   imports: [
@@ -15,7 +16,7 @@ import { BatchSubmissionsService } from './batch-submissions.service';
     BullModule.registerQueue({ name: ANALYSIS_QUEUE_NAME }),
   ],
   controllers: [AnalysisJobsController, AnalysisJobItemController],
-  providers: [AnalysisJobsService, BatchSubmissionsService],
-  exports: [AnalysisJobsService, BatchSubmissionsService],
+  providers: [AnalysisJobsService, BatchSubmissionsService, JobEventsService],
+  exports: [AnalysisJobsService, BatchSubmissionsService, JobEventsService],
 })
 export class AnalysisJobsModule {}

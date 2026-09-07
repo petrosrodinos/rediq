@@ -8,9 +8,23 @@ export const InsightType = {
     CONSENSUS: "CONSENSUS",
     CONTRADICTION: "CONTRADICTION",
     USER_EXPERIENCE: "USER_EXPERIENCE",
+    PRODUCT_MENTION: "PRODUCT_MENTION",
+    FAQ: "FAQ",
+    STATISTIC: "STATISTIC",
+    TREND: "TREND",
+    RECOMMENDATION: "RECOMMENDATION",
+    ARGUMENT: "ARGUMENT",
 } as const;
 
 export type InsightTypeType = (typeof InsightType)[keyof typeof InsightType];
+
+export const SentimentLabel = {
+    POSITIVE: "POSITIVE",
+    NEUTRAL: "NEUTRAL",
+    NEGATIVE: "NEGATIVE",
+} as const;
+
+export type SentimentLabelType = (typeof SentimentLabel)[keyof typeof SentimentLabel];
 
 export interface KnowledgeInsightTopic {
     id: string;
@@ -93,6 +107,8 @@ export interface KnowledgeInsight {
     content: string;
     confidence_score?: number | null;
     supporting_count: number;
+    sentiment?: SentimentLabelType | null;
+    sentiment_score?: number | null;
     metadata?: Record<string, any> | null;
     created_at: string;
     updated_at: string;
@@ -119,6 +135,7 @@ export interface KnowledgeInsightQueryType {
     page?: number;
     limit?: number;
     type?: InsightTypeType;
+    sentiment?: SentimentLabelType;
     topic_uuid?: string;
     min_confidence?: number;
     search?: string;

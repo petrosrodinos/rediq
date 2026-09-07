@@ -1,5 +1,5 @@
 import { z } from 'zod';
-import { InsightType } from 'generated/prisma';
+import { InsightType, SentimentLabel } from 'generated/prisma';
 
 export const KnowledgeInsightQuerySchema = z.object({
   page: z
@@ -11,6 +11,7 @@ export const KnowledgeInsightQuerySchema = z.object({
     .optional()
     .transform((v) => (v ? parseInt(v, 10) : 10)),
   type: z.nativeEnum(InsightType).optional(),
+  sentiment: z.nativeEnum(SentimentLabel).optional(),
   topic_uuid: z.string().optional(),
   min_confidence: z
     .string()

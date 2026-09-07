@@ -6,6 +6,8 @@ import SignUp from "@/pages/auth/pages/sign-up";
 import AuthLayout from "@/pages/auth/layout";
 import AdminLayout from "@/pages/admin/layout";
 import AdminHealthPage from "@/pages/admin/pages/health";
+import AdminUsersPage from "@/pages/admin/pages/users";
+import AdminAlertsPage from "@/pages/admin/pages/alerts";
 import { RoleTypes } from "@/features/user/interfaces/user.interface";
 
 export default function AppRoutes() {
@@ -33,6 +35,8 @@ export default function AppRoutes() {
         }
       >
         <Route path="health" element={<AdminHealthPage />} />
+        <Route path="users" element={<AdminUsersPage />} />
+        <Route path="alerts" element={<AdminAlertsPage />} />
         <Route index element={<Navigate to={RoutePaths.admin.health} replace />} />
       </Route>
 

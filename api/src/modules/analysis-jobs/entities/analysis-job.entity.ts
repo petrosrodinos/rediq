@@ -29,6 +29,18 @@ export class AnalysisJob {
   @ApiProperty()
   comments_total: number;
 
+  @ApiProperty()
+  prompt_tokens: number;
+
+  @ApiProperty()
+  completion_tokens: number;
+
+  @ApiProperty({ required: false, nullable: true })
+  estimated_cost_usd: number | null;
+
+  @ApiProperty({ required: false, nullable: true })
+  actual_cost_usd: number | null;
+
   @ApiProperty({ required: false, nullable: true })
   error_message: string | null;
 

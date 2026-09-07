@@ -21,10 +21,43 @@ export interface BatchSubmission {
     request_file_id: string | null;
     response_file_id: string | null;
     error_file_id: string | null;
+    prompt_tokens: number;
+    completion_tokens: number;
+    cost_usd: number | null;
     submitted_at: string | null;
     completed_at: string | null;
     created_at: string;
     updated_at: string;
+}
+
+export const JobEventLevel = {
+    INFO: "INFO",
+    WARNING: "WARNING",
+    ERROR: "ERROR",
+} as const;
+export type JobEventLevelType = (typeof JobEventLevel)[keyof typeof JobEventLevel];
+
+export interface JobEvent {
+    id: string;
+    analysis_job_uuid: string;
+    step: string;
+    message: string;
+    level: JobEventLevelType;
+    metadata?: Record<string, any> | null;
+    created_at: string;
+}
+
+export interface JobEventQueryType {
+    page?: number;
+    limit?: number;
+    level?: JobEventLevelType;
+    order_by?: "created_at";
+    order_direction?: "asc" | "desc";
+}
+
+export interface JobEventListResponse {
+    data: JobEvent[];
+    pagination: Pagination;
 }
 
 export interface AnalysisJob {
@@ -37,6 +70,10 @@ export interface AnalysisJob {
     posts_total: number;
     comments_processed: number;
     comments_total: number;
+    prompt_tokens: number;
+    completion_tokens: number;
+    estimated_cost_usd: number | null;
+    actual_cost_usd: number | null;
     error_message: string | null;
     started_at: string | null;
     completed_at: string | null;

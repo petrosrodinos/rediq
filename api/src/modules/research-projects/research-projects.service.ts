@@ -1,6 +1,7 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { PrismaService } from '@/core/databases/prisma/prisma.service';
 import { RedditService } from '@/integrations/reddit/services/reddit.service';
+import { SentimentLabel } from 'generated/prisma';
 import { CreateResearchProjectDto } from './dto/create-research-project.dto';
 import { UpdateResearchProjectDto } from './dto/update-research-project.dto';
 import { ResearchProjectsQueryType } from './dto/research-projects-query.schema';
@@ -113,6 +114,47 @@ export class ResearchProjectsService {
 
     await this.prisma.researchProject.delete({ where: { id } });
     return project;
+  }
+
+  /**
+   * Recomputes the cached sentiment mix from this project's KnowledgeInsight rows.
+   * Insights with no sentiment set are excluded from the denominator entirely
+   * rather than counted as neutral, so the percentages only reflect insights the
+   * AI pipeline actually scored.
+   */
+  async recalculateSentiment(userId: string, id: string) {
+    await this.ensureOwnership(userId, id);
+
+    const counts = await this.prisma.knowledgeInsight.groupBy({
+      by: ['sentiment'],
+      where: { research_project_uuid: id, sentiment: { not: null } },
+      _count: { sentiment: true },
+    });
+
+    const total = counts.reduce((sum, row) => sum + row._count.sentiment, 0);
+    const countFor = (label: SentimentLabel) =>
+      counts.find((row) => row.sentiment === label)?._count.sentiment ?? 0;
+
+    const percentages =
+      total === 0
+        ? {
+            sentiment_positive_pct: null,
+            sentiment_neutral_pct: null,
+            sentiment_negative_pct: null,
+          }
+        : {
+            sentiment_positive_pct:
+              (countFor(SentimentLabel.POSITIVE) / total) * 100,
+            sentiment_neutral_pct:
+              (countFor(SentimentLabel.NEUTRAL) / total) * 100,
+            sentiment_negative_pct:
+              (countFor(SentimentLabel.NEGATIVE) / total) * 100,
+          };
+
+    return this.prisma.researchProject.update({
+      where: { id },
+      data: percentages,
+    });
   }
 
   private async ensureOwnership(userId: string, id: string) {

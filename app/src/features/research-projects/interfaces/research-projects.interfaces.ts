@@ -49,6 +49,9 @@ export interface ResearchProject {
     status: AnalysisStatusType;
     posts_analyzed: number;
     comments_analyzed: number;
+    sentiment_positive_pct: number | null;
+    sentiment_neutral_pct: number | null;
+    sentiment_negative_pct: number | null;
     created_at: string;
     updated_at: string;
     source?: ResearchSource;

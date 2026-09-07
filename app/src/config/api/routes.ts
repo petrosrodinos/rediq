@@ -25,6 +25,7 @@ export const ApiRoutes = {
     research_projects: {
         prefix: "/research-projects",
         by_id: (id: string) => `/research-projects/${id}`,
+        recalculate_sentiment: (id: string) => `/research-projects/${id}/sentiment/recalculate`,
     },
     analysis_configurations: {
         by_research_project: (research_project_id: string) => `/research-projects/${research_project_id}/analysis-configurations`,
@@ -35,6 +36,7 @@ export const ApiRoutes = {
         by_id: (id: string) => `/analysis-jobs/${id}`,
         cancel: (id: string) => `/analysis-jobs/${id}/cancel`,
         batch_submissions: (id: string) => `/analysis-jobs/${id}/batch-submissions`,
+        events: (id: string) => `/analysis-jobs/${id}/events`,
     },
     conversations: {
         by_research_project: (research_project_id: string) => `/research-projects/${research_project_id}/conversations`,
@@ -73,5 +75,24 @@ export const ApiRoutes = {
     saved_insights: {
         prefix: "/saved-insights",
         by_id: (id: string) => `/saved-insights/${id}`,
+    },
+    saved_insight_collections: {
+        prefix: "/saved-insights/collections",
+        by_id: (id: string) => `/saved-insights/collections/${id}`,
+    },
+    saved_searches: {
+        prefix: "/saved-searches",
+        by_id: (id: string) => `/saved-searches/${id}`,
+    },
+    admin: {
+        stats: "/admin/stats",
+        users: {
+            prefix: "/admin/users",
+            by_id: (id: string) => `/admin/users/${id}`,
+        },
+        research_projects: "/admin/research-projects",
+        analysis_jobs: "/admin/analysis-jobs",
+        system_errors: "/admin/system-errors",
+        queue: "/admin/queue",
     },
 }

@@ -13,6 +13,7 @@ import { CurrentUser } from '@/shared/decorators/current-user.decorator';
 import { ZodValidationPipe } from '@/shared/pipes/zod.validation.pipe';
 import { AnalysisJobsService } from './analysis-jobs.service';
 import { BatchSubmissionsService } from './batch-submissions.service';
+import { JobEventsService } from './job-events.service';
 import { CreateAnalysisJobDto } from './dto/create-analysis-job.dto';
 import {
   AnalysisJobsQuerySchema,
@@ -22,6 +23,10 @@ import {
   BatchSubmissionsQuerySchema,
   BatchSubmissionsQueryType,
 } from './dto/batch-submissions-query.schema';
+import {
+  JobEventsQuerySchema,
+  JobEventsQueryType,
+} from './dto/job-events-query.schema';
 
 @ApiTags('analysis-jobs')
 @UseGuards(JwtGuard)
@@ -60,6 +65,7 @@ export class AnalysisJobItemController {
   constructor(
     private readonly analysisJobsService: AnalysisJobsService,
     private readonly batchSubmissionsService: BatchSubmissionsService,
+    private readonly jobEventsService: JobEventsService,
   ) {}
 
   @Get(':id')
@@ -86,5 +92,19 @@ export class AnalysisJobItemController {
     query: BatchSubmissionsQueryType,
   ) {
     return this.batchSubmissionsService.findAll(userId, id, query);
+  }
+
+  @Get(':id/events')
+  @ApiOperation({
+    summary: 'List the timestamped pipeline event log for an analysis job',
+  })
+  @ApiResponse({ status: 200, description: 'Job events returned' })
+  findJobEvents(
+    @CurrentUser('id') userId: string,
+    @Param('id') id: string,
+    @Query(new ZodValidationPipe(JobEventsQuerySchema))
+    query: JobEventsQueryType,
+  ) {
+    return this.jobEventsService.findAll(userId, id, query);
   }
 }

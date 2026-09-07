@@ -76,4 +76,17 @@ export class ResearchProjectsController {
   remove(@CurrentUser('id') userId: string, @Param('id') id: string) {
     return this.researchProjectsService.remove(userId, id);
   }
+
+  @Post(':id/sentiment/recalculate')
+  @ApiOperation({
+    summary:
+      "Recompute the project's cached sentiment mix from its current knowledge insights",
+  })
+  @ApiResponse({ status: 200, description: 'Sentiment mix recalculated' })
+  recalculateSentiment(
+    @CurrentUser('id') userId: string,
+    @Param('id') id: string,
+  ) {
+    return this.researchProjectsService.recalculateSentiment(userId, id);
+  }
 }

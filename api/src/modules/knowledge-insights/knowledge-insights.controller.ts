@@ -33,6 +33,7 @@ export class KnowledgeInsightsController {
   @ApiQuery({ name: 'page', required: false })
   @ApiQuery({ name: 'limit', required: false })
   @ApiQuery({ name: 'type', required: false })
+  @ApiQuery({ name: 'sentiment', required: false })
   @ApiQuery({ name: 'topic_uuid', required: false })
   @ApiQuery({ name: 'min_confidence', required: false })
   @ApiQuery({ name: 'search', required: false })

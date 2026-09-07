@@ -41,6 +41,7 @@ export interface SavedInsight {
     user_uuid: string;
     research_project_uuid: string;
     knowledge_insight_uuid: string;
+    collection_uuid: string | null;
     created_at: string;
     knowledge_insight: SavedInsightKnowledgeInsight;
 }
@@ -48,12 +49,18 @@ export interface SavedInsight {
 export interface CreateSavedInsightDto {
     research_project_uuid: string;
     knowledge_insight_uuid: string;
+    collection_uuid?: string | null;
+}
+
+export interface UpdateSavedInsightDto {
+    collection_uuid?: string | null;
 }
 
 export interface SavedInsightQueryType {
     page?: number;
     limit?: number;
     research_project_uuid?: string;
+    collection_uuid?: string;
 }
 
 export interface GetSavedInsightsResponse {
@@ -62,5 +69,26 @@ export interface GetSavedInsightsResponse {
 }
 
 export interface DeleteSavedInsightResponse {
+    success: boolean;
+}
+
+export interface SavedInsightCollection {
+    id: string;
+    user_uuid: string;
+    name: string;
+    saved_insight_count?: number;
+    created_at: string;
+    updated_at: string;
+}
+
+export interface CreateSavedInsightCollectionDto {
+    name: string;
+}
+
+export interface UpdateSavedInsightCollectionDto {
+    name: string;
+}
+
+export interface DeleteSavedInsightCollectionResponse {
     success: boolean;
 }
