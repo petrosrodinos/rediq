@@ -54,6 +54,11 @@ export type AnalysisJob = $Result.DefaultSelection<Prisma.$AnalysisJobPayload>
  */
 export type BatchSubmission = $Result.DefaultSelection<Prisma.$BatchSubmissionPayload>
 /**
+ * Model JobEvent
+ * 
+ */
+export type JobEvent = $Result.DefaultSelection<Prisma.$JobEventPayload>
+/**
  * Model Post
  * 
  */
@@ -108,6 +113,16 @@ export type MessageCitation = $Result.DefaultSelection<Prisma.$MessageCitationPa
  * 
  */
 export type SavedInsight = $Result.DefaultSelection<Prisma.$SavedInsightPayload>
+/**
+ * Model SavedInsightCollection
+ * 
+ */
+export type SavedInsightCollection = $Result.DefaultSelection<Prisma.$SavedInsightCollectionPayload>
+/**
+ * Model SavedSearch
+ * 
+ */
+export type SavedSearch = $Result.DefaultSelection<Prisma.$SavedSearchPayload>
 
 /**
  * Enums
@@ -212,6 +227,15 @@ export const BatchSubmissionStatus: {
 export type BatchSubmissionStatus = (typeof BatchSubmissionStatus)[keyof typeof BatchSubmissionStatus]
 
 
+export const JobEventLevel: {
+  INFO: 'INFO',
+  WARNING: 'WARNING',
+  ERROR: 'ERROR'
+};
+
+export type JobEventLevel = (typeof JobEventLevel)[keyof typeof JobEventLevel]
+
+
 export const InsightType: {
   KEY_INSIGHT: 'KEY_INSIGHT',
   PROBLEM: 'PROBLEM',
@@ -229,6 +253,15 @@ export const InsightType: {
 };
 
 export type InsightType = (typeof InsightType)[keyof typeof InsightType]
+
+
+export const SentimentLabel: {
+  POSITIVE: 'POSITIVE',
+  NEUTRAL: 'NEUTRAL',
+  NEGATIVE: 'NEGATIVE'
+};
+
+export type SentimentLabel = (typeof SentimentLabel)[keyof typeof SentimentLabel]
 
 
 export const ConversationMode: {
@@ -285,9 +318,17 @@ export type BatchSubmissionStatus = $Enums.BatchSubmissionStatus
 
 export const BatchSubmissionStatus: typeof $Enums.BatchSubmissionStatus
 
+export type JobEventLevel = $Enums.JobEventLevel
+
+export const JobEventLevel: typeof $Enums.JobEventLevel
+
 export type InsightType = $Enums.InsightType
 
 export const InsightType: typeof $Enums.InsightType
+
+export type SentimentLabel = $Enums.SentimentLabel
+
+export const SentimentLabel: typeof $Enums.SentimentLabel
 
 export type ConversationMode = $Enums.ConversationMode
 
@@ -495,6 +536,16 @@ export class PrismaClient<
   get batchSubmission(): Prisma.BatchSubmissionDelegate<ExtArgs, ClientOptions>;
 
   /**
+   * `prisma.jobEvent`: Exposes CRUD operations for the **JobEvent** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more JobEvents
+    * const jobEvents = await prisma.jobEvent.findMany()
+    * ```
+    */
+  get jobEvent(): Prisma.JobEventDelegate<ExtArgs, ClientOptions>;
+
+  /**
    * `prisma.post`: Exposes CRUD operations for the **Post** model.
     * Example usage:
     * ```ts
@@ -603,6 +654,26 @@ export class PrismaClient<
     * ```
     */
   get savedInsight(): Prisma.SavedInsightDelegate<ExtArgs, ClientOptions>;
+
+  /**
+   * `prisma.savedInsightCollection`: Exposes CRUD operations for the **SavedInsightCollection** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more SavedInsightCollections
+    * const savedInsightCollections = await prisma.savedInsightCollection.findMany()
+    * ```
+    */
+  get savedInsightCollection(): Prisma.SavedInsightCollectionDelegate<ExtArgs, ClientOptions>;
+
+  /**
+   * `prisma.savedSearch`: Exposes CRUD operations for the **SavedSearch** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more SavedSearches
+    * const savedSearches = await prisma.savedSearch.findMany()
+    * ```
+    */
+  get savedSearch(): Prisma.SavedSearchDelegate<ExtArgs, ClientOptions>;
 }
 
 export namespace Prisma {
@@ -1045,6 +1116,7 @@ export namespace Prisma {
     AnalysisConfiguration: 'AnalysisConfiguration',
     AnalysisJob: 'AnalysisJob',
     BatchSubmission: 'BatchSubmission',
+    JobEvent: 'JobEvent',
     Post: 'Post',
     Comment: 'Comment',
     KnowledgeChunk: 'KnowledgeChunk',
@@ -1055,7 +1127,9 @@ export namespace Prisma {
     Conversation: 'Conversation',
     ConversationMessage: 'ConversationMessage',
     MessageCitation: 'MessageCitation',
-    SavedInsight: 'SavedInsight'
+    SavedInsight: 'SavedInsight',
+    SavedInsightCollection: 'SavedInsightCollection',
+    SavedSearch: 'SavedSearch'
   };
 
   export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -1071,7 +1145,7 @@ export namespace Prisma {
       omit: GlobalOmitOptions
     }
     meta: {
-      modelProps: "user" | "passwordResetToken" | "document" | "researchProject" | "researchSource" | "analysisConfiguration" | "analysisJob" | "batchSubmission" | "post" | "comment" | "knowledgeChunk" | "embedding" | "knowledgeInsight" | "topic" | "citation" | "conversation" | "conversationMessage" | "messageCitation" | "savedInsight"
+      modelProps: "user" | "passwordResetToken" | "document" | "researchProject" | "researchSource" | "analysisConfiguration" | "analysisJob" | "batchSubmission" | "jobEvent" | "post" | "comment" | "knowledgeChunk" | "embedding" | "knowledgeInsight" | "topic" | "citation" | "conversation" | "conversationMessage" | "messageCitation" | "savedInsight" | "savedInsightCollection" | "savedSearch"
       txIsolationLevel: Prisma.TransactionIsolationLevel
     }
     model: {
@@ -1664,6 +1738,80 @@ export namespace Prisma {
           count: {
             args: Prisma.BatchSubmissionCountArgs<ExtArgs>
             result: $Utils.Optional<BatchSubmissionCountAggregateOutputType> | number
+          }
+        }
+      }
+      JobEvent: {
+        payload: Prisma.$JobEventPayload<ExtArgs>
+        fields: Prisma.JobEventFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.JobEventFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$JobEventPayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.JobEventFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$JobEventPayload>
+          }
+          findFirst: {
+            args: Prisma.JobEventFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$JobEventPayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.JobEventFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$JobEventPayload>
+          }
+          findMany: {
+            args: Prisma.JobEventFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$JobEventPayload>[]
+          }
+          create: {
+            args: Prisma.JobEventCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$JobEventPayload>
+          }
+          createMany: {
+            args: Prisma.JobEventCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          createManyAndReturn: {
+            args: Prisma.JobEventCreateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$JobEventPayload>[]
+          }
+          delete: {
+            args: Prisma.JobEventDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$JobEventPayload>
+          }
+          update: {
+            args: Prisma.JobEventUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$JobEventPayload>
+          }
+          deleteMany: {
+            args: Prisma.JobEventDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.JobEventUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateManyAndReturn: {
+            args: Prisma.JobEventUpdateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$JobEventPayload>[]
+          }
+          upsert: {
+            args: Prisma.JobEventUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$JobEventPayload>
+          }
+          aggregate: {
+            args: Prisma.JobEventAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateJobEvent>
+          }
+          groupBy: {
+            args: Prisma.JobEventGroupByArgs<ExtArgs>
+            result: $Utils.Optional<JobEventGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.JobEventCountArgs<ExtArgs>
+            result: $Utils.Optional<JobEventCountAggregateOutputType> | number
           }
         }
       }
@@ -2481,6 +2629,154 @@ export namespace Prisma {
           }
         }
       }
+      SavedInsightCollection: {
+        payload: Prisma.$SavedInsightCollectionPayload<ExtArgs>
+        fields: Prisma.SavedInsightCollectionFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.SavedInsightCollectionFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$SavedInsightCollectionPayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.SavedInsightCollectionFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$SavedInsightCollectionPayload>
+          }
+          findFirst: {
+            args: Prisma.SavedInsightCollectionFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$SavedInsightCollectionPayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.SavedInsightCollectionFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$SavedInsightCollectionPayload>
+          }
+          findMany: {
+            args: Prisma.SavedInsightCollectionFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$SavedInsightCollectionPayload>[]
+          }
+          create: {
+            args: Prisma.SavedInsightCollectionCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$SavedInsightCollectionPayload>
+          }
+          createMany: {
+            args: Prisma.SavedInsightCollectionCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          createManyAndReturn: {
+            args: Prisma.SavedInsightCollectionCreateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$SavedInsightCollectionPayload>[]
+          }
+          delete: {
+            args: Prisma.SavedInsightCollectionDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$SavedInsightCollectionPayload>
+          }
+          update: {
+            args: Prisma.SavedInsightCollectionUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$SavedInsightCollectionPayload>
+          }
+          deleteMany: {
+            args: Prisma.SavedInsightCollectionDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.SavedInsightCollectionUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateManyAndReturn: {
+            args: Prisma.SavedInsightCollectionUpdateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$SavedInsightCollectionPayload>[]
+          }
+          upsert: {
+            args: Prisma.SavedInsightCollectionUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$SavedInsightCollectionPayload>
+          }
+          aggregate: {
+            args: Prisma.SavedInsightCollectionAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateSavedInsightCollection>
+          }
+          groupBy: {
+            args: Prisma.SavedInsightCollectionGroupByArgs<ExtArgs>
+            result: $Utils.Optional<SavedInsightCollectionGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.SavedInsightCollectionCountArgs<ExtArgs>
+            result: $Utils.Optional<SavedInsightCollectionCountAggregateOutputType> | number
+          }
+        }
+      }
+      SavedSearch: {
+        payload: Prisma.$SavedSearchPayload<ExtArgs>
+        fields: Prisma.SavedSearchFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.SavedSearchFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$SavedSearchPayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.SavedSearchFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$SavedSearchPayload>
+          }
+          findFirst: {
+            args: Prisma.SavedSearchFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$SavedSearchPayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.SavedSearchFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$SavedSearchPayload>
+          }
+          findMany: {
+            args: Prisma.SavedSearchFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$SavedSearchPayload>[]
+          }
+          create: {
+            args: Prisma.SavedSearchCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$SavedSearchPayload>
+          }
+          createMany: {
+            args: Prisma.SavedSearchCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          createManyAndReturn: {
+            args: Prisma.SavedSearchCreateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$SavedSearchPayload>[]
+          }
+          delete: {
+            args: Prisma.SavedSearchDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$SavedSearchPayload>
+          }
+          update: {
+            args: Prisma.SavedSearchUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$SavedSearchPayload>
+          }
+          deleteMany: {
+            args: Prisma.SavedSearchDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.SavedSearchUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateManyAndReturn: {
+            args: Prisma.SavedSearchUpdateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$SavedSearchPayload>[]
+          }
+          upsert: {
+            args: Prisma.SavedSearchUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$SavedSearchPayload>
+          }
+          aggregate: {
+            args: Prisma.SavedSearchAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateSavedSearch>
+          }
+          groupBy: {
+            args: Prisma.SavedSearchGroupByArgs<ExtArgs>
+            result: $Utils.Optional<SavedSearchGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.SavedSearchCountArgs<ExtArgs>
+            result: $Utils.Optional<SavedSearchCountAggregateOutputType> | number
+          }
+        }
+      }
     }
   } & {
     other: {
@@ -2597,6 +2893,7 @@ export namespace Prisma {
     analysisConfiguration?: AnalysisConfigurationOmit
     analysisJob?: AnalysisJobOmit
     batchSubmission?: BatchSubmissionOmit
+    jobEvent?: JobEventOmit
     post?: PostOmit
     comment?: CommentOmit
     knowledgeChunk?: KnowledgeChunkOmit
@@ -2608,6 +2905,8 @@ export namespace Prisma {
     conversationMessage?: ConversationMessageOmit
     messageCitation?: MessageCitationOmit
     savedInsight?: SavedInsightOmit
+    savedInsightCollection?: SavedInsightCollectionOmit
+    savedSearch?: SavedSearchOmit
   }
 
   /* Types for Logging */
@@ -2692,6 +2991,8 @@ export namespace Prisma {
     research_projects: number
     conversations: number
     saved_insights: number
+    saved_insight_collections: number
+    saved_searches: number
   }
 
   export type UserCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -2699,6 +3000,8 @@ export namespace Prisma {
     research_projects?: boolean | UserCountOutputTypeCountResearch_projectsArgs
     conversations?: boolean | UserCountOutputTypeCountConversationsArgs
     saved_insights?: boolean | UserCountOutputTypeCountSaved_insightsArgs
+    saved_insight_collections?: boolean | UserCountOutputTypeCountSaved_insight_collectionsArgs
+    saved_searches?: boolean | UserCountOutputTypeCountSaved_searchesArgs
   }
 
   // Custom InputTypes
@@ -2740,6 +3043,20 @@ export namespace Prisma {
     where?: SavedInsightWhereInput
   }
 
+  /**
+   * UserCountOutputType without action
+   */
+  export type UserCountOutputTypeCountSaved_insight_collectionsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: SavedInsightCollectionWhereInput
+  }
+
+  /**
+   * UserCountOutputType without action
+   */
+  export type UserCountOutputTypeCountSaved_searchesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: SavedSearchWhereInput
+  }
+
 
   /**
    * Count Type ResearchProjectCountOutputType
@@ -2756,6 +3073,7 @@ export namespace Prisma {
     embeddings: number
     conversations: number
     saved_insights: number
+    saved_searches: number
   }
 
   export type ResearchProjectCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -2769,6 +3087,7 @@ export namespace Prisma {
     embeddings?: boolean | ResearchProjectCountOutputTypeCountEmbeddingsArgs
     conversations?: boolean | ResearchProjectCountOutputTypeCountConversationsArgs
     saved_insights?: boolean | ResearchProjectCountOutputTypeCountSaved_insightsArgs
+    saved_searches?: boolean | ResearchProjectCountOutputTypeCountSaved_searchesArgs
   }
 
   // Custom InputTypes
@@ -2852,6 +3171,13 @@ export namespace Prisma {
     where?: SavedInsightWhereInput
   }
 
+  /**
+   * ResearchProjectCountOutputType without action
+   */
+  export type ResearchProjectCountOutputTypeCountSaved_searchesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: SavedSearchWhereInput
+  }
+
 
   /**
    * Count Type AnalysisJobCountOutputType
@@ -2861,12 +3187,14 @@ export namespace Prisma {
     batch_submissions: number
     knowledge_chunks: number
     knowledge_insights: number
+    job_events: number
   }
 
   export type AnalysisJobCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     batch_submissions?: boolean | AnalysisJobCountOutputTypeCountBatch_submissionsArgs
     knowledge_chunks?: boolean | AnalysisJobCountOutputTypeCountKnowledge_chunksArgs
     knowledge_insights?: boolean | AnalysisJobCountOutputTypeCountKnowledge_insightsArgs
+    job_events?: boolean | AnalysisJobCountOutputTypeCountJob_eventsArgs
   }
 
   // Custom InputTypes
@@ -2899,6 +3227,13 @@ export namespace Prisma {
    */
   export type AnalysisJobCountOutputTypeCountKnowledge_insightsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     where?: KnowledgeInsightWhereInput
+  }
+
+  /**
+   * AnalysisJobCountOutputType without action
+   */
+  export type AnalysisJobCountOutputTypeCountJob_eventsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: JobEventWhereInput
   }
 
 
@@ -3192,6 +3527,37 @@ export namespace Prisma {
 
 
   /**
+   * Count Type SavedInsightCollectionCountOutputType
+   */
+
+  export type SavedInsightCollectionCountOutputType = {
+    saved_insights: number
+  }
+
+  export type SavedInsightCollectionCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    saved_insights?: boolean | SavedInsightCollectionCountOutputTypeCountSaved_insightsArgs
+  }
+
+  // Custom InputTypes
+  /**
+   * SavedInsightCollectionCountOutputType without action
+   */
+  export type SavedInsightCollectionCountOutputTypeDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the SavedInsightCollectionCountOutputType
+     */
+    select?: SavedInsightCollectionCountOutputTypeSelect<ExtArgs> | null
+  }
+
+  /**
+   * SavedInsightCollectionCountOutputType without action
+   */
+  export type SavedInsightCollectionCountOutputTypeCountSaved_insightsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: SavedInsightWhereInput
+  }
+
+
+  /**
    * Models
    */
 
@@ -3379,6 +3745,8 @@ export namespace Prisma {
     research_projects?: boolean | User$research_projectsArgs<ExtArgs>
     conversations?: boolean | User$conversationsArgs<ExtArgs>
     saved_insights?: boolean | User$saved_insightsArgs<ExtArgs>
+    saved_insight_collections?: boolean | User$saved_insight_collectionsArgs<ExtArgs>
+    saved_searches?: boolean | User$saved_searchesArgs<ExtArgs>
     _count?: boolean | UserCountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["user"]>
 
@@ -3418,6 +3786,8 @@ export namespace Prisma {
     research_projects?: boolean | User$research_projectsArgs<ExtArgs>
     conversations?: boolean | User$conversationsArgs<ExtArgs>
     saved_insights?: boolean | User$saved_insightsArgs<ExtArgs>
+    saved_insight_collections?: boolean | User$saved_insight_collectionsArgs<ExtArgs>
+    saved_searches?: boolean | User$saved_searchesArgs<ExtArgs>
     _count?: boolean | UserCountOutputTypeDefaultArgs<ExtArgs>
   }
   export type UserIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {}
@@ -3430,6 +3800,8 @@ export namespace Prisma {
       research_projects: Prisma.$ResearchProjectPayload<ExtArgs>[]
       conversations: Prisma.$ConversationPayload<ExtArgs>[]
       saved_insights: Prisma.$SavedInsightPayload<ExtArgs>[]
+      saved_insight_collections: Prisma.$SavedInsightCollectionPayload<ExtArgs>[]
+      saved_searches: Prisma.$SavedSearchPayload<ExtArgs>[]
     }
     scalars: $Extensions.GetPayloadResult<{
       id: string
@@ -3837,6 +4209,8 @@ export namespace Prisma {
     research_projects<T extends User$research_projectsArgs<ExtArgs> = {}>(args?: Subset<T, User$research_projectsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ResearchProjectPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     conversations<T extends User$conversationsArgs<ExtArgs> = {}>(args?: Subset<T, User$conversationsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ConversationPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     saved_insights<T extends User$saved_insightsArgs<ExtArgs> = {}>(args?: Subset<T, User$saved_insightsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$SavedInsightPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    saved_insight_collections<T extends User$saved_insight_collectionsArgs<ExtArgs> = {}>(args?: Subset<T, User$saved_insight_collectionsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$SavedInsightCollectionPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    saved_searches<T extends User$saved_searchesArgs<ExtArgs> = {}>(args?: Subset<T, User$saved_searchesArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$SavedSearchPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -4354,6 +4728,54 @@ export namespace Prisma {
     take?: number
     skip?: number
     distinct?: SavedInsightScalarFieldEnum | SavedInsightScalarFieldEnum[]
+  }
+
+  /**
+   * User.saved_insight_collections
+   */
+  export type User$saved_insight_collectionsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the SavedInsightCollection
+     */
+    select?: SavedInsightCollectionSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the SavedInsightCollection
+     */
+    omit?: SavedInsightCollectionOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: SavedInsightCollectionInclude<ExtArgs> | null
+    where?: SavedInsightCollectionWhereInput
+    orderBy?: SavedInsightCollectionOrderByWithRelationInput | SavedInsightCollectionOrderByWithRelationInput[]
+    cursor?: SavedInsightCollectionWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: SavedInsightCollectionScalarFieldEnum | SavedInsightCollectionScalarFieldEnum[]
+  }
+
+  /**
+   * User.saved_searches
+   */
+  export type User$saved_searchesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the SavedSearch
+     */
+    select?: SavedSearchSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the SavedSearch
+     */
+    omit?: SavedSearchOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: SavedSearchInclude<ExtArgs> | null
+    where?: SavedSearchWhereInput
+    orderBy?: SavedSearchOrderByWithRelationInput | SavedSearchOrderByWithRelationInput[]
+    cursor?: SavedSearchWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: SavedSearchScalarFieldEnum | SavedSearchScalarFieldEnum[]
   }
 
   /**
@@ -6542,11 +6964,17 @@ export namespace Prisma {
   export type ResearchProjectAvgAggregateOutputType = {
     posts_analyzed: number | null
     comments_analyzed: number | null
+    sentiment_positive_pct: number | null
+    sentiment_neutral_pct: number | null
+    sentiment_negative_pct: number | null
   }
 
   export type ResearchProjectSumAggregateOutputType = {
     posts_analyzed: number | null
     comments_analyzed: number | null
+    sentiment_positive_pct: number | null
+    sentiment_neutral_pct: number | null
+    sentiment_negative_pct: number | null
   }
 
   export type ResearchProjectMinAggregateOutputType = {
@@ -6558,6 +6986,9 @@ export namespace Prisma {
     comments_analyzed: number | null
     created_at: Date | null
     updated_at: Date | null
+    sentiment_positive_pct: number | null
+    sentiment_neutral_pct: number | null
+    sentiment_negative_pct: number | null
   }
 
   export type ResearchProjectMaxAggregateOutputType = {
@@ -6569,6 +7000,9 @@ export namespace Prisma {
     comments_analyzed: number | null
     created_at: Date | null
     updated_at: Date | null
+    sentiment_positive_pct: number | null
+    sentiment_neutral_pct: number | null
+    sentiment_negative_pct: number | null
   }
 
   export type ResearchProjectCountAggregateOutputType = {
@@ -6580,6 +7014,9 @@ export namespace Prisma {
     comments_analyzed: number
     created_at: number
     updated_at: number
+    sentiment_positive_pct: number
+    sentiment_neutral_pct: number
+    sentiment_negative_pct: number
     _all: number
   }
 
@@ -6587,11 +7024,17 @@ export namespace Prisma {
   export type ResearchProjectAvgAggregateInputType = {
     posts_analyzed?: true
     comments_analyzed?: true
+    sentiment_positive_pct?: true
+    sentiment_neutral_pct?: true
+    sentiment_negative_pct?: true
   }
 
   export type ResearchProjectSumAggregateInputType = {
     posts_analyzed?: true
     comments_analyzed?: true
+    sentiment_positive_pct?: true
+    sentiment_neutral_pct?: true
+    sentiment_negative_pct?: true
   }
 
   export type ResearchProjectMinAggregateInputType = {
@@ -6603,6 +7046,9 @@ export namespace Prisma {
     comments_analyzed?: true
     created_at?: true
     updated_at?: true
+    sentiment_positive_pct?: true
+    sentiment_neutral_pct?: true
+    sentiment_negative_pct?: true
   }
 
   export type ResearchProjectMaxAggregateInputType = {
@@ -6614,6 +7060,9 @@ export namespace Prisma {
     comments_analyzed?: true
     created_at?: true
     updated_at?: true
+    sentiment_positive_pct?: true
+    sentiment_neutral_pct?: true
+    sentiment_negative_pct?: true
   }
 
   export type ResearchProjectCountAggregateInputType = {
@@ -6625,6 +7074,9 @@ export namespace Prisma {
     comments_analyzed?: true
     created_at?: true
     updated_at?: true
+    sentiment_positive_pct?: true
+    sentiment_neutral_pct?: true
+    sentiment_negative_pct?: true
     _all?: true
   }
 
@@ -6723,6 +7175,9 @@ export namespace Prisma {
     comments_analyzed: number
     created_at: Date
     updated_at: Date
+    sentiment_positive_pct: number | null
+    sentiment_neutral_pct: number | null
+    sentiment_negative_pct: number | null
     _count: ResearchProjectCountAggregateOutputType | null
     _avg: ResearchProjectAvgAggregateOutputType | null
     _sum: ResearchProjectSumAggregateOutputType | null
@@ -6753,6 +7208,9 @@ export namespace Prisma {
     comments_analyzed?: boolean
     created_at?: boolean
     updated_at?: boolean
+    sentiment_positive_pct?: boolean
+    sentiment_neutral_pct?: boolean
+    sentiment_negative_pct?: boolean
     user?: boolean | UserDefaultArgs<ExtArgs>
     source?: boolean | ResearchProject$sourceArgs<ExtArgs>
     analysis_configurations?: boolean | ResearchProject$analysis_configurationsArgs<ExtArgs>
@@ -6765,6 +7223,7 @@ export namespace Prisma {
     embeddings?: boolean | ResearchProject$embeddingsArgs<ExtArgs>
     conversations?: boolean | ResearchProject$conversationsArgs<ExtArgs>
     saved_insights?: boolean | ResearchProject$saved_insightsArgs<ExtArgs>
+    saved_searches?: boolean | ResearchProject$saved_searchesArgs<ExtArgs>
     _count?: boolean | ResearchProjectCountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["researchProject"]>
 
@@ -6777,6 +7236,9 @@ export namespace Prisma {
     comments_analyzed?: boolean
     created_at?: boolean
     updated_at?: boolean
+    sentiment_positive_pct?: boolean
+    sentiment_neutral_pct?: boolean
+    sentiment_negative_pct?: boolean
     user?: boolean | UserDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["researchProject"]>
 
@@ -6789,6 +7251,9 @@ export namespace Prisma {
     comments_analyzed?: boolean
     created_at?: boolean
     updated_at?: boolean
+    sentiment_positive_pct?: boolean
+    sentiment_neutral_pct?: boolean
+    sentiment_negative_pct?: boolean
     user?: boolean | UserDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["researchProject"]>
 
@@ -6801,9 +7266,12 @@ export namespace Prisma {
     comments_analyzed?: boolean
     created_at?: boolean
     updated_at?: boolean
+    sentiment_positive_pct?: boolean
+    sentiment_neutral_pct?: boolean
+    sentiment_negative_pct?: boolean
   }
 
-  export type ResearchProjectOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "user_uuid" | "name" | "status" | "posts_analyzed" | "comments_analyzed" | "created_at" | "updated_at", ExtArgs["result"]["researchProject"]>
+  export type ResearchProjectOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "user_uuid" | "name" | "status" | "posts_analyzed" | "comments_analyzed" | "created_at" | "updated_at" | "sentiment_positive_pct" | "sentiment_neutral_pct" | "sentiment_negative_pct", ExtArgs["result"]["researchProject"]>
   export type ResearchProjectInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     user?: boolean | UserDefaultArgs<ExtArgs>
     source?: boolean | ResearchProject$sourceArgs<ExtArgs>
@@ -6817,6 +7285,7 @@ export namespace Prisma {
     embeddings?: boolean | ResearchProject$embeddingsArgs<ExtArgs>
     conversations?: boolean | ResearchProject$conversationsArgs<ExtArgs>
     saved_insights?: boolean | ResearchProject$saved_insightsArgs<ExtArgs>
+    saved_searches?: boolean | ResearchProject$saved_searchesArgs<ExtArgs>
     _count?: boolean | ResearchProjectCountOutputTypeDefaultArgs<ExtArgs>
   }
   export type ResearchProjectIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -6841,6 +7310,7 @@ export namespace Prisma {
       embeddings: Prisma.$EmbeddingPayload<ExtArgs>[]
       conversations: Prisma.$ConversationPayload<ExtArgs>[]
       saved_insights: Prisma.$SavedInsightPayload<ExtArgs>[]
+      saved_searches: Prisma.$SavedSearchPayload<ExtArgs>[]
     }
     scalars: $Extensions.GetPayloadResult<{
       id: string
@@ -6851,6 +7321,9 @@ export namespace Prisma {
       comments_analyzed: number
       created_at: Date
       updated_at: Date
+      sentiment_positive_pct: number | null
+      sentiment_neutral_pct: number | null
+      sentiment_negative_pct: number | null
     }, ExtArgs["result"]["researchProject"]>
     composites: {}
   }
@@ -7257,6 +7730,7 @@ export namespace Prisma {
     embeddings<T extends ResearchProject$embeddingsArgs<ExtArgs> = {}>(args?: Subset<T, ResearchProject$embeddingsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$EmbeddingPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     conversations<T extends ResearchProject$conversationsArgs<ExtArgs> = {}>(args?: Subset<T, ResearchProject$conversationsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ConversationPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     saved_insights<T extends ResearchProject$saved_insightsArgs<ExtArgs> = {}>(args?: Subset<T, ResearchProject$saved_insightsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$SavedInsightPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    saved_searches<T extends ResearchProject$saved_searchesArgs<ExtArgs> = {}>(args?: Subset<T, ResearchProject$saved_searchesArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$SavedSearchPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -7294,6 +7768,9 @@ export namespace Prisma {
     readonly comments_analyzed: FieldRef<"ResearchProject", 'Int'>
     readonly created_at: FieldRef<"ResearchProject", 'DateTime'>
     readonly updated_at: FieldRef<"ResearchProject", 'DateTime'>
+    readonly sentiment_positive_pct: FieldRef<"ResearchProject", 'Float'>
+    readonly sentiment_neutral_pct: FieldRef<"ResearchProject", 'Float'>
+    readonly sentiment_negative_pct: FieldRef<"ResearchProject", 'Float'>
   }
     
 
@@ -7946,6 +8423,30 @@ export namespace Prisma {
     take?: number
     skip?: number
     distinct?: SavedInsightScalarFieldEnum | SavedInsightScalarFieldEnum[]
+  }
+
+  /**
+   * ResearchProject.saved_searches
+   */
+  export type ResearchProject$saved_searchesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the SavedSearch
+     */
+    select?: SavedSearchSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the SavedSearch
+     */
+    omit?: SavedSearchOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: SavedSearchInclude<ExtArgs> | null
+    where?: SavedSearchWhereInput
+    orderBy?: SavedSearchOrderByWithRelationInput | SavedSearchOrderByWithRelationInput[]
+    cursor?: SavedSearchWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: SavedSearchScalarFieldEnum | SavedSearchScalarFieldEnum[]
   }
 
   /**
@@ -10450,6 +10951,10 @@ export namespace Prisma {
     posts_total: number | null
     comments_processed: number | null
     comments_total: number | null
+    prompt_tokens: number | null
+    completion_tokens: number | null
+    estimated_cost_usd: number | null
+    actual_cost_usd: number | null
   }
 
   export type AnalysisJobSumAggregateOutputType = {
@@ -10457,6 +10962,10 @@ export namespace Prisma {
     posts_total: number | null
     comments_processed: number | null
     comments_total: number | null
+    prompt_tokens: number | null
+    completion_tokens: number | null
+    estimated_cost_usd: number | null
+    actual_cost_usd: number | null
   }
 
   export type AnalysisJobMinAggregateOutputType = {
@@ -10469,6 +10978,10 @@ export namespace Prisma {
     posts_total: number | null
     comments_processed: number | null
     comments_total: number | null
+    prompt_tokens: number | null
+    completion_tokens: number | null
+    estimated_cost_usd: number | null
+    actual_cost_usd: number | null
     error_message: string | null
     started_at: Date | null
     completed_at: Date | null
@@ -10486,6 +10999,10 @@ export namespace Prisma {
     posts_total: number | null
     comments_processed: number | null
     comments_total: number | null
+    prompt_tokens: number | null
+    completion_tokens: number | null
+    estimated_cost_usd: number | null
+    actual_cost_usd: number | null
     error_message: string | null
     started_at: Date | null
     completed_at: Date | null
@@ -10503,6 +11020,10 @@ export namespace Prisma {
     posts_total: number
     comments_processed: number
     comments_total: number
+    prompt_tokens: number
+    completion_tokens: number
+    estimated_cost_usd: number
+    actual_cost_usd: number
     error_message: number
     started_at: number
     completed_at: number
@@ -10517,6 +11038,10 @@ export namespace Prisma {
     posts_total?: true
     comments_processed?: true
     comments_total?: true
+    prompt_tokens?: true
+    completion_tokens?: true
+    estimated_cost_usd?: true
+    actual_cost_usd?: true
   }
 
   export type AnalysisJobSumAggregateInputType = {
@@ -10524,6 +11049,10 @@ export namespace Prisma {
     posts_total?: true
     comments_processed?: true
     comments_total?: true
+    prompt_tokens?: true
+    completion_tokens?: true
+    estimated_cost_usd?: true
+    actual_cost_usd?: true
   }
 
   export type AnalysisJobMinAggregateInputType = {
@@ -10536,6 +11065,10 @@ export namespace Prisma {
     posts_total?: true
     comments_processed?: true
     comments_total?: true
+    prompt_tokens?: true
+    completion_tokens?: true
+    estimated_cost_usd?: true
+    actual_cost_usd?: true
     error_message?: true
     started_at?: true
     completed_at?: true
@@ -10553,6 +11086,10 @@ export namespace Prisma {
     posts_total?: true
     comments_processed?: true
     comments_total?: true
+    prompt_tokens?: true
+    completion_tokens?: true
+    estimated_cost_usd?: true
+    actual_cost_usd?: true
     error_message?: true
     started_at?: true
     completed_at?: true
@@ -10570,6 +11107,10 @@ export namespace Prisma {
     posts_total?: true
     comments_processed?: true
     comments_total?: true
+    prompt_tokens?: true
+    completion_tokens?: true
+    estimated_cost_usd?: true
+    actual_cost_usd?: true
     error_message?: true
     started_at?: true
     completed_at?: true
@@ -10674,6 +11215,10 @@ export namespace Prisma {
     posts_total: number
     comments_processed: number
     comments_total: number
+    prompt_tokens: number
+    completion_tokens: number
+    estimated_cost_usd: number | null
+    actual_cost_usd: number | null
     error_message: string | null
     started_at: Date | null
     completed_at: Date | null
@@ -10710,6 +11255,10 @@ export namespace Prisma {
     posts_total?: boolean
     comments_processed?: boolean
     comments_total?: boolean
+    prompt_tokens?: boolean
+    completion_tokens?: boolean
+    estimated_cost_usd?: boolean
+    actual_cost_usd?: boolean
     error_message?: boolean
     started_at?: boolean
     completed_at?: boolean
@@ -10720,6 +11269,7 @@ export namespace Prisma {
     batch_submissions?: boolean | AnalysisJob$batch_submissionsArgs<ExtArgs>
     knowledge_chunks?: boolean | AnalysisJob$knowledge_chunksArgs<ExtArgs>
     knowledge_insights?: boolean | AnalysisJob$knowledge_insightsArgs<ExtArgs>
+    job_events?: boolean | AnalysisJob$job_eventsArgs<ExtArgs>
     _count?: boolean | AnalysisJobCountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["analysisJob"]>
 
@@ -10733,6 +11283,10 @@ export namespace Prisma {
     posts_total?: boolean
     comments_processed?: boolean
     comments_total?: boolean
+    prompt_tokens?: boolean
+    completion_tokens?: boolean
+    estimated_cost_usd?: boolean
+    actual_cost_usd?: boolean
     error_message?: boolean
     started_at?: boolean
     completed_at?: boolean
@@ -10752,6 +11306,10 @@ export namespace Prisma {
     posts_total?: boolean
     comments_processed?: boolean
     comments_total?: boolean
+    prompt_tokens?: boolean
+    completion_tokens?: boolean
+    estimated_cost_usd?: boolean
+    actual_cost_usd?: boolean
     error_message?: boolean
     started_at?: boolean
     completed_at?: boolean
@@ -10771,6 +11329,10 @@ export namespace Prisma {
     posts_total?: boolean
     comments_processed?: boolean
     comments_total?: boolean
+    prompt_tokens?: boolean
+    completion_tokens?: boolean
+    estimated_cost_usd?: boolean
+    actual_cost_usd?: boolean
     error_message?: boolean
     started_at?: boolean
     completed_at?: boolean
@@ -10778,13 +11340,14 @@ export namespace Prisma {
     updated_at?: boolean
   }
 
-  export type AnalysisJobOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "research_project_uuid" | "analysis_configuration_uuid" | "status" | "current_step" | "posts_processed" | "posts_total" | "comments_processed" | "comments_total" | "error_message" | "started_at" | "completed_at" | "created_at" | "updated_at", ExtArgs["result"]["analysisJob"]>
+  export type AnalysisJobOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "research_project_uuid" | "analysis_configuration_uuid" | "status" | "current_step" | "posts_processed" | "posts_total" | "comments_processed" | "comments_total" | "prompt_tokens" | "completion_tokens" | "estimated_cost_usd" | "actual_cost_usd" | "error_message" | "started_at" | "completed_at" | "created_at" | "updated_at", ExtArgs["result"]["analysisJob"]>
   export type AnalysisJobInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     research_project?: boolean | ResearchProjectDefaultArgs<ExtArgs>
     configuration?: boolean | AnalysisConfigurationDefaultArgs<ExtArgs>
     batch_submissions?: boolean | AnalysisJob$batch_submissionsArgs<ExtArgs>
     knowledge_chunks?: boolean | AnalysisJob$knowledge_chunksArgs<ExtArgs>
     knowledge_insights?: boolean | AnalysisJob$knowledge_insightsArgs<ExtArgs>
+    job_events?: boolean | AnalysisJob$job_eventsArgs<ExtArgs>
     _count?: boolean | AnalysisJobCountOutputTypeDefaultArgs<ExtArgs>
   }
   export type AnalysisJobIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -10804,6 +11367,7 @@ export namespace Prisma {
       batch_submissions: Prisma.$BatchSubmissionPayload<ExtArgs>[]
       knowledge_chunks: Prisma.$KnowledgeChunkPayload<ExtArgs>[]
       knowledge_insights: Prisma.$KnowledgeInsightPayload<ExtArgs>[]
+      job_events: Prisma.$JobEventPayload<ExtArgs>[]
     }
     scalars: $Extensions.GetPayloadResult<{
       id: string
@@ -10815,6 +11379,10 @@ export namespace Prisma {
       posts_total: number
       comments_processed: number
       comments_total: number
+      prompt_tokens: number
+      completion_tokens: number
+      estimated_cost_usd: number | null
+      actual_cost_usd: number | null
       error_message: string | null
       started_at: Date | null
       completed_at: Date | null
@@ -11219,6 +11787,7 @@ export namespace Prisma {
     batch_submissions<T extends AnalysisJob$batch_submissionsArgs<ExtArgs> = {}>(args?: Subset<T, AnalysisJob$batch_submissionsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$BatchSubmissionPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     knowledge_chunks<T extends AnalysisJob$knowledge_chunksArgs<ExtArgs> = {}>(args?: Subset<T, AnalysisJob$knowledge_chunksArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$KnowledgeChunkPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     knowledge_insights<T extends AnalysisJob$knowledge_insightsArgs<ExtArgs> = {}>(args?: Subset<T, AnalysisJob$knowledge_insightsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$KnowledgeInsightPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    job_events<T extends AnalysisJob$job_eventsArgs<ExtArgs> = {}>(args?: Subset<T, AnalysisJob$job_eventsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$JobEventPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -11257,6 +11826,10 @@ export namespace Prisma {
     readonly posts_total: FieldRef<"AnalysisJob", 'Int'>
     readonly comments_processed: FieldRef<"AnalysisJob", 'Int'>
     readonly comments_total: FieldRef<"AnalysisJob", 'Int'>
+    readonly prompt_tokens: FieldRef<"AnalysisJob", 'Int'>
+    readonly completion_tokens: FieldRef<"AnalysisJob", 'Int'>
+    readonly estimated_cost_usd: FieldRef<"AnalysisJob", 'Float'>
+    readonly actual_cost_usd: FieldRef<"AnalysisJob", 'Float'>
     readonly error_message: FieldRef<"AnalysisJob", 'String'>
     readonly started_at: FieldRef<"AnalysisJob", 'DateTime'>
     readonly completed_at: FieldRef<"AnalysisJob", 'DateTime'>
@@ -11730,6 +12303,30 @@ export namespace Prisma {
   }
 
   /**
+   * AnalysisJob.job_events
+   */
+  export type AnalysisJob$job_eventsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the JobEvent
+     */
+    select?: JobEventSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the JobEvent
+     */
+    omit?: JobEventOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: JobEventInclude<ExtArgs> | null
+    where?: JobEventWhereInput
+    orderBy?: JobEventOrderByWithRelationInput | JobEventOrderByWithRelationInput[]
+    cursor?: JobEventWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: JobEventScalarFieldEnum | JobEventScalarFieldEnum[]
+  }
+
+  /**
    * AnalysisJob without action
    */
   export type AnalysisJobDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -11754,8 +12351,22 @@ export namespace Prisma {
 
   export type AggregateBatchSubmission = {
     _count: BatchSubmissionCountAggregateOutputType | null
+    _avg: BatchSubmissionAvgAggregateOutputType | null
+    _sum: BatchSubmissionSumAggregateOutputType | null
     _min: BatchSubmissionMinAggregateOutputType | null
     _max: BatchSubmissionMaxAggregateOutputType | null
+  }
+
+  export type BatchSubmissionAvgAggregateOutputType = {
+    prompt_tokens: number | null
+    completion_tokens: number | null
+    cost_usd: number | null
+  }
+
+  export type BatchSubmissionSumAggregateOutputType = {
+    prompt_tokens: number | null
+    completion_tokens: number | null
+    cost_usd: number | null
   }
 
   export type BatchSubmissionMinAggregateOutputType = {
@@ -11766,6 +12377,9 @@ export namespace Prisma {
     request_file_id: string | null
     response_file_id: string | null
     error_file_id: string | null
+    prompt_tokens: number | null
+    completion_tokens: number | null
+    cost_usd: number | null
     submitted_at: Date | null
     completed_at: Date | null
     created_at: Date | null
@@ -11780,6 +12394,9 @@ export namespace Prisma {
     request_file_id: string | null
     response_file_id: string | null
     error_file_id: string | null
+    prompt_tokens: number | null
+    completion_tokens: number | null
+    cost_usd: number | null
     submitted_at: Date | null
     completed_at: Date | null
     created_at: Date | null
@@ -11794,6 +12411,9 @@ export namespace Prisma {
     request_file_id: number
     response_file_id: number
     error_file_id: number
+    prompt_tokens: number
+    completion_tokens: number
+    cost_usd: number
     submitted_at: number
     completed_at: number
     created_at: number
@@ -11801,6 +12421,18 @@ export namespace Prisma {
     _all: number
   }
 
+
+  export type BatchSubmissionAvgAggregateInputType = {
+    prompt_tokens?: true
+    completion_tokens?: true
+    cost_usd?: true
+  }
+
+  export type BatchSubmissionSumAggregateInputType = {
+    prompt_tokens?: true
+    completion_tokens?: true
+    cost_usd?: true
+  }
 
   export type BatchSubmissionMinAggregateInputType = {
     id?: true
@@ -11810,6 +12442,9 @@ export namespace Prisma {
     request_file_id?: true
     response_file_id?: true
     error_file_id?: true
+    prompt_tokens?: true
+    completion_tokens?: true
+    cost_usd?: true
     submitted_at?: true
     completed_at?: true
     created_at?: true
@@ -11824,6 +12459,9 @@ export namespace Prisma {
     request_file_id?: true
     response_file_id?: true
     error_file_id?: true
+    prompt_tokens?: true
+    completion_tokens?: true
+    cost_usd?: true
     submitted_at?: true
     completed_at?: true
     created_at?: true
@@ -11838,6 +12476,9 @@ export namespace Prisma {
     request_file_id?: true
     response_file_id?: true
     error_file_id?: true
+    prompt_tokens?: true
+    completion_tokens?: true
+    cost_usd?: true
     submitted_at?: true
     completed_at?: true
     created_at?: true
@@ -11883,6 +12524,18 @@ export namespace Prisma {
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
      * 
+     * Select which fields to average
+    **/
+    _avg?: BatchSubmissionAvgAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to sum
+    **/
+    _sum?: BatchSubmissionSumAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
      * Select which fields to find the minimum value
     **/
     _min?: BatchSubmissionMinAggregateInputType
@@ -11913,6 +12566,8 @@ export namespace Prisma {
     take?: number
     skip?: number
     _count?: BatchSubmissionCountAggregateInputType | true
+    _avg?: BatchSubmissionAvgAggregateInputType
+    _sum?: BatchSubmissionSumAggregateInputType
     _min?: BatchSubmissionMinAggregateInputType
     _max?: BatchSubmissionMaxAggregateInputType
   }
@@ -11925,11 +12580,16 @@ export namespace Prisma {
     request_file_id: string | null
     response_file_id: string | null
     error_file_id: string | null
+    prompt_tokens: number
+    completion_tokens: number
+    cost_usd: number | null
     submitted_at: Date | null
     completed_at: Date | null
     created_at: Date
     updated_at: Date
     _count: BatchSubmissionCountAggregateOutputType | null
+    _avg: BatchSubmissionAvgAggregateOutputType | null
+    _sum: BatchSubmissionSumAggregateOutputType | null
     _min: BatchSubmissionMinAggregateOutputType | null
     _max: BatchSubmissionMaxAggregateOutputType | null
   }
@@ -11956,6 +12616,9 @@ export namespace Prisma {
     request_file_id?: boolean
     response_file_id?: boolean
     error_file_id?: boolean
+    prompt_tokens?: boolean
+    completion_tokens?: boolean
+    cost_usd?: boolean
     submitted_at?: boolean
     completed_at?: boolean
     created_at?: boolean
@@ -11971,6 +12634,9 @@ export namespace Prisma {
     request_file_id?: boolean
     response_file_id?: boolean
     error_file_id?: boolean
+    prompt_tokens?: boolean
+    completion_tokens?: boolean
+    cost_usd?: boolean
     submitted_at?: boolean
     completed_at?: boolean
     created_at?: boolean
@@ -11986,6 +12652,9 @@ export namespace Prisma {
     request_file_id?: boolean
     response_file_id?: boolean
     error_file_id?: boolean
+    prompt_tokens?: boolean
+    completion_tokens?: boolean
+    cost_usd?: boolean
     submitted_at?: boolean
     completed_at?: boolean
     created_at?: boolean
@@ -12001,13 +12670,16 @@ export namespace Prisma {
     request_file_id?: boolean
     response_file_id?: boolean
     error_file_id?: boolean
+    prompt_tokens?: boolean
+    completion_tokens?: boolean
+    cost_usd?: boolean
     submitted_at?: boolean
     completed_at?: boolean
     created_at?: boolean
     updated_at?: boolean
   }
 
-  export type BatchSubmissionOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "analysis_job_uuid" | "openai_batch_id" | "status" | "request_file_id" | "response_file_id" | "error_file_id" | "submitted_at" | "completed_at" | "created_at" | "updated_at", ExtArgs["result"]["batchSubmission"]>
+  export type BatchSubmissionOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "analysis_job_uuid" | "openai_batch_id" | "status" | "request_file_id" | "response_file_id" | "error_file_id" | "prompt_tokens" | "completion_tokens" | "cost_usd" | "submitted_at" | "completed_at" | "created_at" | "updated_at", ExtArgs["result"]["batchSubmission"]>
   export type BatchSubmissionInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     analysis_job?: boolean | AnalysisJobDefaultArgs<ExtArgs>
   }
@@ -12031,6 +12703,9 @@ export namespace Prisma {
       request_file_id: string | null
       response_file_id: string | null
       error_file_id: string | null
+      prompt_tokens: number
+      completion_tokens: number
+      cost_usd: number | null
       submitted_at: Date | null
       completed_at: Date | null
       created_at: Date
@@ -12466,6 +13141,9 @@ export namespace Prisma {
     readonly request_file_id: FieldRef<"BatchSubmission", 'String'>
     readonly response_file_id: FieldRef<"BatchSubmission", 'String'>
     readonly error_file_id: FieldRef<"BatchSubmission", 'String'>
+    readonly prompt_tokens: FieldRef<"BatchSubmission", 'Int'>
+    readonly completion_tokens: FieldRef<"BatchSubmission", 'Int'>
+    readonly cost_usd: FieldRef<"BatchSubmission", 'Float'>
     readonly submitted_at: FieldRef<"BatchSubmission", 'DateTime'>
     readonly completed_at: FieldRef<"BatchSubmission", 'DateTime'>
     readonly created_at: FieldRef<"BatchSubmission", 'DateTime'>
@@ -12881,6 +13559,1086 @@ export namespace Prisma {
      * Choose, which related nodes to fetch as well
      */
     include?: BatchSubmissionInclude<ExtArgs> | null
+  }
+
+
+  /**
+   * Model JobEvent
+   */
+
+  export type AggregateJobEvent = {
+    _count: JobEventCountAggregateOutputType | null
+    _min: JobEventMinAggregateOutputType | null
+    _max: JobEventMaxAggregateOutputType | null
+  }
+
+  export type JobEventMinAggregateOutputType = {
+    id: string | null
+    analysis_job_uuid: string | null
+    step: string | null
+    message: string | null
+    level: $Enums.JobEventLevel | null
+    created_at: Date | null
+  }
+
+  export type JobEventMaxAggregateOutputType = {
+    id: string | null
+    analysis_job_uuid: string | null
+    step: string | null
+    message: string | null
+    level: $Enums.JobEventLevel | null
+    created_at: Date | null
+  }
+
+  export type JobEventCountAggregateOutputType = {
+    id: number
+    analysis_job_uuid: number
+    step: number
+    message: number
+    level: number
+    metadata: number
+    created_at: number
+    _all: number
+  }
+
+
+  export type JobEventMinAggregateInputType = {
+    id?: true
+    analysis_job_uuid?: true
+    step?: true
+    message?: true
+    level?: true
+    created_at?: true
+  }
+
+  export type JobEventMaxAggregateInputType = {
+    id?: true
+    analysis_job_uuid?: true
+    step?: true
+    message?: true
+    level?: true
+    created_at?: true
+  }
+
+  export type JobEventCountAggregateInputType = {
+    id?: true
+    analysis_job_uuid?: true
+    step?: true
+    message?: true
+    level?: true
+    metadata?: true
+    created_at?: true
+    _all?: true
+  }
+
+  export type JobEventAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which JobEvent to aggregate.
+     */
+    where?: JobEventWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of JobEvents to fetch.
+     */
+    orderBy?: JobEventOrderByWithRelationInput | JobEventOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: JobEventWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` JobEvents from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` JobEvents.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned JobEvents
+    **/
+    _count?: true | JobEventCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: JobEventMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: JobEventMaxAggregateInputType
+  }
+
+  export type GetJobEventAggregateType<T extends JobEventAggregateArgs> = {
+        [P in keyof T & keyof AggregateJobEvent]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateJobEvent[P]>
+      : GetScalarType<T[P], AggregateJobEvent[P]>
+  }
+
+
+
+
+  export type JobEventGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: JobEventWhereInput
+    orderBy?: JobEventOrderByWithAggregationInput | JobEventOrderByWithAggregationInput[]
+    by: JobEventScalarFieldEnum[] | JobEventScalarFieldEnum
+    having?: JobEventScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: JobEventCountAggregateInputType | true
+    _min?: JobEventMinAggregateInputType
+    _max?: JobEventMaxAggregateInputType
+  }
+
+  export type JobEventGroupByOutputType = {
+    id: string
+    analysis_job_uuid: string
+    step: string
+    message: string
+    level: $Enums.JobEventLevel
+    metadata: JsonValue | null
+    created_at: Date
+    _count: JobEventCountAggregateOutputType | null
+    _min: JobEventMinAggregateOutputType | null
+    _max: JobEventMaxAggregateOutputType | null
+  }
+
+  type GetJobEventGroupByPayload<T extends JobEventGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<JobEventGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof JobEventGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], JobEventGroupByOutputType[P]>
+            : GetScalarType<T[P], JobEventGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type JobEventSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    analysis_job_uuid?: boolean
+    step?: boolean
+    message?: boolean
+    level?: boolean
+    metadata?: boolean
+    created_at?: boolean
+    analysis_job?: boolean | AnalysisJobDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["jobEvent"]>
+
+  export type JobEventSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    analysis_job_uuid?: boolean
+    step?: boolean
+    message?: boolean
+    level?: boolean
+    metadata?: boolean
+    created_at?: boolean
+    analysis_job?: boolean | AnalysisJobDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["jobEvent"]>
+
+  export type JobEventSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    analysis_job_uuid?: boolean
+    step?: boolean
+    message?: boolean
+    level?: boolean
+    metadata?: boolean
+    created_at?: boolean
+    analysis_job?: boolean | AnalysisJobDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["jobEvent"]>
+
+  export type JobEventSelectScalar = {
+    id?: boolean
+    analysis_job_uuid?: boolean
+    step?: boolean
+    message?: boolean
+    level?: boolean
+    metadata?: boolean
+    created_at?: boolean
+  }
+
+  export type JobEventOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "analysis_job_uuid" | "step" | "message" | "level" | "metadata" | "created_at", ExtArgs["result"]["jobEvent"]>
+  export type JobEventInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    analysis_job?: boolean | AnalysisJobDefaultArgs<ExtArgs>
+  }
+  export type JobEventIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    analysis_job?: boolean | AnalysisJobDefaultArgs<ExtArgs>
+  }
+  export type JobEventIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    analysis_job?: boolean | AnalysisJobDefaultArgs<ExtArgs>
+  }
+
+  export type $JobEventPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "JobEvent"
+    objects: {
+      analysis_job: Prisma.$AnalysisJobPayload<ExtArgs>
+    }
+    scalars: $Extensions.GetPayloadResult<{
+      id: string
+      analysis_job_uuid: string
+      step: string
+      message: string
+      level: $Enums.JobEventLevel
+      metadata: Prisma.JsonValue | null
+      created_at: Date
+    }, ExtArgs["result"]["jobEvent"]>
+    composites: {}
+  }
+
+  type JobEventGetPayload<S extends boolean | null | undefined | JobEventDefaultArgs> = $Result.GetResult<Prisma.$JobEventPayload, S>
+
+  type JobEventCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<JobEventFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: JobEventCountAggregateInputType | true
+    }
+
+  export interface JobEventDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['JobEvent'], meta: { name: 'JobEvent' } }
+    /**
+     * Find zero or one JobEvent that matches the filter.
+     * @param {JobEventFindUniqueArgs} args - Arguments to find a JobEvent
+     * @example
+     * // Get one JobEvent
+     * const jobEvent = await prisma.jobEvent.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends JobEventFindUniqueArgs>(args: SelectSubset<T, JobEventFindUniqueArgs<ExtArgs>>): Prisma__JobEventClient<$Result.GetResult<Prisma.$JobEventPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find one JobEvent that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {JobEventFindUniqueOrThrowArgs} args - Arguments to find a JobEvent
+     * @example
+     * // Get one JobEvent
+     * const jobEvent = await prisma.jobEvent.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends JobEventFindUniqueOrThrowArgs>(args: SelectSubset<T, JobEventFindUniqueOrThrowArgs<ExtArgs>>): Prisma__JobEventClient<$Result.GetResult<Prisma.$JobEventPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first JobEvent that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {JobEventFindFirstArgs} args - Arguments to find a JobEvent
+     * @example
+     * // Get one JobEvent
+     * const jobEvent = await prisma.jobEvent.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends JobEventFindFirstArgs>(args?: SelectSubset<T, JobEventFindFirstArgs<ExtArgs>>): Prisma__JobEventClient<$Result.GetResult<Prisma.$JobEventPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first JobEvent that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {JobEventFindFirstOrThrowArgs} args - Arguments to find a JobEvent
+     * @example
+     * // Get one JobEvent
+     * const jobEvent = await prisma.jobEvent.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends JobEventFindFirstOrThrowArgs>(args?: SelectSubset<T, JobEventFindFirstOrThrowArgs<ExtArgs>>): Prisma__JobEventClient<$Result.GetResult<Prisma.$JobEventPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more JobEvents that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {JobEventFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all JobEvents
+     * const jobEvents = await prisma.jobEvent.findMany()
+     * 
+     * // Get first 10 JobEvents
+     * const jobEvents = await prisma.jobEvent.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const jobEventWithIdOnly = await prisma.jobEvent.findMany({ select: { id: true } })
+     * 
+     */
+    findMany<T extends JobEventFindManyArgs>(args?: SelectSubset<T, JobEventFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$JobEventPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+
+    /**
+     * Create a JobEvent.
+     * @param {JobEventCreateArgs} args - Arguments to create a JobEvent.
+     * @example
+     * // Create one JobEvent
+     * const JobEvent = await prisma.jobEvent.create({
+     *   data: {
+     *     // ... data to create a JobEvent
+     *   }
+     * })
+     * 
+     */
+    create<T extends JobEventCreateArgs>(args: SelectSubset<T, JobEventCreateArgs<ExtArgs>>): Prisma__JobEventClient<$Result.GetResult<Prisma.$JobEventPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Create many JobEvents.
+     * @param {JobEventCreateManyArgs} args - Arguments to create many JobEvents.
+     * @example
+     * // Create many JobEvents
+     * const jobEvent = await prisma.jobEvent.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends JobEventCreateManyArgs>(args?: SelectSubset<T, JobEventCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create many JobEvents and returns the data saved in the database.
+     * @param {JobEventCreateManyAndReturnArgs} args - Arguments to create many JobEvents.
+     * @example
+     * // Create many JobEvents
+     * const jobEvent = await prisma.jobEvent.createManyAndReturn({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Create many JobEvents and only return the `id`
+     * const jobEventWithIdOnly = await prisma.jobEvent.createManyAndReturn({
+     *   select: { id: true },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    createManyAndReturn<T extends JobEventCreateManyAndReturnArgs>(args?: SelectSubset<T, JobEventCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$JobEventPayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Delete a JobEvent.
+     * @param {JobEventDeleteArgs} args - Arguments to delete one JobEvent.
+     * @example
+     * // Delete one JobEvent
+     * const JobEvent = await prisma.jobEvent.delete({
+     *   where: {
+     *     // ... filter to delete one JobEvent
+     *   }
+     * })
+     * 
+     */
+    delete<T extends JobEventDeleteArgs>(args: SelectSubset<T, JobEventDeleteArgs<ExtArgs>>): Prisma__JobEventClient<$Result.GetResult<Prisma.$JobEventPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Update one JobEvent.
+     * @param {JobEventUpdateArgs} args - Arguments to update one JobEvent.
+     * @example
+     * // Update one JobEvent
+     * const jobEvent = await prisma.jobEvent.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends JobEventUpdateArgs>(args: SelectSubset<T, JobEventUpdateArgs<ExtArgs>>): Prisma__JobEventClient<$Result.GetResult<Prisma.$JobEventPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Delete zero or more JobEvents.
+     * @param {JobEventDeleteManyArgs} args - Arguments to filter JobEvents to delete.
+     * @example
+     * // Delete a few JobEvents
+     * const { count } = await prisma.jobEvent.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends JobEventDeleteManyArgs>(args?: SelectSubset<T, JobEventDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more JobEvents.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {JobEventUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many JobEvents
+     * const jobEvent = await prisma.jobEvent.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends JobEventUpdateManyArgs>(args: SelectSubset<T, JobEventUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more JobEvents and returns the data updated in the database.
+     * @param {JobEventUpdateManyAndReturnArgs} args - Arguments to update many JobEvents.
+     * @example
+     * // Update many JobEvents
+     * const jobEvent = await prisma.jobEvent.updateManyAndReturn({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Update zero or more JobEvents and only return the `id`
+     * const jobEventWithIdOnly = await prisma.jobEvent.updateManyAndReturn({
+     *   select: { id: true },
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    updateManyAndReturn<T extends JobEventUpdateManyAndReturnArgs>(args: SelectSubset<T, JobEventUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$JobEventPayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Create or update one JobEvent.
+     * @param {JobEventUpsertArgs} args - Arguments to update or create a JobEvent.
+     * @example
+     * // Update or create a JobEvent
+     * const jobEvent = await prisma.jobEvent.upsert({
+     *   create: {
+     *     // ... data to create a JobEvent
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the JobEvent we want to update
+     *   }
+     * })
+     */
+    upsert<T extends JobEventUpsertArgs>(args: SelectSubset<T, JobEventUpsertArgs<ExtArgs>>): Prisma__JobEventClient<$Result.GetResult<Prisma.$JobEventPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+
+    /**
+     * Count the number of JobEvents.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {JobEventCountArgs} args - Arguments to filter JobEvents to count.
+     * @example
+     * // Count the number of JobEvents
+     * const count = await prisma.jobEvent.count({
+     *   where: {
+     *     // ... the filter for the JobEvents we want to count
+     *   }
+     * })
+    **/
+    count<T extends JobEventCountArgs>(
+      args?: Subset<T, JobEventCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], JobEventCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a JobEvent.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {JobEventAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends JobEventAggregateArgs>(args: Subset<T, JobEventAggregateArgs>): Prisma.PrismaPromise<GetJobEventAggregateType<T>>
+
+    /**
+     * Group by JobEvent.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {JobEventGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends JobEventGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: JobEventGroupByArgs['orderBy'] }
+        : { orderBy?: JobEventGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, JobEventGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetJobEventGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the JobEvent model
+   */
+  readonly fields: JobEventFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for JobEvent.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__JobEventClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    analysis_job<T extends AnalysisJobDefaultArgs<ExtArgs> = {}>(args?: Subset<T, AnalysisJobDefaultArgs<ExtArgs>>): Prisma__AnalysisJobClient<$Result.GetResult<Prisma.$AnalysisJobPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the JobEvent model
+   */
+  interface JobEventFieldRefs {
+    readonly id: FieldRef<"JobEvent", 'String'>
+    readonly analysis_job_uuid: FieldRef<"JobEvent", 'String'>
+    readonly step: FieldRef<"JobEvent", 'String'>
+    readonly message: FieldRef<"JobEvent", 'String'>
+    readonly level: FieldRef<"JobEvent", 'JobEventLevel'>
+    readonly metadata: FieldRef<"JobEvent", 'Json'>
+    readonly created_at: FieldRef<"JobEvent", 'DateTime'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * JobEvent findUnique
+   */
+  export type JobEventFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the JobEvent
+     */
+    select?: JobEventSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the JobEvent
+     */
+    omit?: JobEventOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: JobEventInclude<ExtArgs> | null
+    /**
+     * Filter, which JobEvent to fetch.
+     */
+    where: JobEventWhereUniqueInput
+  }
+
+  /**
+   * JobEvent findUniqueOrThrow
+   */
+  export type JobEventFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the JobEvent
+     */
+    select?: JobEventSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the JobEvent
+     */
+    omit?: JobEventOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: JobEventInclude<ExtArgs> | null
+    /**
+     * Filter, which JobEvent to fetch.
+     */
+    where: JobEventWhereUniqueInput
+  }
+
+  /**
+   * JobEvent findFirst
+   */
+  export type JobEventFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the JobEvent
+     */
+    select?: JobEventSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the JobEvent
+     */
+    omit?: JobEventOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: JobEventInclude<ExtArgs> | null
+    /**
+     * Filter, which JobEvent to fetch.
+     */
+    where?: JobEventWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of JobEvents to fetch.
+     */
+    orderBy?: JobEventOrderByWithRelationInput | JobEventOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for JobEvents.
+     */
+    cursor?: JobEventWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` JobEvents from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` JobEvents.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of JobEvents.
+     */
+    distinct?: JobEventScalarFieldEnum | JobEventScalarFieldEnum[]
+  }
+
+  /**
+   * JobEvent findFirstOrThrow
+   */
+  export type JobEventFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the JobEvent
+     */
+    select?: JobEventSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the JobEvent
+     */
+    omit?: JobEventOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: JobEventInclude<ExtArgs> | null
+    /**
+     * Filter, which JobEvent to fetch.
+     */
+    where?: JobEventWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of JobEvents to fetch.
+     */
+    orderBy?: JobEventOrderByWithRelationInput | JobEventOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for JobEvents.
+     */
+    cursor?: JobEventWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` JobEvents from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` JobEvents.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of JobEvents.
+     */
+    distinct?: JobEventScalarFieldEnum | JobEventScalarFieldEnum[]
+  }
+
+  /**
+   * JobEvent findMany
+   */
+  export type JobEventFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the JobEvent
+     */
+    select?: JobEventSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the JobEvent
+     */
+    omit?: JobEventOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: JobEventInclude<ExtArgs> | null
+    /**
+     * Filter, which JobEvents to fetch.
+     */
+    where?: JobEventWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of JobEvents to fetch.
+     */
+    orderBy?: JobEventOrderByWithRelationInput | JobEventOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing JobEvents.
+     */
+    cursor?: JobEventWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` JobEvents from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` JobEvents.
+     */
+    skip?: number
+    distinct?: JobEventScalarFieldEnum | JobEventScalarFieldEnum[]
+  }
+
+  /**
+   * JobEvent create
+   */
+  export type JobEventCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the JobEvent
+     */
+    select?: JobEventSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the JobEvent
+     */
+    omit?: JobEventOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: JobEventInclude<ExtArgs> | null
+    /**
+     * The data needed to create a JobEvent.
+     */
+    data: XOR<JobEventCreateInput, JobEventUncheckedCreateInput>
+  }
+
+  /**
+   * JobEvent createMany
+   */
+  export type JobEventCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many JobEvents.
+     */
+    data: JobEventCreateManyInput | JobEventCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * JobEvent createManyAndReturn
+   */
+  export type JobEventCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the JobEvent
+     */
+    select?: JobEventSelectCreateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the JobEvent
+     */
+    omit?: JobEventOmit<ExtArgs> | null
+    /**
+     * The data used to create many JobEvents.
+     */
+    data: JobEventCreateManyInput | JobEventCreateManyInput[]
+    skipDuplicates?: boolean
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: JobEventIncludeCreateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * JobEvent update
+   */
+  export type JobEventUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the JobEvent
+     */
+    select?: JobEventSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the JobEvent
+     */
+    omit?: JobEventOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: JobEventInclude<ExtArgs> | null
+    /**
+     * The data needed to update a JobEvent.
+     */
+    data: XOR<JobEventUpdateInput, JobEventUncheckedUpdateInput>
+    /**
+     * Choose, which JobEvent to update.
+     */
+    where: JobEventWhereUniqueInput
+  }
+
+  /**
+   * JobEvent updateMany
+   */
+  export type JobEventUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update JobEvents.
+     */
+    data: XOR<JobEventUpdateManyMutationInput, JobEventUncheckedUpdateManyInput>
+    /**
+     * Filter which JobEvents to update
+     */
+    where?: JobEventWhereInput
+    /**
+     * Limit how many JobEvents to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * JobEvent updateManyAndReturn
+   */
+  export type JobEventUpdateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the JobEvent
+     */
+    select?: JobEventSelectUpdateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the JobEvent
+     */
+    omit?: JobEventOmit<ExtArgs> | null
+    /**
+     * The data used to update JobEvents.
+     */
+    data: XOR<JobEventUpdateManyMutationInput, JobEventUncheckedUpdateManyInput>
+    /**
+     * Filter which JobEvents to update
+     */
+    where?: JobEventWhereInput
+    /**
+     * Limit how many JobEvents to update.
+     */
+    limit?: number
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: JobEventIncludeUpdateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * JobEvent upsert
+   */
+  export type JobEventUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the JobEvent
+     */
+    select?: JobEventSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the JobEvent
+     */
+    omit?: JobEventOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: JobEventInclude<ExtArgs> | null
+    /**
+     * The filter to search for the JobEvent to update in case it exists.
+     */
+    where: JobEventWhereUniqueInput
+    /**
+     * In case the JobEvent found by the `where` argument doesn't exist, create a new JobEvent with this data.
+     */
+    create: XOR<JobEventCreateInput, JobEventUncheckedCreateInput>
+    /**
+     * In case the JobEvent was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<JobEventUpdateInput, JobEventUncheckedUpdateInput>
+  }
+
+  /**
+   * JobEvent delete
+   */
+  export type JobEventDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the JobEvent
+     */
+    select?: JobEventSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the JobEvent
+     */
+    omit?: JobEventOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: JobEventInclude<ExtArgs> | null
+    /**
+     * Filter which JobEvent to delete.
+     */
+    where: JobEventWhereUniqueInput
+  }
+
+  /**
+   * JobEvent deleteMany
+   */
+  export type JobEventDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which JobEvents to delete
+     */
+    where?: JobEventWhereInput
+    /**
+     * Limit how many JobEvents to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * JobEvent without action
+   */
+  export type JobEventDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the JobEvent
+     */
+    select?: JobEventSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the JobEvent
+     */
+    omit?: JobEventOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: JobEventInclude<ExtArgs> | null
   }
 
 
@@ -18309,11 +20067,13 @@ export namespace Prisma {
   export type KnowledgeInsightAvgAggregateOutputType = {
     confidence_score: number | null
     supporting_count: number | null
+    sentiment_score: number | null
   }
 
   export type KnowledgeInsightSumAggregateOutputType = {
     confidence_score: number | null
     supporting_count: number | null
+    sentiment_score: number | null
   }
 
   export type KnowledgeInsightMinAggregateOutputType = {
@@ -18326,6 +20086,8 @@ export namespace Prisma {
     content: string | null
     confidence_score: number | null
     supporting_count: number | null
+    sentiment: $Enums.SentimentLabel | null
+    sentiment_score: number | null
     created_at: Date | null
     updated_at: Date | null
   }
@@ -18340,6 +20102,8 @@ export namespace Prisma {
     content: string | null
     confidence_score: number | null
     supporting_count: number | null
+    sentiment: $Enums.SentimentLabel | null
+    sentiment_score: number | null
     created_at: Date | null
     updated_at: Date | null
   }
@@ -18354,6 +20118,8 @@ export namespace Prisma {
     content: number
     confidence_score: number
     supporting_count: number
+    sentiment: number
+    sentiment_score: number
     metadata: number
     created_at: number
     updated_at: number
@@ -18364,11 +20130,13 @@ export namespace Prisma {
   export type KnowledgeInsightAvgAggregateInputType = {
     confidence_score?: true
     supporting_count?: true
+    sentiment_score?: true
   }
 
   export type KnowledgeInsightSumAggregateInputType = {
     confidence_score?: true
     supporting_count?: true
+    sentiment_score?: true
   }
 
   export type KnowledgeInsightMinAggregateInputType = {
@@ -18381,6 +20149,8 @@ export namespace Prisma {
     content?: true
     confidence_score?: true
     supporting_count?: true
+    sentiment?: true
+    sentiment_score?: true
     created_at?: true
     updated_at?: true
   }
@@ -18395,6 +20165,8 @@ export namespace Prisma {
     content?: true
     confidence_score?: true
     supporting_count?: true
+    sentiment?: true
+    sentiment_score?: true
     created_at?: true
     updated_at?: true
   }
@@ -18409,6 +20181,8 @@ export namespace Prisma {
     content?: true
     confidence_score?: true
     supporting_count?: true
+    sentiment?: true
+    sentiment_score?: true
     metadata?: true
     created_at?: true
     updated_at?: true
@@ -18511,6 +20285,8 @@ export namespace Prisma {
     content: string
     confidence_score: number | null
     supporting_count: number
+    sentiment: $Enums.SentimentLabel | null
+    sentiment_score: number | null
     metadata: JsonValue | null
     created_at: Date
     updated_at: Date
@@ -18545,6 +20321,8 @@ export namespace Prisma {
     content?: boolean
     confidence_score?: boolean
     supporting_count?: boolean
+    sentiment?: boolean
+    sentiment_score?: boolean
     metadata?: boolean
     created_at?: boolean
     updated_at?: boolean
@@ -18568,6 +20346,8 @@ export namespace Prisma {
     content?: boolean
     confidence_score?: boolean
     supporting_count?: boolean
+    sentiment?: boolean
+    sentiment_score?: boolean
     metadata?: boolean
     created_at?: boolean
     updated_at?: boolean
@@ -18586,6 +20366,8 @@ export namespace Prisma {
     content?: boolean
     confidence_score?: boolean
     supporting_count?: boolean
+    sentiment?: boolean
+    sentiment_score?: boolean
     metadata?: boolean
     created_at?: boolean
     updated_at?: boolean
@@ -18604,12 +20386,14 @@ export namespace Prisma {
     content?: boolean
     confidence_score?: boolean
     supporting_count?: boolean
+    sentiment?: boolean
+    sentiment_score?: boolean
     metadata?: boolean
     created_at?: boolean
     updated_at?: boolean
   }
 
-  export type KnowledgeInsightOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "research_project_uuid" | "analysis_job_uuid" | "topic_uuid" | "type" | "title" | "content" | "confidence_score" | "supporting_count" | "metadata" | "created_at" | "updated_at", ExtArgs["result"]["knowledgeInsight"]>
+  export type KnowledgeInsightOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "research_project_uuid" | "analysis_job_uuid" | "topic_uuid" | "type" | "title" | "content" | "confidence_score" | "supporting_count" | "sentiment" | "sentiment_score" | "metadata" | "created_at" | "updated_at", ExtArgs["result"]["knowledgeInsight"]>
   export type KnowledgeInsightInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     research_project?: boolean | ResearchProjectDefaultArgs<ExtArgs>
     analysis_job?: boolean | KnowledgeInsight$analysis_jobArgs<ExtArgs>
@@ -18652,6 +20436,8 @@ export namespace Prisma {
       content: string
       confidence_score: number | null
       supporting_count: number
+      sentiment: $Enums.SentimentLabel | null
+      sentiment_score: number | null
       metadata: Prisma.JsonValue | null
       created_at: Date
       updated_at: Date
@@ -19094,6 +20880,8 @@ export namespace Prisma {
     readonly content: FieldRef<"KnowledgeInsight", 'String'>
     readonly confidence_score: FieldRef<"KnowledgeInsight", 'Float'>
     readonly supporting_count: FieldRef<"KnowledgeInsight", 'Int'>
+    readonly sentiment: FieldRef<"KnowledgeInsight", 'SentimentLabel'>
+    readonly sentiment_score: FieldRef<"KnowledgeInsight", 'Float'>
     readonly metadata: FieldRef<"KnowledgeInsight", 'Json'>
     readonly created_at: FieldRef<"KnowledgeInsight", 'DateTime'>
     readonly updated_at: FieldRef<"KnowledgeInsight", 'DateTime'>
@@ -25296,6 +27084,7 @@ export namespace Prisma {
     user_uuid: string | null
     research_project_uuid: string | null
     knowledge_insight_uuid: string | null
+    collection_uuid: string | null
     created_at: Date | null
   }
 
@@ -25304,6 +27093,7 @@ export namespace Prisma {
     user_uuid: string | null
     research_project_uuid: string | null
     knowledge_insight_uuid: string | null
+    collection_uuid: string | null
     created_at: Date | null
   }
 
@@ -25312,6 +27102,7 @@ export namespace Prisma {
     user_uuid: number
     research_project_uuid: number
     knowledge_insight_uuid: number
+    collection_uuid: number
     created_at: number
     _all: number
   }
@@ -25322,6 +27113,7 @@ export namespace Prisma {
     user_uuid?: true
     research_project_uuid?: true
     knowledge_insight_uuid?: true
+    collection_uuid?: true
     created_at?: true
   }
 
@@ -25330,6 +27122,7 @@ export namespace Prisma {
     user_uuid?: true
     research_project_uuid?: true
     knowledge_insight_uuid?: true
+    collection_uuid?: true
     created_at?: true
   }
 
@@ -25338,6 +27131,7 @@ export namespace Prisma {
     user_uuid?: true
     research_project_uuid?: true
     knowledge_insight_uuid?: true
+    collection_uuid?: true
     created_at?: true
     _all?: true
   }
@@ -25419,6 +27213,7 @@ export namespace Prisma {
     user_uuid: string
     research_project_uuid: string
     knowledge_insight_uuid: string
+    collection_uuid: string | null
     created_at: Date
     _count: SavedInsightCountAggregateOutputType | null
     _min: SavedInsightMinAggregateOutputType | null
@@ -25444,10 +27239,12 @@ export namespace Prisma {
     user_uuid?: boolean
     research_project_uuid?: boolean
     knowledge_insight_uuid?: boolean
+    collection_uuid?: boolean
     created_at?: boolean
     user?: boolean | UserDefaultArgs<ExtArgs>
     research_project?: boolean | ResearchProjectDefaultArgs<ExtArgs>
     knowledge_insight?: boolean | KnowledgeInsightDefaultArgs<ExtArgs>
+    collection?: boolean | SavedInsight$collectionArgs<ExtArgs>
   }, ExtArgs["result"]["savedInsight"]>
 
   export type SavedInsightSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
@@ -25455,10 +27252,12 @@ export namespace Prisma {
     user_uuid?: boolean
     research_project_uuid?: boolean
     knowledge_insight_uuid?: boolean
+    collection_uuid?: boolean
     created_at?: boolean
     user?: boolean | UserDefaultArgs<ExtArgs>
     research_project?: boolean | ResearchProjectDefaultArgs<ExtArgs>
     knowledge_insight?: boolean | KnowledgeInsightDefaultArgs<ExtArgs>
+    collection?: boolean | SavedInsight$collectionArgs<ExtArgs>
   }, ExtArgs["result"]["savedInsight"]>
 
   export type SavedInsightSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
@@ -25466,10 +27265,12 @@ export namespace Prisma {
     user_uuid?: boolean
     research_project_uuid?: boolean
     knowledge_insight_uuid?: boolean
+    collection_uuid?: boolean
     created_at?: boolean
     user?: boolean | UserDefaultArgs<ExtArgs>
     research_project?: boolean | ResearchProjectDefaultArgs<ExtArgs>
     knowledge_insight?: boolean | KnowledgeInsightDefaultArgs<ExtArgs>
+    collection?: boolean | SavedInsight$collectionArgs<ExtArgs>
   }, ExtArgs["result"]["savedInsight"]>
 
   export type SavedInsightSelectScalar = {
@@ -25477,24 +27278,28 @@ export namespace Prisma {
     user_uuid?: boolean
     research_project_uuid?: boolean
     knowledge_insight_uuid?: boolean
+    collection_uuid?: boolean
     created_at?: boolean
   }
 
-  export type SavedInsightOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "user_uuid" | "research_project_uuid" | "knowledge_insight_uuid" | "created_at", ExtArgs["result"]["savedInsight"]>
+  export type SavedInsightOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "user_uuid" | "research_project_uuid" | "knowledge_insight_uuid" | "collection_uuid" | "created_at", ExtArgs["result"]["savedInsight"]>
   export type SavedInsightInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     user?: boolean | UserDefaultArgs<ExtArgs>
     research_project?: boolean | ResearchProjectDefaultArgs<ExtArgs>
     knowledge_insight?: boolean | KnowledgeInsightDefaultArgs<ExtArgs>
+    collection?: boolean | SavedInsight$collectionArgs<ExtArgs>
   }
   export type SavedInsightIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     user?: boolean | UserDefaultArgs<ExtArgs>
     research_project?: boolean | ResearchProjectDefaultArgs<ExtArgs>
     knowledge_insight?: boolean | KnowledgeInsightDefaultArgs<ExtArgs>
+    collection?: boolean | SavedInsight$collectionArgs<ExtArgs>
   }
   export type SavedInsightIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     user?: boolean | UserDefaultArgs<ExtArgs>
     research_project?: boolean | ResearchProjectDefaultArgs<ExtArgs>
     knowledge_insight?: boolean | KnowledgeInsightDefaultArgs<ExtArgs>
+    collection?: boolean | SavedInsight$collectionArgs<ExtArgs>
   }
 
   export type $SavedInsightPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -25503,12 +27308,14 @@ export namespace Prisma {
       user: Prisma.$UserPayload<ExtArgs>
       research_project: Prisma.$ResearchProjectPayload<ExtArgs>
       knowledge_insight: Prisma.$KnowledgeInsightPayload<ExtArgs>
+      collection: Prisma.$SavedInsightCollectionPayload<ExtArgs> | null
     }
     scalars: $Extensions.GetPayloadResult<{
       id: string
       user_uuid: string
       research_project_uuid: string
       knowledge_insight_uuid: string
+      collection_uuid: string | null
       created_at: Date
     }, ExtArgs["result"]["savedInsight"]>
     composites: {}
@@ -25907,6 +27714,7 @@ export namespace Prisma {
     user<T extends UserDefaultArgs<ExtArgs> = {}>(args?: Subset<T, UserDefaultArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
     research_project<T extends ResearchProjectDefaultArgs<ExtArgs> = {}>(args?: Subset<T, ResearchProjectDefaultArgs<ExtArgs>>): Prisma__ResearchProjectClient<$Result.GetResult<Prisma.$ResearchProjectPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
     knowledge_insight<T extends KnowledgeInsightDefaultArgs<ExtArgs> = {}>(args?: Subset<T, KnowledgeInsightDefaultArgs<ExtArgs>>): Prisma__KnowledgeInsightClient<$Result.GetResult<Prisma.$KnowledgeInsightPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    collection<T extends SavedInsight$collectionArgs<ExtArgs> = {}>(args?: Subset<T, SavedInsight$collectionArgs<ExtArgs>>): Prisma__SavedInsightCollectionClient<$Result.GetResult<Prisma.$SavedInsightCollectionPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -25940,6 +27748,7 @@ export namespace Prisma {
     readonly user_uuid: FieldRef<"SavedInsight", 'String'>
     readonly research_project_uuid: FieldRef<"SavedInsight", 'String'>
     readonly knowledge_insight_uuid: FieldRef<"SavedInsight", 'String'>
+    readonly collection_uuid: FieldRef<"SavedInsight", 'String'>
     readonly created_at: FieldRef<"SavedInsight", 'DateTime'>
   }
     
@@ -26337,6 +28146,25 @@ export namespace Prisma {
   }
 
   /**
+   * SavedInsight.collection
+   */
+  export type SavedInsight$collectionArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the SavedInsightCollection
+     */
+    select?: SavedInsightCollectionSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the SavedInsightCollection
+     */
+    omit?: SavedInsightCollectionOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: SavedInsightCollectionInclude<ExtArgs> | null
+    where?: SavedInsightCollectionWhereInput
+  }
+
+  /**
    * SavedInsight without action
    */
   export type SavedInsightDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -26352,6 +28180,2252 @@ export namespace Prisma {
      * Choose, which related nodes to fetch as well
      */
     include?: SavedInsightInclude<ExtArgs> | null
+  }
+
+
+  /**
+   * Model SavedInsightCollection
+   */
+
+  export type AggregateSavedInsightCollection = {
+    _count: SavedInsightCollectionCountAggregateOutputType | null
+    _min: SavedInsightCollectionMinAggregateOutputType | null
+    _max: SavedInsightCollectionMaxAggregateOutputType | null
+  }
+
+  export type SavedInsightCollectionMinAggregateOutputType = {
+    id: string | null
+    user_uuid: string | null
+    name: string | null
+    created_at: Date | null
+    updated_at: Date | null
+  }
+
+  export type SavedInsightCollectionMaxAggregateOutputType = {
+    id: string | null
+    user_uuid: string | null
+    name: string | null
+    created_at: Date | null
+    updated_at: Date | null
+  }
+
+  export type SavedInsightCollectionCountAggregateOutputType = {
+    id: number
+    user_uuid: number
+    name: number
+    created_at: number
+    updated_at: number
+    _all: number
+  }
+
+
+  export type SavedInsightCollectionMinAggregateInputType = {
+    id?: true
+    user_uuid?: true
+    name?: true
+    created_at?: true
+    updated_at?: true
+  }
+
+  export type SavedInsightCollectionMaxAggregateInputType = {
+    id?: true
+    user_uuid?: true
+    name?: true
+    created_at?: true
+    updated_at?: true
+  }
+
+  export type SavedInsightCollectionCountAggregateInputType = {
+    id?: true
+    user_uuid?: true
+    name?: true
+    created_at?: true
+    updated_at?: true
+    _all?: true
+  }
+
+  export type SavedInsightCollectionAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which SavedInsightCollection to aggregate.
+     */
+    where?: SavedInsightCollectionWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of SavedInsightCollections to fetch.
+     */
+    orderBy?: SavedInsightCollectionOrderByWithRelationInput | SavedInsightCollectionOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: SavedInsightCollectionWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` SavedInsightCollections from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` SavedInsightCollections.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned SavedInsightCollections
+    **/
+    _count?: true | SavedInsightCollectionCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: SavedInsightCollectionMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: SavedInsightCollectionMaxAggregateInputType
+  }
+
+  export type GetSavedInsightCollectionAggregateType<T extends SavedInsightCollectionAggregateArgs> = {
+        [P in keyof T & keyof AggregateSavedInsightCollection]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateSavedInsightCollection[P]>
+      : GetScalarType<T[P], AggregateSavedInsightCollection[P]>
+  }
+
+
+
+
+  export type SavedInsightCollectionGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: SavedInsightCollectionWhereInput
+    orderBy?: SavedInsightCollectionOrderByWithAggregationInput | SavedInsightCollectionOrderByWithAggregationInput[]
+    by: SavedInsightCollectionScalarFieldEnum[] | SavedInsightCollectionScalarFieldEnum
+    having?: SavedInsightCollectionScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: SavedInsightCollectionCountAggregateInputType | true
+    _min?: SavedInsightCollectionMinAggregateInputType
+    _max?: SavedInsightCollectionMaxAggregateInputType
+  }
+
+  export type SavedInsightCollectionGroupByOutputType = {
+    id: string
+    user_uuid: string
+    name: string
+    created_at: Date
+    updated_at: Date
+    _count: SavedInsightCollectionCountAggregateOutputType | null
+    _min: SavedInsightCollectionMinAggregateOutputType | null
+    _max: SavedInsightCollectionMaxAggregateOutputType | null
+  }
+
+  type GetSavedInsightCollectionGroupByPayload<T extends SavedInsightCollectionGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<SavedInsightCollectionGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof SavedInsightCollectionGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], SavedInsightCollectionGroupByOutputType[P]>
+            : GetScalarType<T[P], SavedInsightCollectionGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type SavedInsightCollectionSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    user_uuid?: boolean
+    name?: boolean
+    created_at?: boolean
+    updated_at?: boolean
+    user?: boolean | UserDefaultArgs<ExtArgs>
+    saved_insights?: boolean | SavedInsightCollection$saved_insightsArgs<ExtArgs>
+    _count?: boolean | SavedInsightCollectionCountOutputTypeDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["savedInsightCollection"]>
+
+  export type SavedInsightCollectionSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    user_uuid?: boolean
+    name?: boolean
+    created_at?: boolean
+    updated_at?: boolean
+    user?: boolean | UserDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["savedInsightCollection"]>
+
+  export type SavedInsightCollectionSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    user_uuid?: boolean
+    name?: boolean
+    created_at?: boolean
+    updated_at?: boolean
+    user?: boolean | UserDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["savedInsightCollection"]>
+
+  export type SavedInsightCollectionSelectScalar = {
+    id?: boolean
+    user_uuid?: boolean
+    name?: boolean
+    created_at?: boolean
+    updated_at?: boolean
+  }
+
+  export type SavedInsightCollectionOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "user_uuid" | "name" | "created_at" | "updated_at", ExtArgs["result"]["savedInsightCollection"]>
+  export type SavedInsightCollectionInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    user?: boolean | UserDefaultArgs<ExtArgs>
+    saved_insights?: boolean | SavedInsightCollection$saved_insightsArgs<ExtArgs>
+    _count?: boolean | SavedInsightCollectionCountOutputTypeDefaultArgs<ExtArgs>
+  }
+  export type SavedInsightCollectionIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    user?: boolean | UserDefaultArgs<ExtArgs>
+  }
+  export type SavedInsightCollectionIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    user?: boolean | UserDefaultArgs<ExtArgs>
+  }
+
+  export type $SavedInsightCollectionPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "SavedInsightCollection"
+    objects: {
+      user: Prisma.$UserPayload<ExtArgs>
+      saved_insights: Prisma.$SavedInsightPayload<ExtArgs>[]
+    }
+    scalars: $Extensions.GetPayloadResult<{
+      id: string
+      user_uuid: string
+      name: string
+      created_at: Date
+      updated_at: Date
+    }, ExtArgs["result"]["savedInsightCollection"]>
+    composites: {}
+  }
+
+  type SavedInsightCollectionGetPayload<S extends boolean | null | undefined | SavedInsightCollectionDefaultArgs> = $Result.GetResult<Prisma.$SavedInsightCollectionPayload, S>
+
+  type SavedInsightCollectionCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<SavedInsightCollectionFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: SavedInsightCollectionCountAggregateInputType | true
+    }
+
+  export interface SavedInsightCollectionDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['SavedInsightCollection'], meta: { name: 'SavedInsightCollection' } }
+    /**
+     * Find zero or one SavedInsightCollection that matches the filter.
+     * @param {SavedInsightCollectionFindUniqueArgs} args - Arguments to find a SavedInsightCollection
+     * @example
+     * // Get one SavedInsightCollection
+     * const savedInsightCollection = await prisma.savedInsightCollection.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends SavedInsightCollectionFindUniqueArgs>(args: SelectSubset<T, SavedInsightCollectionFindUniqueArgs<ExtArgs>>): Prisma__SavedInsightCollectionClient<$Result.GetResult<Prisma.$SavedInsightCollectionPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find one SavedInsightCollection that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {SavedInsightCollectionFindUniqueOrThrowArgs} args - Arguments to find a SavedInsightCollection
+     * @example
+     * // Get one SavedInsightCollection
+     * const savedInsightCollection = await prisma.savedInsightCollection.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends SavedInsightCollectionFindUniqueOrThrowArgs>(args: SelectSubset<T, SavedInsightCollectionFindUniqueOrThrowArgs<ExtArgs>>): Prisma__SavedInsightCollectionClient<$Result.GetResult<Prisma.$SavedInsightCollectionPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first SavedInsightCollection that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {SavedInsightCollectionFindFirstArgs} args - Arguments to find a SavedInsightCollection
+     * @example
+     * // Get one SavedInsightCollection
+     * const savedInsightCollection = await prisma.savedInsightCollection.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends SavedInsightCollectionFindFirstArgs>(args?: SelectSubset<T, SavedInsightCollectionFindFirstArgs<ExtArgs>>): Prisma__SavedInsightCollectionClient<$Result.GetResult<Prisma.$SavedInsightCollectionPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first SavedInsightCollection that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {SavedInsightCollectionFindFirstOrThrowArgs} args - Arguments to find a SavedInsightCollection
+     * @example
+     * // Get one SavedInsightCollection
+     * const savedInsightCollection = await prisma.savedInsightCollection.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends SavedInsightCollectionFindFirstOrThrowArgs>(args?: SelectSubset<T, SavedInsightCollectionFindFirstOrThrowArgs<ExtArgs>>): Prisma__SavedInsightCollectionClient<$Result.GetResult<Prisma.$SavedInsightCollectionPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more SavedInsightCollections that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {SavedInsightCollectionFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all SavedInsightCollections
+     * const savedInsightCollections = await prisma.savedInsightCollection.findMany()
+     * 
+     * // Get first 10 SavedInsightCollections
+     * const savedInsightCollections = await prisma.savedInsightCollection.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const savedInsightCollectionWithIdOnly = await prisma.savedInsightCollection.findMany({ select: { id: true } })
+     * 
+     */
+    findMany<T extends SavedInsightCollectionFindManyArgs>(args?: SelectSubset<T, SavedInsightCollectionFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$SavedInsightCollectionPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+
+    /**
+     * Create a SavedInsightCollection.
+     * @param {SavedInsightCollectionCreateArgs} args - Arguments to create a SavedInsightCollection.
+     * @example
+     * // Create one SavedInsightCollection
+     * const SavedInsightCollection = await prisma.savedInsightCollection.create({
+     *   data: {
+     *     // ... data to create a SavedInsightCollection
+     *   }
+     * })
+     * 
+     */
+    create<T extends SavedInsightCollectionCreateArgs>(args: SelectSubset<T, SavedInsightCollectionCreateArgs<ExtArgs>>): Prisma__SavedInsightCollectionClient<$Result.GetResult<Prisma.$SavedInsightCollectionPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Create many SavedInsightCollections.
+     * @param {SavedInsightCollectionCreateManyArgs} args - Arguments to create many SavedInsightCollections.
+     * @example
+     * // Create many SavedInsightCollections
+     * const savedInsightCollection = await prisma.savedInsightCollection.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends SavedInsightCollectionCreateManyArgs>(args?: SelectSubset<T, SavedInsightCollectionCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create many SavedInsightCollections and returns the data saved in the database.
+     * @param {SavedInsightCollectionCreateManyAndReturnArgs} args - Arguments to create many SavedInsightCollections.
+     * @example
+     * // Create many SavedInsightCollections
+     * const savedInsightCollection = await prisma.savedInsightCollection.createManyAndReturn({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Create many SavedInsightCollections and only return the `id`
+     * const savedInsightCollectionWithIdOnly = await prisma.savedInsightCollection.createManyAndReturn({
+     *   select: { id: true },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    createManyAndReturn<T extends SavedInsightCollectionCreateManyAndReturnArgs>(args?: SelectSubset<T, SavedInsightCollectionCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$SavedInsightCollectionPayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Delete a SavedInsightCollection.
+     * @param {SavedInsightCollectionDeleteArgs} args - Arguments to delete one SavedInsightCollection.
+     * @example
+     * // Delete one SavedInsightCollection
+     * const SavedInsightCollection = await prisma.savedInsightCollection.delete({
+     *   where: {
+     *     // ... filter to delete one SavedInsightCollection
+     *   }
+     * })
+     * 
+     */
+    delete<T extends SavedInsightCollectionDeleteArgs>(args: SelectSubset<T, SavedInsightCollectionDeleteArgs<ExtArgs>>): Prisma__SavedInsightCollectionClient<$Result.GetResult<Prisma.$SavedInsightCollectionPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Update one SavedInsightCollection.
+     * @param {SavedInsightCollectionUpdateArgs} args - Arguments to update one SavedInsightCollection.
+     * @example
+     * // Update one SavedInsightCollection
+     * const savedInsightCollection = await prisma.savedInsightCollection.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends SavedInsightCollectionUpdateArgs>(args: SelectSubset<T, SavedInsightCollectionUpdateArgs<ExtArgs>>): Prisma__SavedInsightCollectionClient<$Result.GetResult<Prisma.$SavedInsightCollectionPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Delete zero or more SavedInsightCollections.
+     * @param {SavedInsightCollectionDeleteManyArgs} args - Arguments to filter SavedInsightCollections to delete.
+     * @example
+     * // Delete a few SavedInsightCollections
+     * const { count } = await prisma.savedInsightCollection.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends SavedInsightCollectionDeleteManyArgs>(args?: SelectSubset<T, SavedInsightCollectionDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more SavedInsightCollections.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {SavedInsightCollectionUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many SavedInsightCollections
+     * const savedInsightCollection = await prisma.savedInsightCollection.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends SavedInsightCollectionUpdateManyArgs>(args: SelectSubset<T, SavedInsightCollectionUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more SavedInsightCollections and returns the data updated in the database.
+     * @param {SavedInsightCollectionUpdateManyAndReturnArgs} args - Arguments to update many SavedInsightCollections.
+     * @example
+     * // Update many SavedInsightCollections
+     * const savedInsightCollection = await prisma.savedInsightCollection.updateManyAndReturn({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Update zero or more SavedInsightCollections and only return the `id`
+     * const savedInsightCollectionWithIdOnly = await prisma.savedInsightCollection.updateManyAndReturn({
+     *   select: { id: true },
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    updateManyAndReturn<T extends SavedInsightCollectionUpdateManyAndReturnArgs>(args: SelectSubset<T, SavedInsightCollectionUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$SavedInsightCollectionPayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Create or update one SavedInsightCollection.
+     * @param {SavedInsightCollectionUpsertArgs} args - Arguments to update or create a SavedInsightCollection.
+     * @example
+     * // Update or create a SavedInsightCollection
+     * const savedInsightCollection = await prisma.savedInsightCollection.upsert({
+     *   create: {
+     *     // ... data to create a SavedInsightCollection
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the SavedInsightCollection we want to update
+     *   }
+     * })
+     */
+    upsert<T extends SavedInsightCollectionUpsertArgs>(args: SelectSubset<T, SavedInsightCollectionUpsertArgs<ExtArgs>>): Prisma__SavedInsightCollectionClient<$Result.GetResult<Prisma.$SavedInsightCollectionPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+
+    /**
+     * Count the number of SavedInsightCollections.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {SavedInsightCollectionCountArgs} args - Arguments to filter SavedInsightCollections to count.
+     * @example
+     * // Count the number of SavedInsightCollections
+     * const count = await prisma.savedInsightCollection.count({
+     *   where: {
+     *     // ... the filter for the SavedInsightCollections we want to count
+     *   }
+     * })
+    **/
+    count<T extends SavedInsightCollectionCountArgs>(
+      args?: Subset<T, SavedInsightCollectionCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], SavedInsightCollectionCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a SavedInsightCollection.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {SavedInsightCollectionAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends SavedInsightCollectionAggregateArgs>(args: Subset<T, SavedInsightCollectionAggregateArgs>): Prisma.PrismaPromise<GetSavedInsightCollectionAggregateType<T>>
+
+    /**
+     * Group by SavedInsightCollection.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {SavedInsightCollectionGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends SavedInsightCollectionGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: SavedInsightCollectionGroupByArgs['orderBy'] }
+        : { orderBy?: SavedInsightCollectionGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, SavedInsightCollectionGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetSavedInsightCollectionGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the SavedInsightCollection model
+   */
+  readonly fields: SavedInsightCollectionFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for SavedInsightCollection.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__SavedInsightCollectionClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    user<T extends UserDefaultArgs<ExtArgs> = {}>(args?: Subset<T, UserDefaultArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    saved_insights<T extends SavedInsightCollection$saved_insightsArgs<ExtArgs> = {}>(args?: Subset<T, SavedInsightCollection$saved_insightsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$SavedInsightPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the SavedInsightCollection model
+   */
+  interface SavedInsightCollectionFieldRefs {
+    readonly id: FieldRef<"SavedInsightCollection", 'String'>
+    readonly user_uuid: FieldRef<"SavedInsightCollection", 'String'>
+    readonly name: FieldRef<"SavedInsightCollection", 'String'>
+    readonly created_at: FieldRef<"SavedInsightCollection", 'DateTime'>
+    readonly updated_at: FieldRef<"SavedInsightCollection", 'DateTime'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * SavedInsightCollection findUnique
+   */
+  export type SavedInsightCollectionFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the SavedInsightCollection
+     */
+    select?: SavedInsightCollectionSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the SavedInsightCollection
+     */
+    omit?: SavedInsightCollectionOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: SavedInsightCollectionInclude<ExtArgs> | null
+    /**
+     * Filter, which SavedInsightCollection to fetch.
+     */
+    where: SavedInsightCollectionWhereUniqueInput
+  }
+
+  /**
+   * SavedInsightCollection findUniqueOrThrow
+   */
+  export type SavedInsightCollectionFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the SavedInsightCollection
+     */
+    select?: SavedInsightCollectionSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the SavedInsightCollection
+     */
+    omit?: SavedInsightCollectionOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: SavedInsightCollectionInclude<ExtArgs> | null
+    /**
+     * Filter, which SavedInsightCollection to fetch.
+     */
+    where: SavedInsightCollectionWhereUniqueInput
+  }
+
+  /**
+   * SavedInsightCollection findFirst
+   */
+  export type SavedInsightCollectionFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the SavedInsightCollection
+     */
+    select?: SavedInsightCollectionSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the SavedInsightCollection
+     */
+    omit?: SavedInsightCollectionOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: SavedInsightCollectionInclude<ExtArgs> | null
+    /**
+     * Filter, which SavedInsightCollection to fetch.
+     */
+    where?: SavedInsightCollectionWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of SavedInsightCollections to fetch.
+     */
+    orderBy?: SavedInsightCollectionOrderByWithRelationInput | SavedInsightCollectionOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for SavedInsightCollections.
+     */
+    cursor?: SavedInsightCollectionWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` SavedInsightCollections from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` SavedInsightCollections.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of SavedInsightCollections.
+     */
+    distinct?: SavedInsightCollectionScalarFieldEnum | SavedInsightCollectionScalarFieldEnum[]
+  }
+
+  /**
+   * SavedInsightCollection findFirstOrThrow
+   */
+  export type SavedInsightCollectionFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the SavedInsightCollection
+     */
+    select?: SavedInsightCollectionSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the SavedInsightCollection
+     */
+    omit?: SavedInsightCollectionOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: SavedInsightCollectionInclude<ExtArgs> | null
+    /**
+     * Filter, which SavedInsightCollection to fetch.
+     */
+    where?: SavedInsightCollectionWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of SavedInsightCollections to fetch.
+     */
+    orderBy?: SavedInsightCollectionOrderByWithRelationInput | SavedInsightCollectionOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for SavedInsightCollections.
+     */
+    cursor?: SavedInsightCollectionWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` SavedInsightCollections from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` SavedInsightCollections.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of SavedInsightCollections.
+     */
+    distinct?: SavedInsightCollectionScalarFieldEnum | SavedInsightCollectionScalarFieldEnum[]
+  }
+
+  /**
+   * SavedInsightCollection findMany
+   */
+  export type SavedInsightCollectionFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the SavedInsightCollection
+     */
+    select?: SavedInsightCollectionSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the SavedInsightCollection
+     */
+    omit?: SavedInsightCollectionOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: SavedInsightCollectionInclude<ExtArgs> | null
+    /**
+     * Filter, which SavedInsightCollections to fetch.
+     */
+    where?: SavedInsightCollectionWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of SavedInsightCollections to fetch.
+     */
+    orderBy?: SavedInsightCollectionOrderByWithRelationInput | SavedInsightCollectionOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing SavedInsightCollections.
+     */
+    cursor?: SavedInsightCollectionWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` SavedInsightCollections from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` SavedInsightCollections.
+     */
+    skip?: number
+    distinct?: SavedInsightCollectionScalarFieldEnum | SavedInsightCollectionScalarFieldEnum[]
+  }
+
+  /**
+   * SavedInsightCollection create
+   */
+  export type SavedInsightCollectionCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the SavedInsightCollection
+     */
+    select?: SavedInsightCollectionSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the SavedInsightCollection
+     */
+    omit?: SavedInsightCollectionOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: SavedInsightCollectionInclude<ExtArgs> | null
+    /**
+     * The data needed to create a SavedInsightCollection.
+     */
+    data: XOR<SavedInsightCollectionCreateInput, SavedInsightCollectionUncheckedCreateInput>
+  }
+
+  /**
+   * SavedInsightCollection createMany
+   */
+  export type SavedInsightCollectionCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many SavedInsightCollections.
+     */
+    data: SavedInsightCollectionCreateManyInput | SavedInsightCollectionCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * SavedInsightCollection createManyAndReturn
+   */
+  export type SavedInsightCollectionCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the SavedInsightCollection
+     */
+    select?: SavedInsightCollectionSelectCreateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the SavedInsightCollection
+     */
+    omit?: SavedInsightCollectionOmit<ExtArgs> | null
+    /**
+     * The data used to create many SavedInsightCollections.
+     */
+    data: SavedInsightCollectionCreateManyInput | SavedInsightCollectionCreateManyInput[]
+    skipDuplicates?: boolean
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: SavedInsightCollectionIncludeCreateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * SavedInsightCollection update
+   */
+  export type SavedInsightCollectionUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the SavedInsightCollection
+     */
+    select?: SavedInsightCollectionSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the SavedInsightCollection
+     */
+    omit?: SavedInsightCollectionOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: SavedInsightCollectionInclude<ExtArgs> | null
+    /**
+     * The data needed to update a SavedInsightCollection.
+     */
+    data: XOR<SavedInsightCollectionUpdateInput, SavedInsightCollectionUncheckedUpdateInput>
+    /**
+     * Choose, which SavedInsightCollection to update.
+     */
+    where: SavedInsightCollectionWhereUniqueInput
+  }
+
+  /**
+   * SavedInsightCollection updateMany
+   */
+  export type SavedInsightCollectionUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update SavedInsightCollections.
+     */
+    data: XOR<SavedInsightCollectionUpdateManyMutationInput, SavedInsightCollectionUncheckedUpdateManyInput>
+    /**
+     * Filter which SavedInsightCollections to update
+     */
+    where?: SavedInsightCollectionWhereInput
+    /**
+     * Limit how many SavedInsightCollections to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * SavedInsightCollection updateManyAndReturn
+   */
+  export type SavedInsightCollectionUpdateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the SavedInsightCollection
+     */
+    select?: SavedInsightCollectionSelectUpdateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the SavedInsightCollection
+     */
+    omit?: SavedInsightCollectionOmit<ExtArgs> | null
+    /**
+     * The data used to update SavedInsightCollections.
+     */
+    data: XOR<SavedInsightCollectionUpdateManyMutationInput, SavedInsightCollectionUncheckedUpdateManyInput>
+    /**
+     * Filter which SavedInsightCollections to update
+     */
+    where?: SavedInsightCollectionWhereInput
+    /**
+     * Limit how many SavedInsightCollections to update.
+     */
+    limit?: number
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: SavedInsightCollectionIncludeUpdateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * SavedInsightCollection upsert
+   */
+  export type SavedInsightCollectionUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the SavedInsightCollection
+     */
+    select?: SavedInsightCollectionSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the SavedInsightCollection
+     */
+    omit?: SavedInsightCollectionOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: SavedInsightCollectionInclude<ExtArgs> | null
+    /**
+     * The filter to search for the SavedInsightCollection to update in case it exists.
+     */
+    where: SavedInsightCollectionWhereUniqueInput
+    /**
+     * In case the SavedInsightCollection found by the `where` argument doesn't exist, create a new SavedInsightCollection with this data.
+     */
+    create: XOR<SavedInsightCollectionCreateInput, SavedInsightCollectionUncheckedCreateInput>
+    /**
+     * In case the SavedInsightCollection was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<SavedInsightCollectionUpdateInput, SavedInsightCollectionUncheckedUpdateInput>
+  }
+
+  /**
+   * SavedInsightCollection delete
+   */
+  export type SavedInsightCollectionDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the SavedInsightCollection
+     */
+    select?: SavedInsightCollectionSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the SavedInsightCollection
+     */
+    omit?: SavedInsightCollectionOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: SavedInsightCollectionInclude<ExtArgs> | null
+    /**
+     * Filter which SavedInsightCollection to delete.
+     */
+    where: SavedInsightCollectionWhereUniqueInput
+  }
+
+  /**
+   * SavedInsightCollection deleteMany
+   */
+  export type SavedInsightCollectionDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which SavedInsightCollections to delete
+     */
+    where?: SavedInsightCollectionWhereInput
+    /**
+     * Limit how many SavedInsightCollections to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * SavedInsightCollection.saved_insights
+   */
+  export type SavedInsightCollection$saved_insightsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the SavedInsight
+     */
+    select?: SavedInsightSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the SavedInsight
+     */
+    omit?: SavedInsightOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: SavedInsightInclude<ExtArgs> | null
+    where?: SavedInsightWhereInput
+    orderBy?: SavedInsightOrderByWithRelationInput | SavedInsightOrderByWithRelationInput[]
+    cursor?: SavedInsightWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: SavedInsightScalarFieldEnum | SavedInsightScalarFieldEnum[]
+  }
+
+  /**
+   * SavedInsightCollection without action
+   */
+  export type SavedInsightCollectionDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the SavedInsightCollection
+     */
+    select?: SavedInsightCollectionSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the SavedInsightCollection
+     */
+    omit?: SavedInsightCollectionOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: SavedInsightCollectionInclude<ExtArgs> | null
+  }
+
+
+  /**
+   * Model SavedSearch
+   */
+
+  export type AggregateSavedSearch = {
+    _count: SavedSearchCountAggregateOutputType | null
+    _avg: SavedSearchAvgAggregateOutputType | null
+    _sum: SavedSearchSumAggregateOutputType | null
+    _min: SavedSearchMinAggregateOutputType | null
+    _max: SavedSearchMaxAggregateOutputType | null
+  }
+
+  export type SavedSearchAvgAggregateOutputType = {
+    min_score: number | null
+  }
+
+  export type SavedSearchSumAggregateOutputType = {
+    min_score: number | null
+  }
+
+  export type SavedSearchMinAggregateOutputType = {
+    id: string | null
+    user_uuid: string | null
+    research_project_uuid: string | null
+    name: string | null
+    query: string | null
+    min_score: number | null
+    time_range: $Enums.TopTimeRange | null
+    created_at: Date | null
+  }
+
+  export type SavedSearchMaxAggregateOutputType = {
+    id: string | null
+    user_uuid: string | null
+    research_project_uuid: string | null
+    name: string | null
+    query: string | null
+    min_score: number | null
+    time_range: $Enums.TopTimeRange | null
+    created_at: Date | null
+  }
+
+  export type SavedSearchCountAggregateOutputType = {
+    id: number
+    user_uuid: number
+    research_project_uuid: number
+    name: number
+    query: number
+    min_score: number
+    time_range: number
+    created_at: number
+    _all: number
+  }
+
+
+  export type SavedSearchAvgAggregateInputType = {
+    min_score?: true
+  }
+
+  export type SavedSearchSumAggregateInputType = {
+    min_score?: true
+  }
+
+  export type SavedSearchMinAggregateInputType = {
+    id?: true
+    user_uuid?: true
+    research_project_uuid?: true
+    name?: true
+    query?: true
+    min_score?: true
+    time_range?: true
+    created_at?: true
+  }
+
+  export type SavedSearchMaxAggregateInputType = {
+    id?: true
+    user_uuid?: true
+    research_project_uuid?: true
+    name?: true
+    query?: true
+    min_score?: true
+    time_range?: true
+    created_at?: true
+  }
+
+  export type SavedSearchCountAggregateInputType = {
+    id?: true
+    user_uuid?: true
+    research_project_uuid?: true
+    name?: true
+    query?: true
+    min_score?: true
+    time_range?: true
+    created_at?: true
+    _all?: true
+  }
+
+  export type SavedSearchAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which SavedSearch to aggregate.
+     */
+    where?: SavedSearchWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of SavedSearches to fetch.
+     */
+    orderBy?: SavedSearchOrderByWithRelationInput | SavedSearchOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: SavedSearchWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` SavedSearches from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` SavedSearches.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned SavedSearches
+    **/
+    _count?: true | SavedSearchCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to average
+    **/
+    _avg?: SavedSearchAvgAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to sum
+    **/
+    _sum?: SavedSearchSumAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: SavedSearchMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: SavedSearchMaxAggregateInputType
+  }
+
+  export type GetSavedSearchAggregateType<T extends SavedSearchAggregateArgs> = {
+        [P in keyof T & keyof AggregateSavedSearch]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateSavedSearch[P]>
+      : GetScalarType<T[P], AggregateSavedSearch[P]>
+  }
+
+
+
+
+  export type SavedSearchGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: SavedSearchWhereInput
+    orderBy?: SavedSearchOrderByWithAggregationInput | SavedSearchOrderByWithAggregationInput[]
+    by: SavedSearchScalarFieldEnum[] | SavedSearchScalarFieldEnum
+    having?: SavedSearchScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: SavedSearchCountAggregateInputType | true
+    _avg?: SavedSearchAvgAggregateInputType
+    _sum?: SavedSearchSumAggregateInputType
+    _min?: SavedSearchMinAggregateInputType
+    _max?: SavedSearchMaxAggregateInputType
+  }
+
+  export type SavedSearchGroupByOutputType = {
+    id: string
+    user_uuid: string
+    research_project_uuid: string | null
+    name: string | null
+    query: string
+    min_score: number | null
+    time_range: $Enums.TopTimeRange | null
+    created_at: Date
+    _count: SavedSearchCountAggregateOutputType | null
+    _avg: SavedSearchAvgAggregateOutputType | null
+    _sum: SavedSearchSumAggregateOutputType | null
+    _min: SavedSearchMinAggregateOutputType | null
+    _max: SavedSearchMaxAggregateOutputType | null
+  }
+
+  type GetSavedSearchGroupByPayload<T extends SavedSearchGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<SavedSearchGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof SavedSearchGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], SavedSearchGroupByOutputType[P]>
+            : GetScalarType<T[P], SavedSearchGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type SavedSearchSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    user_uuid?: boolean
+    research_project_uuid?: boolean
+    name?: boolean
+    query?: boolean
+    min_score?: boolean
+    time_range?: boolean
+    created_at?: boolean
+    user?: boolean | UserDefaultArgs<ExtArgs>
+    research_project?: boolean | SavedSearch$research_projectArgs<ExtArgs>
+  }, ExtArgs["result"]["savedSearch"]>
+
+  export type SavedSearchSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    user_uuid?: boolean
+    research_project_uuid?: boolean
+    name?: boolean
+    query?: boolean
+    min_score?: boolean
+    time_range?: boolean
+    created_at?: boolean
+    user?: boolean | UserDefaultArgs<ExtArgs>
+    research_project?: boolean | SavedSearch$research_projectArgs<ExtArgs>
+  }, ExtArgs["result"]["savedSearch"]>
+
+  export type SavedSearchSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    user_uuid?: boolean
+    research_project_uuid?: boolean
+    name?: boolean
+    query?: boolean
+    min_score?: boolean
+    time_range?: boolean
+    created_at?: boolean
+    user?: boolean | UserDefaultArgs<ExtArgs>
+    research_project?: boolean | SavedSearch$research_projectArgs<ExtArgs>
+  }, ExtArgs["result"]["savedSearch"]>
+
+  export type SavedSearchSelectScalar = {
+    id?: boolean
+    user_uuid?: boolean
+    research_project_uuid?: boolean
+    name?: boolean
+    query?: boolean
+    min_score?: boolean
+    time_range?: boolean
+    created_at?: boolean
+  }
+
+  export type SavedSearchOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "user_uuid" | "research_project_uuid" | "name" | "query" | "min_score" | "time_range" | "created_at", ExtArgs["result"]["savedSearch"]>
+  export type SavedSearchInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    user?: boolean | UserDefaultArgs<ExtArgs>
+    research_project?: boolean | SavedSearch$research_projectArgs<ExtArgs>
+  }
+  export type SavedSearchIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    user?: boolean | UserDefaultArgs<ExtArgs>
+    research_project?: boolean | SavedSearch$research_projectArgs<ExtArgs>
+  }
+  export type SavedSearchIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    user?: boolean | UserDefaultArgs<ExtArgs>
+    research_project?: boolean | SavedSearch$research_projectArgs<ExtArgs>
+  }
+
+  export type $SavedSearchPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "SavedSearch"
+    objects: {
+      user: Prisma.$UserPayload<ExtArgs>
+      research_project: Prisma.$ResearchProjectPayload<ExtArgs> | null
+    }
+    scalars: $Extensions.GetPayloadResult<{
+      id: string
+      user_uuid: string
+      research_project_uuid: string | null
+      name: string | null
+      query: string
+      min_score: number | null
+      time_range: $Enums.TopTimeRange | null
+      created_at: Date
+    }, ExtArgs["result"]["savedSearch"]>
+    composites: {}
+  }
+
+  type SavedSearchGetPayload<S extends boolean | null | undefined | SavedSearchDefaultArgs> = $Result.GetResult<Prisma.$SavedSearchPayload, S>
+
+  type SavedSearchCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<SavedSearchFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: SavedSearchCountAggregateInputType | true
+    }
+
+  export interface SavedSearchDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['SavedSearch'], meta: { name: 'SavedSearch' } }
+    /**
+     * Find zero or one SavedSearch that matches the filter.
+     * @param {SavedSearchFindUniqueArgs} args - Arguments to find a SavedSearch
+     * @example
+     * // Get one SavedSearch
+     * const savedSearch = await prisma.savedSearch.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends SavedSearchFindUniqueArgs>(args: SelectSubset<T, SavedSearchFindUniqueArgs<ExtArgs>>): Prisma__SavedSearchClient<$Result.GetResult<Prisma.$SavedSearchPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find one SavedSearch that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {SavedSearchFindUniqueOrThrowArgs} args - Arguments to find a SavedSearch
+     * @example
+     * // Get one SavedSearch
+     * const savedSearch = await prisma.savedSearch.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends SavedSearchFindUniqueOrThrowArgs>(args: SelectSubset<T, SavedSearchFindUniqueOrThrowArgs<ExtArgs>>): Prisma__SavedSearchClient<$Result.GetResult<Prisma.$SavedSearchPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first SavedSearch that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {SavedSearchFindFirstArgs} args - Arguments to find a SavedSearch
+     * @example
+     * // Get one SavedSearch
+     * const savedSearch = await prisma.savedSearch.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends SavedSearchFindFirstArgs>(args?: SelectSubset<T, SavedSearchFindFirstArgs<ExtArgs>>): Prisma__SavedSearchClient<$Result.GetResult<Prisma.$SavedSearchPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first SavedSearch that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {SavedSearchFindFirstOrThrowArgs} args - Arguments to find a SavedSearch
+     * @example
+     * // Get one SavedSearch
+     * const savedSearch = await prisma.savedSearch.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends SavedSearchFindFirstOrThrowArgs>(args?: SelectSubset<T, SavedSearchFindFirstOrThrowArgs<ExtArgs>>): Prisma__SavedSearchClient<$Result.GetResult<Prisma.$SavedSearchPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more SavedSearches that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {SavedSearchFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all SavedSearches
+     * const savedSearches = await prisma.savedSearch.findMany()
+     * 
+     * // Get first 10 SavedSearches
+     * const savedSearches = await prisma.savedSearch.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const savedSearchWithIdOnly = await prisma.savedSearch.findMany({ select: { id: true } })
+     * 
+     */
+    findMany<T extends SavedSearchFindManyArgs>(args?: SelectSubset<T, SavedSearchFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$SavedSearchPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+
+    /**
+     * Create a SavedSearch.
+     * @param {SavedSearchCreateArgs} args - Arguments to create a SavedSearch.
+     * @example
+     * // Create one SavedSearch
+     * const SavedSearch = await prisma.savedSearch.create({
+     *   data: {
+     *     // ... data to create a SavedSearch
+     *   }
+     * })
+     * 
+     */
+    create<T extends SavedSearchCreateArgs>(args: SelectSubset<T, SavedSearchCreateArgs<ExtArgs>>): Prisma__SavedSearchClient<$Result.GetResult<Prisma.$SavedSearchPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Create many SavedSearches.
+     * @param {SavedSearchCreateManyArgs} args - Arguments to create many SavedSearches.
+     * @example
+     * // Create many SavedSearches
+     * const savedSearch = await prisma.savedSearch.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends SavedSearchCreateManyArgs>(args?: SelectSubset<T, SavedSearchCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create many SavedSearches and returns the data saved in the database.
+     * @param {SavedSearchCreateManyAndReturnArgs} args - Arguments to create many SavedSearches.
+     * @example
+     * // Create many SavedSearches
+     * const savedSearch = await prisma.savedSearch.createManyAndReturn({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Create many SavedSearches and only return the `id`
+     * const savedSearchWithIdOnly = await prisma.savedSearch.createManyAndReturn({
+     *   select: { id: true },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    createManyAndReturn<T extends SavedSearchCreateManyAndReturnArgs>(args?: SelectSubset<T, SavedSearchCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$SavedSearchPayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Delete a SavedSearch.
+     * @param {SavedSearchDeleteArgs} args - Arguments to delete one SavedSearch.
+     * @example
+     * // Delete one SavedSearch
+     * const SavedSearch = await prisma.savedSearch.delete({
+     *   where: {
+     *     // ... filter to delete one SavedSearch
+     *   }
+     * })
+     * 
+     */
+    delete<T extends SavedSearchDeleteArgs>(args: SelectSubset<T, SavedSearchDeleteArgs<ExtArgs>>): Prisma__SavedSearchClient<$Result.GetResult<Prisma.$SavedSearchPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Update one SavedSearch.
+     * @param {SavedSearchUpdateArgs} args - Arguments to update one SavedSearch.
+     * @example
+     * // Update one SavedSearch
+     * const savedSearch = await prisma.savedSearch.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends SavedSearchUpdateArgs>(args: SelectSubset<T, SavedSearchUpdateArgs<ExtArgs>>): Prisma__SavedSearchClient<$Result.GetResult<Prisma.$SavedSearchPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Delete zero or more SavedSearches.
+     * @param {SavedSearchDeleteManyArgs} args - Arguments to filter SavedSearches to delete.
+     * @example
+     * // Delete a few SavedSearches
+     * const { count } = await prisma.savedSearch.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends SavedSearchDeleteManyArgs>(args?: SelectSubset<T, SavedSearchDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more SavedSearches.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {SavedSearchUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many SavedSearches
+     * const savedSearch = await prisma.savedSearch.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends SavedSearchUpdateManyArgs>(args: SelectSubset<T, SavedSearchUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more SavedSearches and returns the data updated in the database.
+     * @param {SavedSearchUpdateManyAndReturnArgs} args - Arguments to update many SavedSearches.
+     * @example
+     * // Update many SavedSearches
+     * const savedSearch = await prisma.savedSearch.updateManyAndReturn({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Update zero or more SavedSearches and only return the `id`
+     * const savedSearchWithIdOnly = await prisma.savedSearch.updateManyAndReturn({
+     *   select: { id: true },
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    updateManyAndReturn<T extends SavedSearchUpdateManyAndReturnArgs>(args: SelectSubset<T, SavedSearchUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$SavedSearchPayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Create or update one SavedSearch.
+     * @param {SavedSearchUpsertArgs} args - Arguments to update or create a SavedSearch.
+     * @example
+     * // Update or create a SavedSearch
+     * const savedSearch = await prisma.savedSearch.upsert({
+     *   create: {
+     *     // ... data to create a SavedSearch
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the SavedSearch we want to update
+     *   }
+     * })
+     */
+    upsert<T extends SavedSearchUpsertArgs>(args: SelectSubset<T, SavedSearchUpsertArgs<ExtArgs>>): Prisma__SavedSearchClient<$Result.GetResult<Prisma.$SavedSearchPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+
+    /**
+     * Count the number of SavedSearches.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {SavedSearchCountArgs} args - Arguments to filter SavedSearches to count.
+     * @example
+     * // Count the number of SavedSearches
+     * const count = await prisma.savedSearch.count({
+     *   where: {
+     *     // ... the filter for the SavedSearches we want to count
+     *   }
+     * })
+    **/
+    count<T extends SavedSearchCountArgs>(
+      args?: Subset<T, SavedSearchCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], SavedSearchCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a SavedSearch.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {SavedSearchAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends SavedSearchAggregateArgs>(args: Subset<T, SavedSearchAggregateArgs>): Prisma.PrismaPromise<GetSavedSearchAggregateType<T>>
+
+    /**
+     * Group by SavedSearch.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {SavedSearchGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends SavedSearchGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: SavedSearchGroupByArgs['orderBy'] }
+        : { orderBy?: SavedSearchGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, SavedSearchGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetSavedSearchGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the SavedSearch model
+   */
+  readonly fields: SavedSearchFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for SavedSearch.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__SavedSearchClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    user<T extends UserDefaultArgs<ExtArgs> = {}>(args?: Subset<T, UserDefaultArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    research_project<T extends SavedSearch$research_projectArgs<ExtArgs> = {}>(args?: Subset<T, SavedSearch$research_projectArgs<ExtArgs>>): Prisma__ResearchProjectClient<$Result.GetResult<Prisma.$ResearchProjectPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the SavedSearch model
+   */
+  interface SavedSearchFieldRefs {
+    readonly id: FieldRef<"SavedSearch", 'String'>
+    readonly user_uuid: FieldRef<"SavedSearch", 'String'>
+    readonly research_project_uuid: FieldRef<"SavedSearch", 'String'>
+    readonly name: FieldRef<"SavedSearch", 'String'>
+    readonly query: FieldRef<"SavedSearch", 'String'>
+    readonly min_score: FieldRef<"SavedSearch", 'Int'>
+    readonly time_range: FieldRef<"SavedSearch", 'TopTimeRange'>
+    readonly created_at: FieldRef<"SavedSearch", 'DateTime'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * SavedSearch findUnique
+   */
+  export type SavedSearchFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the SavedSearch
+     */
+    select?: SavedSearchSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the SavedSearch
+     */
+    omit?: SavedSearchOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: SavedSearchInclude<ExtArgs> | null
+    /**
+     * Filter, which SavedSearch to fetch.
+     */
+    where: SavedSearchWhereUniqueInput
+  }
+
+  /**
+   * SavedSearch findUniqueOrThrow
+   */
+  export type SavedSearchFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the SavedSearch
+     */
+    select?: SavedSearchSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the SavedSearch
+     */
+    omit?: SavedSearchOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: SavedSearchInclude<ExtArgs> | null
+    /**
+     * Filter, which SavedSearch to fetch.
+     */
+    where: SavedSearchWhereUniqueInput
+  }
+
+  /**
+   * SavedSearch findFirst
+   */
+  export type SavedSearchFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the SavedSearch
+     */
+    select?: SavedSearchSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the SavedSearch
+     */
+    omit?: SavedSearchOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: SavedSearchInclude<ExtArgs> | null
+    /**
+     * Filter, which SavedSearch to fetch.
+     */
+    where?: SavedSearchWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of SavedSearches to fetch.
+     */
+    orderBy?: SavedSearchOrderByWithRelationInput | SavedSearchOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for SavedSearches.
+     */
+    cursor?: SavedSearchWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` SavedSearches from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` SavedSearches.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of SavedSearches.
+     */
+    distinct?: SavedSearchScalarFieldEnum | SavedSearchScalarFieldEnum[]
+  }
+
+  /**
+   * SavedSearch findFirstOrThrow
+   */
+  export type SavedSearchFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the SavedSearch
+     */
+    select?: SavedSearchSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the SavedSearch
+     */
+    omit?: SavedSearchOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: SavedSearchInclude<ExtArgs> | null
+    /**
+     * Filter, which SavedSearch to fetch.
+     */
+    where?: SavedSearchWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of SavedSearches to fetch.
+     */
+    orderBy?: SavedSearchOrderByWithRelationInput | SavedSearchOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for SavedSearches.
+     */
+    cursor?: SavedSearchWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` SavedSearches from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` SavedSearches.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of SavedSearches.
+     */
+    distinct?: SavedSearchScalarFieldEnum | SavedSearchScalarFieldEnum[]
+  }
+
+  /**
+   * SavedSearch findMany
+   */
+  export type SavedSearchFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the SavedSearch
+     */
+    select?: SavedSearchSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the SavedSearch
+     */
+    omit?: SavedSearchOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: SavedSearchInclude<ExtArgs> | null
+    /**
+     * Filter, which SavedSearches to fetch.
+     */
+    where?: SavedSearchWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of SavedSearches to fetch.
+     */
+    orderBy?: SavedSearchOrderByWithRelationInput | SavedSearchOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing SavedSearches.
+     */
+    cursor?: SavedSearchWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` SavedSearches from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` SavedSearches.
+     */
+    skip?: number
+    distinct?: SavedSearchScalarFieldEnum | SavedSearchScalarFieldEnum[]
+  }
+
+  /**
+   * SavedSearch create
+   */
+  export type SavedSearchCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the SavedSearch
+     */
+    select?: SavedSearchSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the SavedSearch
+     */
+    omit?: SavedSearchOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: SavedSearchInclude<ExtArgs> | null
+    /**
+     * The data needed to create a SavedSearch.
+     */
+    data: XOR<SavedSearchCreateInput, SavedSearchUncheckedCreateInput>
+  }
+
+  /**
+   * SavedSearch createMany
+   */
+  export type SavedSearchCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many SavedSearches.
+     */
+    data: SavedSearchCreateManyInput | SavedSearchCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * SavedSearch createManyAndReturn
+   */
+  export type SavedSearchCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the SavedSearch
+     */
+    select?: SavedSearchSelectCreateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the SavedSearch
+     */
+    omit?: SavedSearchOmit<ExtArgs> | null
+    /**
+     * The data used to create many SavedSearches.
+     */
+    data: SavedSearchCreateManyInput | SavedSearchCreateManyInput[]
+    skipDuplicates?: boolean
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: SavedSearchIncludeCreateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * SavedSearch update
+   */
+  export type SavedSearchUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the SavedSearch
+     */
+    select?: SavedSearchSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the SavedSearch
+     */
+    omit?: SavedSearchOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: SavedSearchInclude<ExtArgs> | null
+    /**
+     * The data needed to update a SavedSearch.
+     */
+    data: XOR<SavedSearchUpdateInput, SavedSearchUncheckedUpdateInput>
+    /**
+     * Choose, which SavedSearch to update.
+     */
+    where: SavedSearchWhereUniqueInput
+  }
+
+  /**
+   * SavedSearch updateMany
+   */
+  export type SavedSearchUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update SavedSearches.
+     */
+    data: XOR<SavedSearchUpdateManyMutationInput, SavedSearchUncheckedUpdateManyInput>
+    /**
+     * Filter which SavedSearches to update
+     */
+    where?: SavedSearchWhereInput
+    /**
+     * Limit how many SavedSearches to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * SavedSearch updateManyAndReturn
+   */
+  export type SavedSearchUpdateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the SavedSearch
+     */
+    select?: SavedSearchSelectUpdateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the SavedSearch
+     */
+    omit?: SavedSearchOmit<ExtArgs> | null
+    /**
+     * The data used to update SavedSearches.
+     */
+    data: XOR<SavedSearchUpdateManyMutationInput, SavedSearchUncheckedUpdateManyInput>
+    /**
+     * Filter which SavedSearches to update
+     */
+    where?: SavedSearchWhereInput
+    /**
+     * Limit how many SavedSearches to update.
+     */
+    limit?: number
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: SavedSearchIncludeUpdateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * SavedSearch upsert
+   */
+  export type SavedSearchUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the SavedSearch
+     */
+    select?: SavedSearchSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the SavedSearch
+     */
+    omit?: SavedSearchOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: SavedSearchInclude<ExtArgs> | null
+    /**
+     * The filter to search for the SavedSearch to update in case it exists.
+     */
+    where: SavedSearchWhereUniqueInput
+    /**
+     * In case the SavedSearch found by the `where` argument doesn't exist, create a new SavedSearch with this data.
+     */
+    create: XOR<SavedSearchCreateInput, SavedSearchUncheckedCreateInput>
+    /**
+     * In case the SavedSearch was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<SavedSearchUpdateInput, SavedSearchUncheckedUpdateInput>
+  }
+
+  /**
+   * SavedSearch delete
+   */
+  export type SavedSearchDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the SavedSearch
+     */
+    select?: SavedSearchSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the SavedSearch
+     */
+    omit?: SavedSearchOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: SavedSearchInclude<ExtArgs> | null
+    /**
+     * Filter which SavedSearch to delete.
+     */
+    where: SavedSearchWhereUniqueInput
+  }
+
+  /**
+   * SavedSearch deleteMany
+   */
+  export type SavedSearchDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which SavedSearches to delete
+     */
+    where?: SavedSearchWhereInput
+    /**
+     * Limit how many SavedSearches to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * SavedSearch.research_project
+   */
+  export type SavedSearch$research_projectArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ResearchProject
+     */
+    select?: ResearchProjectSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ResearchProject
+     */
+    omit?: ResearchProjectOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ResearchProjectInclude<ExtArgs> | null
+    where?: ResearchProjectWhereInput
+  }
+
+  /**
+   * SavedSearch without action
+   */
+  export type SavedSearchDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the SavedSearch
+     */
+    select?: SavedSearchSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the SavedSearch
+     */
+    omit?: SavedSearchOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: SavedSearchInclude<ExtArgs> | null
   }
 
 
@@ -26417,7 +30491,10 @@ export namespace Prisma {
     posts_analyzed: 'posts_analyzed',
     comments_analyzed: 'comments_analyzed',
     created_at: 'created_at',
-    updated_at: 'updated_at'
+    updated_at: 'updated_at',
+    sentiment_positive_pct: 'sentiment_positive_pct',
+    sentiment_neutral_pct: 'sentiment_neutral_pct',
+    sentiment_negative_pct: 'sentiment_negative_pct'
   };
 
   export type ResearchProjectScalarFieldEnum = (typeof ResearchProjectScalarFieldEnum)[keyof typeof ResearchProjectScalarFieldEnum]
@@ -26476,6 +30553,10 @@ export namespace Prisma {
     posts_total: 'posts_total',
     comments_processed: 'comments_processed',
     comments_total: 'comments_total',
+    prompt_tokens: 'prompt_tokens',
+    completion_tokens: 'completion_tokens',
+    estimated_cost_usd: 'estimated_cost_usd',
+    actual_cost_usd: 'actual_cost_usd',
     error_message: 'error_message',
     started_at: 'started_at',
     completed_at: 'completed_at',
@@ -26494,6 +30575,9 @@ export namespace Prisma {
     request_file_id: 'request_file_id',
     response_file_id: 'response_file_id',
     error_file_id: 'error_file_id',
+    prompt_tokens: 'prompt_tokens',
+    completion_tokens: 'completion_tokens',
+    cost_usd: 'cost_usd',
     submitted_at: 'submitted_at',
     completed_at: 'completed_at',
     created_at: 'created_at',
@@ -26501,6 +30585,19 @@ export namespace Prisma {
   };
 
   export type BatchSubmissionScalarFieldEnum = (typeof BatchSubmissionScalarFieldEnum)[keyof typeof BatchSubmissionScalarFieldEnum]
+
+
+  export const JobEventScalarFieldEnum: {
+    id: 'id',
+    analysis_job_uuid: 'analysis_job_uuid',
+    step: 'step',
+    message: 'message',
+    level: 'level',
+    metadata: 'metadata',
+    created_at: 'created_at'
+  };
+
+  export type JobEventScalarFieldEnum = (typeof JobEventScalarFieldEnum)[keyof typeof JobEventScalarFieldEnum]
 
 
   export const PostScalarFieldEnum: {
@@ -26595,6 +30692,8 @@ export namespace Prisma {
     content: 'content',
     confidence_score: 'confidence_score',
     supporting_count: 'supporting_count',
+    sentiment: 'sentiment',
+    sentiment_score: 'sentiment_score',
     metadata: 'metadata',
     created_at: 'created_at',
     updated_at: 'updated_at'
@@ -26670,10 +30769,36 @@ export namespace Prisma {
     user_uuid: 'user_uuid',
     research_project_uuid: 'research_project_uuid',
     knowledge_insight_uuid: 'knowledge_insight_uuid',
+    collection_uuid: 'collection_uuid',
     created_at: 'created_at'
   };
 
   export type SavedInsightScalarFieldEnum = (typeof SavedInsightScalarFieldEnum)[keyof typeof SavedInsightScalarFieldEnum]
+
+
+  export const SavedInsightCollectionScalarFieldEnum: {
+    id: 'id',
+    user_uuid: 'user_uuid',
+    name: 'name',
+    created_at: 'created_at',
+    updated_at: 'updated_at'
+  };
+
+  export type SavedInsightCollectionScalarFieldEnum = (typeof SavedInsightCollectionScalarFieldEnum)[keyof typeof SavedInsightCollectionScalarFieldEnum]
+
+
+  export const SavedSearchScalarFieldEnum: {
+    id: 'id',
+    user_uuid: 'user_uuid',
+    research_project_uuid: 'research_project_uuid',
+    name: 'name',
+    query: 'query',
+    min_score: 'min_score',
+    time_range: 'time_range',
+    created_at: 'created_at'
+  };
+
+  export type SavedSearchScalarFieldEnum = (typeof SavedSearchScalarFieldEnum)[keyof typeof SavedSearchScalarFieldEnum]
 
 
   export const SortOrder: {
@@ -26807,6 +30932,20 @@ export namespace Prisma {
 
 
   /**
+   * Reference to a field of type 'Float'
+   */
+  export type FloatFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Float'>
+    
+
+
+  /**
+   * Reference to a field of type 'Float[]'
+   */
+  export type ListFloatFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Float[]'>
+    
+
+
+  /**
    * Reference to a field of type 'SourcePlatform'
    */
   export type EnumSourcePlatformFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'SourcePlatform'>
@@ -26898,16 +31037,30 @@ export namespace Prisma {
 
 
   /**
-   * Reference to a field of type 'Float'
+   * Reference to a field of type 'JobEventLevel'
    */
-  export type FloatFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Float'>
+  export type EnumJobEventLevelFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'JobEventLevel'>
     
 
 
   /**
-   * Reference to a field of type 'Float[]'
+   * Reference to a field of type 'JobEventLevel[]'
    */
-  export type ListFloatFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Float[]'>
+  export type ListEnumJobEventLevelFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'JobEventLevel[]'>
+    
+
+
+  /**
+   * Reference to a field of type 'Json'
+   */
+  export type JsonFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Json'>
+    
+
+
+  /**
+   * Reference to a field of type 'QueryMode'
+   */
+  export type EnumQueryModeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'QueryMode'>
     
 
 
@@ -26926,16 +31079,16 @@ export namespace Prisma {
 
 
   /**
-   * Reference to a field of type 'Json'
+   * Reference to a field of type 'SentimentLabel'
    */
-  export type JsonFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Json'>
+  export type EnumSentimentLabelFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'SentimentLabel'>
     
 
 
   /**
-   * Reference to a field of type 'QueryMode'
+   * Reference to a field of type 'SentimentLabel[]'
    */
-  export type EnumQueryModeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'QueryMode'>
+  export type ListEnumSentimentLabelFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'SentimentLabel[]'>
     
 
 
@@ -26985,6 +31138,8 @@ export namespace Prisma {
     research_projects?: ResearchProjectListRelationFilter
     conversations?: ConversationListRelationFilter
     saved_insights?: SavedInsightListRelationFilter
+    saved_insight_collections?: SavedInsightCollectionListRelationFilter
+    saved_searches?: SavedSearchListRelationFilter
   }
 
   export type UserOrderByWithRelationInput = {
@@ -26999,6 +31154,8 @@ export namespace Prisma {
     research_projects?: ResearchProjectOrderByRelationAggregateInput
     conversations?: ConversationOrderByRelationAggregateInput
     saved_insights?: SavedInsightOrderByRelationAggregateInput
+    saved_insight_collections?: SavedInsightCollectionOrderByRelationAggregateInput
+    saved_searches?: SavedSearchOrderByRelationAggregateInput
   }
 
   export type UserWhereUniqueInput = Prisma.AtLeast<{
@@ -27016,6 +31173,8 @@ export namespace Prisma {
     research_projects?: ResearchProjectListRelationFilter
     conversations?: ConversationListRelationFilter
     saved_insights?: SavedInsightListRelationFilter
+    saved_insight_collections?: SavedInsightCollectionListRelationFilter
+    saved_searches?: SavedSearchListRelationFilter
   }, "id" | "email" | "phone">
 
   export type UserOrderByWithAggregationInput = {
@@ -27190,6 +31349,9 @@ export namespace Prisma {
     comments_analyzed?: IntFilter<"ResearchProject"> | number
     created_at?: DateTimeFilter<"ResearchProject"> | Date | string
     updated_at?: DateTimeFilter<"ResearchProject"> | Date | string
+    sentiment_positive_pct?: FloatNullableFilter<"ResearchProject"> | number | null
+    sentiment_neutral_pct?: FloatNullableFilter<"ResearchProject"> | number | null
+    sentiment_negative_pct?: FloatNullableFilter<"ResearchProject"> | number | null
     user?: XOR<UserScalarRelationFilter, UserWhereInput>
     source?: XOR<ResearchSourceNullableScalarRelationFilter, ResearchSourceWhereInput> | null
     analysis_configurations?: AnalysisConfigurationListRelationFilter
@@ -27202,6 +31364,7 @@ export namespace Prisma {
     embeddings?: EmbeddingListRelationFilter
     conversations?: ConversationListRelationFilter
     saved_insights?: SavedInsightListRelationFilter
+    saved_searches?: SavedSearchListRelationFilter
   }
 
   export type ResearchProjectOrderByWithRelationInput = {
@@ -27213,6 +31376,9 @@ export namespace Prisma {
     comments_analyzed?: SortOrder
     created_at?: SortOrder
     updated_at?: SortOrder
+    sentiment_positive_pct?: SortOrderInput | SortOrder
+    sentiment_neutral_pct?: SortOrderInput | SortOrder
+    sentiment_negative_pct?: SortOrderInput | SortOrder
     user?: UserOrderByWithRelationInput
     source?: ResearchSourceOrderByWithRelationInput
     analysis_configurations?: AnalysisConfigurationOrderByRelationAggregateInput
@@ -27225,6 +31391,7 @@ export namespace Prisma {
     embeddings?: EmbeddingOrderByRelationAggregateInput
     conversations?: ConversationOrderByRelationAggregateInput
     saved_insights?: SavedInsightOrderByRelationAggregateInput
+    saved_searches?: SavedSearchOrderByRelationAggregateInput
   }
 
   export type ResearchProjectWhereUniqueInput = Prisma.AtLeast<{
@@ -27239,6 +31406,9 @@ export namespace Prisma {
     comments_analyzed?: IntFilter<"ResearchProject"> | number
     created_at?: DateTimeFilter<"ResearchProject"> | Date | string
     updated_at?: DateTimeFilter<"ResearchProject"> | Date | string
+    sentiment_positive_pct?: FloatNullableFilter<"ResearchProject"> | number | null
+    sentiment_neutral_pct?: FloatNullableFilter<"ResearchProject"> | number | null
+    sentiment_negative_pct?: FloatNullableFilter<"ResearchProject"> | number | null
     user?: XOR<UserScalarRelationFilter, UserWhereInput>
     source?: XOR<ResearchSourceNullableScalarRelationFilter, ResearchSourceWhereInput> | null
     analysis_configurations?: AnalysisConfigurationListRelationFilter
@@ -27251,6 +31421,7 @@ export namespace Prisma {
     embeddings?: EmbeddingListRelationFilter
     conversations?: ConversationListRelationFilter
     saved_insights?: SavedInsightListRelationFilter
+    saved_searches?: SavedSearchListRelationFilter
   }, "id">
 
   export type ResearchProjectOrderByWithAggregationInput = {
@@ -27262,6 +31433,9 @@ export namespace Prisma {
     comments_analyzed?: SortOrder
     created_at?: SortOrder
     updated_at?: SortOrder
+    sentiment_positive_pct?: SortOrderInput | SortOrder
+    sentiment_neutral_pct?: SortOrderInput | SortOrder
+    sentiment_negative_pct?: SortOrderInput | SortOrder
     _count?: ResearchProjectCountOrderByAggregateInput
     _avg?: ResearchProjectAvgOrderByAggregateInput
     _max?: ResearchProjectMaxOrderByAggregateInput
@@ -27281,6 +31455,9 @@ export namespace Prisma {
     comments_analyzed?: IntWithAggregatesFilter<"ResearchProject"> | number
     created_at?: DateTimeWithAggregatesFilter<"ResearchProject"> | Date | string
     updated_at?: DateTimeWithAggregatesFilter<"ResearchProject"> | Date | string
+    sentiment_positive_pct?: FloatNullableWithAggregatesFilter<"ResearchProject"> | number | null
+    sentiment_neutral_pct?: FloatNullableWithAggregatesFilter<"ResearchProject"> | number | null
+    sentiment_negative_pct?: FloatNullableWithAggregatesFilter<"ResearchProject"> | number | null
   }
 
   export type ResearchSourceWhereInput = {
@@ -27516,6 +31693,10 @@ export namespace Prisma {
     posts_total?: IntFilter<"AnalysisJob"> | number
     comments_processed?: IntFilter<"AnalysisJob"> | number
     comments_total?: IntFilter<"AnalysisJob"> | number
+    prompt_tokens?: IntFilter<"AnalysisJob"> | number
+    completion_tokens?: IntFilter<"AnalysisJob"> | number
+    estimated_cost_usd?: FloatNullableFilter<"AnalysisJob"> | number | null
+    actual_cost_usd?: FloatNullableFilter<"AnalysisJob"> | number | null
     error_message?: StringNullableFilter<"AnalysisJob"> | string | null
     started_at?: DateTimeNullableFilter<"AnalysisJob"> | Date | string | null
     completed_at?: DateTimeNullableFilter<"AnalysisJob"> | Date | string | null
@@ -27526,6 +31707,7 @@ export namespace Prisma {
     batch_submissions?: BatchSubmissionListRelationFilter
     knowledge_chunks?: KnowledgeChunkListRelationFilter
     knowledge_insights?: KnowledgeInsightListRelationFilter
+    job_events?: JobEventListRelationFilter
   }
 
   export type AnalysisJobOrderByWithRelationInput = {
@@ -27538,6 +31720,10 @@ export namespace Prisma {
     posts_total?: SortOrder
     comments_processed?: SortOrder
     comments_total?: SortOrder
+    prompt_tokens?: SortOrder
+    completion_tokens?: SortOrder
+    estimated_cost_usd?: SortOrderInput | SortOrder
+    actual_cost_usd?: SortOrderInput | SortOrder
     error_message?: SortOrderInput | SortOrder
     started_at?: SortOrderInput | SortOrder
     completed_at?: SortOrderInput | SortOrder
@@ -27548,6 +31734,7 @@ export namespace Prisma {
     batch_submissions?: BatchSubmissionOrderByRelationAggregateInput
     knowledge_chunks?: KnowledgeChunkOrderByRelationAggregateInput
     knowledge_insights?: KnowledgeInsightOrderByRelationAggregateInput
+    job_events?: JobEventOrderByRelationAggregateInput
   }
 
   export type AnalysisJobWhereUniqueInput = Prisma.AtLeast<{
@@ -27563,6 +31750,10 @@ export namespace Prisma {
     posts_total?: IntFilter<"AnalysisJob"> | number
     comments_processed?: IntFilter<"AnalysisJob"> | number
     comments_total?: IntFilter<"AnalysisJob"> | number
+    prompt_tokens?: IntFilter<"AnalysisJob"> | number
+    completion_tokens?: IntFilter<"AnalysisJob"> | number
+    estimated_cost_usd?: FloatNullableFilter<"AnalysisJob"> | number | null
+    actual_cost_usd?: FloatNullableFilter<"AnalysisJob"> | number | null
     error_message?: StringNullableFilter<"AnalysisJob"> | string | null
     started_at?: DateTimeNullableFilter<"AnalysisJob"> | Date | string | null
     completed_at?: DateTimeNullableFilter<"AnalysisJob"> | Date | string | null
@@ -27573,6 +31764,7 @@ export namespace Prisma {
     batch_submissions?: BatchSubmissionListRelationFilter
     knowledge_chunks?: KnowledgeChunkListRelationFilter
     knowledge_insights?: KnowledgeInsightListRelationFilter
+    job_events?: JobEventListRelationFilter
   }, "id" | "analysis_configuration_uuid">
 
   export type AnalysisJobOrderByWithAggregationInput = {
@@ -27585,6 +31777,10 @@ export namespace Prisma {
     posts_total?: SortOrder
     comments_processed?: SortOrder
     comments_total?: SortOrder
+    prompt_tokens?: SortOrder
+    completion_tokens?: SortOrder
+    estimated_cost_usd?: SortOrderInput | SortOrder
+    actual_cost_usd?: SortOrderInput | SortOrder
     error_message?: SortOrderInput | SortOrder
     started_at?: SortOrderInput | SortOrder
     completed_at?: SortOrderInput | SortOrder
@@ -27610,6 +31806,10 @@ export namespace Prisma {
     posts_total?: IntWithAggregatesFilter<"AnalysisJob"> | number
     comments_processed?: IntWithAggregatesFilter<"AnalysisJob"> | number
     comments_total?: IntWithAggregatesFilter<"AnalysisJob"> | number
+    prompt_tokens?: IntWithAggregatesFilter<"AnalysisJob"> | number
+    completion_tokens?: IntWithAggregatesFilter<"AnalysisJob"> | number
+    estimated_cost_usd?: FloatNullableWithAggregatesFilter<"AnalysisJob"> | number | null
+    actual_cost_usd?: FloatNullableWithAggregatesFilter<"AnalysisJob"> | number | null
     error_message?: StringNullableWithAggregatesFilter<"AnalysisJob"> | string | null
     started_at?: DateTimeNullableWithAggregatesFilter<"AnalysisJob"> | Date | string | null
     completed_at?: DateTimeNullableWithAggregatesFilter<"AnalysisJob"> | Date | string | null
@@ -27628,6 +31828,9 @@ export namespace Prisma {
     request_file_id?: StringNullableFilter<"BatchSubmission"> | string | null
     response_file_id?: StringNullableFilter<"BatchSubmission"> | string | null
     error_file_id?: StringNullableFilter<"BatchSubmission"> | string | null
+    prompt_tokens?: IntFilter<"BatchSubmission"> | number
+    completion_tokens?: IntFilter<"BatchSubmission"> | number
+    cost_usd?: FloatNullableFilter<"BatchSubmission"> | number | null
     submitted_at?: DateTimeNullableFilter<"BatchSubmission"> | Date | string | null
     completed_at?: DateTimeNullableFilter<"BatchSubmission"> | Date | string | null
     created_at?: DateTimeFilter<"BatchSubmission"> | Date | string
@@ -27643,6 +31846,9 @@ export namespace Prisma {
     request_file_id?: SortOrderInput | SortOrder
     response_file_id?: SortOrderInput | SortOrder
     error_file_id?: SortOrderInput | SortOrder
+    prompt_tokens?: SortOrder
+    completion_tokens?: SortOrder
+    cost_usd?: SortOrderInput | SortOrder
     submitted_at?: SortOrderInput | SortOrder
     completed_at?: SortOrderInput | SortOrder
     created_at?: SortOrder
@@ -27661,6 +31867,9 @@ export namespace Prisma {
     request_file_id?: StringNullableFilter<"BatchSubmission"> | string | null
     response_file_id?: StringNullableFilter<"BatchSubmission"> | string | null
     error_file_id?: StringNullableFilter<"BatchSubmission"> | string | null
+    prompt_tokens?: IntFilter<"BatchSubmission"> | number
+    completion_tokens?: IntFilter<"BatchSubmission"> | number
+    cost_usd?: FloatNullableFilter<"BatchSubmission"> | number | null
     submitted_at?: DateTimeNullableFilter<"BatchSubmission"> | Date | string | null
     completed_at?: DateTimeNullableFilter<"BatchSubmission"> | Date | string | null
     created_at?: DateTimeFilter<"BatchSubmission"> | Date | string
@@ -27676,13 +31885,18 @@ export namespace Prisma {
     request_file_id?: SortOrderInput | SortOrder
     response_file_id?: SortOrderInput | SortOrder
     error_file_id?: SortOrderInput | SortOrder
+    prompt_tokens?: SortOrder
+    completion_tokens?: SortOrder
+    cost_usd?: SortOrderInput | SortOrder
     submitted_at?: SortOrderInput | SortOrder
     completed_at?: SortOrderInput | SortOrder
     created_at?: SortOrder
     updated_at?: SortOrder
     _count?: BatchSubmissionCountOrderByAggregateInput
+    _avg?: BatchSubmissionAvgOrderByAggregateInput
     _max?: BatchSubmissionMaxOrderByAggregateInput
     _min?: BatchSubmissionMinOrderByAggregateInput
+    _sum?: BatchSubmissionSumOrderByAggregateInput
   }
 
   export type BatchSubmissionScalarWhereWithAggregatesInput = {
@@ -27696,10 +31910,78 @@ export namespace Prisma {
     request_file_id?: StringNullableWithAggregatesFilter<"BatchSubmission"> | string | null
     response_file_id?: StringNullableWithAggregatesFilter<"BatchSubmission"> | string | null
     error_file_id?: StringNullableWithAggregatesFilter<"BatchSubmission"> | string | null
+    prompt_tokens?: IntWithAggregatesFilter<"BatchSubmission"> | number
+    completion_tokens?: IntWithAggregatesFilter<"BatchSubmission"> | number
+    cost_usd?: FloatNullableWithAggregatesFilter<"BatchSubmission"> | number | null
     submitted_at?: DateTimeNullableWithAggregatesFilter<"BatchSubmission"> | Date | string | null
     completed_at?: DateTimeNullableWithAggregatesFilter<"BatchSubmission"> | Date | string | null
     created_at?: DateTimeWithAggregatesFilter<"BatchSubmission"> | Date | string
     updated_at?: DateTimeWithAggregatesFilter<"BatchSubmission"> | Date | string
+  }
+
+  export type JobEventWhereInput = {
+    AND?: JobEventWhereInput | JobEventWhereInput[]
+    OR?: JobEventWhereInput[]
+    NOT?: JobEventWhereInput | JobEventWhereInput[]
+    id?: StringFilter<"JobEvent"> | string
+    analysis_job_uuid?: StringFilter<"JobEvent"> | string
+    step?: StringFilter<"JobEvent"> | string
+    message?: StringFilter<"JobEvent"> | string
+    level?: EnumJobEventLevelFilter<"JobEvent"> | $Enums.JobEventLevel
+    metadata?: JsonNullableFilter<"JobEvent">
+    created_at?: DateTimeFilter<"JobEvent"> | Date | string
+    analysis_job?: XOR<AnalysisJobScalarRelationFilter, AnalysisJobWhereInput>
+  }
+
+  export type JobEventOrderByWithRelationInput = {
+    id?: SortOrder
+    analysis_job_uuid?: SortOrder
+    step?: SortOrder
+    message?: SortOrder
+    level?: SortOrder
+    metadata?: SortOrderInput | SortOrder
+    created_at?: SortOrder
+    analysis_job?: AnalysisJobOrderByWithRelationInput
+  }
+
+  export type JobEventWhereUniqueInput = Prisma.AtLeast<{
+    id?: string
+    AND?: JobEventWhereInput | JobEventWhereInput[]
+    OR?: JobEventWhereInput[]
+    NOT?: JobEventWhereInput | JobEventWhereInput[]
+    analysis_job_uuid?: StringFilter<"JobEvent"> | string
+    step?: StringFilter<"JobEvent"> | string
+    message?: StringFilter<"JobEvent"> | string
+    level?: EnumJobEventLevelFilter<"JobEvent"> | $Enums.JobEventLevel
+    metadata?: JsonNullableFilter<"JobEvent">
+    created_at?: DateTimeFilter<"JobEvent"> | Date | string
+    analysis_job?: XOR<AnalysisJobScalarRelationFilter, AnalysisJobWhereInput>
+  }, "id">
+
+  export type JobEventOrderByWithAggregationInput = {
+    id?: SortOrder
+    analysis_job_uuid?: SortOrder
+    step?: SortOrder
+    message?: SortOrder
+    level?: SortOrder
+    metadata?: SortOrderInput | SortOrder
+    created_at?: SortOrder
+    _count?: JobEventCountOrderByAggregateInput
+    _max?: JobEventMaxOrderByAggregateInput
+    _min?: JobEventMinOrderByAggregateInput
+  }
+
+  export type JobEventScalarWhereWithAggregatesInput = {
+    AND?: JobEventScalarWhereWithAggregatesInput | JobEventScalarWhereWithAggregatesInput[]
+    OR?: JobEventScalarWhereWithAggregatesInput[]
+    NOT?: JobEventScalarWhereWithAggregatesInput | JobEventScalarWhereWithAggregatesInput[]
+    id?: StringWithAggregatesFilter<"JobEvent"> | string
+    analysis_job_uuid?: StringWithAggregatesFilter<"JobEvent"> | string
+    step?: StringWithAggregatesFilter<"JobEvent"> | string
+    message?: StringWithAggregatesFilter<"JobEvent"> | string
+    level?: EnumJobEventLevelWithAggregatesFilter<"JobEvent"> | $Enums.JobEventLevel
+    metadata?: JsonNullableWithAggregatesFilter<"JobEvent">
+    created_at?: DateTimeWithAggregatesFilter<"JobEvent"> | Date | string
   }
 
   export type PostWhereInput = {
@@ -28198,6 +32480,8 @@ export namespace Prisma {
     content?: StringFilter<"KnowledgeInsight"> | string
     confidence_score?: FloatNullableFilter<"KnowledgeInsight"> | number | null
     supporting_count?: IntFilter<"KnowledgeInsight"> | number
+    sentiment?: EnumSentimentLabelNullableFilter<"KnowledgeInsight"> | $Enums.SentimentLabel | null
+    sentiment_score?: FloatNullableFilter<"KnowledgeInsight"> | number | null
     metadata?: JsonNullableFilter<"KnowledgeInsight">
     created_at?: DateTimeFilter<"KnowledgeInsight"> | Date | string
     updated_at?: DateTimeFilter<"KnowledgeInsight"> | Date | string
@@ -28220,6 +32504,8 @@ export namespace Prisma {
     content?: SortOrder
     confidence_score?: SortOrderInput | SortOrder
     supporting_count?: SortOrder
+    sentiment?: SortOrderInput | SortOrder
+    sentiment_score?: SortOrderInput | SortOrder
     metadata?: SortOrderInput | SortOrder
     created_at?: SortOrder
     updated_at?: SortOrder
@@ -28245,6 +32531,8 @@ export namespace Prisma {
     content?: StringFilter<"KnowledgeInsight"> | string
     confidence_score?: FloatNullableFilter<"KnowledgeInsight"> | number | null
     supporting_count?: IntFilter<"KnowledgeInsight"> | number
+    sentiment?: EnumSentimentLabelNullableFilter<"KnowledgeInsight"> | $Enums.SentimentLabel | null
+    sentiment_score?: FloatNullableFilter<"KnowledgeInsight"> | number | null
     metadata?: JsonNullableFilter<"KnowledgeInsight">
     created_at?: DateTimeFilter<"KnowledgeInsight"> | Date | string
     updated_at?: DateTimeFilter<"KnowledgeInsight"> | Date | string
@@ -28267,6 +32555,8 @@ export namespace Prisma {
     content?: SortOrder
     confidence_score?: SortOrderInput | SortOrder
     supporting_count?: SortOrder
+    sentiment?: SortOrderInput | SortOrder
+    sentiment_score?: SortOrderInput | SortOrder
     metadata?: SortOrderInput | SortOrder
     created_at?: SortOrder
     updated_at?: SortOrder
@@ -28290,6 +32580,8 @@ export namespace Prisma {
     content?: StringWithAggregatesFilter<"KnowledgeInsight"> | string
     confidence_score?: FloatNullableWithAggregatesFilter<"KnowledgeInsight"> | number | null
     supporting_count?: IntWithAggregatesFilter<"KnowledgeInsight"> | number
+    sentiment?: EnumSentimentLabelNullableWithAggregatesFilter<"KnowledgeInsight"> | $Enums.SentimentLabel | null
+    sentiment_score?: FloatNullableWithAggregatesFilter<"KnowledgeInsight"> | number | null
     metadata?: JsonNullableWithAggregatesFilter<"KnowledgeInsight">
     created_at?: DateTimeWithAggregatesFilter<"KnowledgeInsight"> | Date | string
     updated_at?: DateTimeWithAggregatesFilter<"KnowledgeInsight"> | Date | string
@@ -28643,10 +32935,12 @@ export namespace Prisma {
     user_uuid?: StringFilter<"SavedInsight"> | string
     research_project_uuid?: StringFilter<"SavedInsight"> | string
     knowledge_insight_uuid?: StringFilter<"SavedInsight"> | string
+    collection_uuid?: StringNullableFilter<"SavedInsight"> | string | null
     created_at?: DateTimeFilter<"SavedInsight"> | Date | string
     user?: XOR<UserScalarRelationFilter, UserWhereInput>
     research_project?: XOR<ResearchProjectScalarRelationFilter, ResearchProjectWhereInput>
     knowledge_insight?: XOR<KnowledgeInsightScalarRelationFilter, KnowledgeInsightWhereInput>
+    collection?: XOR<SavedInsightCollectionNullableScalarRelationFilter, SavedInsightCollectionWhereInput> | null
   }
 
   export type SavedInsightOrderByWithRelationInput = {
@@ -28654,10 +32948,12 @@ export namespace Prisma {
     user_uuid?: SortOrder
     research_project_uuid?: SortOrder
     knowledge_insight_uuid?: SortOrder
+    collection_uuid?: SortOrderInput | SortOrder
     created_at?: SortOrder
     user?: UserOrderByWithRelationInput
     research_project?: ResearchProjectOrderByWithRelationInput
     knowledge_insight?: KnowledgeInsightOrderByWithRelationInput
+    collection?: SavedInsightCollectionOrderByWithRelationInput
   }
 
   export type SavedInsightWhereUniqueInput = Prisma.AtLeast<{
@@ -28669,10 +32965,12 @@ export namespace Prisma {
     user_uuid?: StringFilter<"SavedInsight"> | string
     research_project_uuid?: StringFilter<"SavedInsight"> | string
     knowledge_insight_uuid?: StringFilter<"SavedInsight"> | string
+    collection_uuid?: StringNullableFilter<"SavedInsight"> | string | null
     created_at?: DateTimeFilter<"SavedInsight"> | Date | string
     user?: XOR<UserScalarRelationFilter, UserWhereInput>
     research_project?: XOR<ResearchProjectScalarRelationFilter, ResearchProjectWhereInput>
     knowledge_insight?: XOR<KnowledgeInsightScalarRelationFilter, KnowledgeInsightWhereInput>
+    collection?: XOR<SavedInsightCollectionNullableScalarRelationFilter, SavedInsightCollectionWhereInput> | null
   }, "id" | "user_uuid_knowledge_insight_uuid">
 
   export type SavedInsightOrderByWithAggregationInput = {
@@ -28680,6 +32978,7 @@ export namespace Prisma {
     user_uuid?: SortOrder
     research_project_uuid?: SortOrder
     knowledge_insight_uuid?: SortOrder
+    collection_uuid?: SortOrderInput | SortOrder
     created_at?: SortOrder
     _count?: SavedInsightCountOrderByAggregateInput
     _max?: SavedInsightMaxOrderByAggregateInput
@@ -28694,7 +32993,142 @@ export namespace Prisma {
     user_uuid?: StringWithAggregatesFilter<"SavedInsight"> | string
     research_project_uuid?: StringWithAggregatesFilter<"SavedInsight"> | string
     knowledge_insight_uuid?: StringWithAggregatesFilter<"SavedInsight"> | string
+    collection_uuid?: StringNullableWithAggregatesFilter<"SavedInsight"> | string | null
     created_at?: DateTimeWithAggregatesFilter<"SavedInsight"> | Date | string
+  }
+
+  export type SavedInsightCollectionWhereInput = {
+    AND?: SavedInsightCollectionWhereInput | SavedInsightCollectionWhereInput[]
+    OR?: SavedInsightCollectionWhereInput[]
+    NOT?: SavedInsightCollectionWhereInput | SavedInsightCollectionWhereInput[]
+    id?: StringFilter<"SavedInsightCollection"> | string
+    user_uuid?: StringFilter<"SavedInsightCollection"> | string
+    name?: StringFilter<"SavedInsightCollection"> | string
+    created_at?: DateTimeFilter<"SavedInsightCollection"> | Date | string
+    updated_at?: DateTimeFilter<"SavedInsightCollection"> | Date | string
+    user?: XOR<UserScalarRelationFilter, UserWhereInput>
+    saved_insights?: SavedInsightListRelationFilter
+  }
+
+  export type SavedInsightCollectionOrderByWithRelationInput = {
+    id?: SortOrder
+    user_uuid?: SortOrder
+    name?: SortOrder
+    created_at?: SortOrder
+    updated_at?: SortOrder
+    user?: UserOrderByWithRelationInput
+    saved_insights?: SavedInsightOrderByRelationAggregateInput
+  }
+
+  export type SavedInsightCollectionWhereUniqueInput = Prisma.AtLeast<{
+    id?: string
+    user_uuid_name?: SavedInsightCollectionUser_uuidNameCompoundUniqueInput
+    AND?: SavedInsightCollectionWhereInput | SavedInsightCollectionWhereInput[]
+    OR?: SavedInsightCollectionWhereInput[]
+    NOT?: SavedInsightCollectionWhereInput | SavedInsightCollectionWhereInput[]
+    user_uuid?: StringFilter<"SavedInsightCollection"> | string
+    name?: StringFilter<"SavedInsightCollection"> | string
+    created_at?: DateTimeFilter<"SavedInsightCollection"> | Date | string
+    updated_at?: DateTimeFilter<"SavedInsightCollection"> | Date | string
+    user?: XOR<UserScalarRelationFilter, UserWhereInput>
+    saved_insights?: SavedInsightListRelationFilter
+  }, "id" | "user_uuid_name">
+
+  export type SavedInsightCollectionOrderByWithAggregationInput = {
+    id?: SortOrder
+    user_uuid?: SortOrder
+    name?: SortOrder
+    created_at?: SortOrder
+    updated_at?: SortOrder
+    _count?: SavedInsightCollectionCountOrderByAggregateInput
+    _max?: SavedInsightCollectionMaxOrderByAggregateInput
+    _min?: SavedInsightCollectionMinOrderByAggregateInput
+  }
+
+  export type SavedInsightCollectionScalarWhereWithAggregatesInput = {
+    AND?: SavedInsightCollectionScalarWhereWithAggregatesInput | SavedInsightCollectionScalarWhereWithAggregatesInput[]
+    OR?: SavedInsightCollectionScalarWhereWithAggregatesInput[]
+    NOT?: SavedInsightCollectionScalarWhereWithAggregatesInput | SavedInsightCollectionScalarWhereWithAggregatesInput[]
+    id?: StringWithAggregatesFilter<"SavedInsightCollection"> | string
+    user_uuid?: StringWithAggregatesFilter<"SavedInsightCollection"> | string
+    name?: StringWithAggregatesFilter<"SavedInsightCollection"> | string
+    created_at?: DateTimeWithAggregatesFilter<"SavedInsightCollection"> | Date | string
+    updated_at?: DateTimeWithAggregatesFilter<"SavedInsightCollection"> | Date | string
+  }
+
+  export type SavedSearchWhereInput = {
+    AND?: SavedSearchWhereInput | SavedSearchWhereInput[]
+    OR?: SavedSearchWhereInput[]
+    NOT?: SavedSearchWhereInput | SavedSearchWhereInput[]
+    id?: StringFilter<"SavedSearch"> | string
+    user_uuid?: StringFilter<"SavedSearch"> | string
+    research_project_uuid?: StringNullableFilter<"SavedSearch"> | string | null
+    name?: StringNullableFilter<"SavedSearch"> | string | null
+    query?: StringFilter<"SavedSearch"> | string
+    min_score?: IntNullableFilter<"SavedSearch"> | number | null
+    time_range?: EnumTopTimeRangeNullableFilter<"SavedSearch"> | $Enums.TopTimeRange | null
+    created_at?: DateTimeFilter<"SavedSearch"> | Date | string
+    user?: XOR<UserScalarRelationFilter, UserWhereInput>
+    research_project?: XOR<ResearchProjectNullableScalarRelationFilter, ResearchProjectWhereInput> | null
+  }
+
+  export type SavedSearchOrderByWithRelationInput = {
+    id?: SortOrder
+    user_uuid?: SortOrder
+    research_project_uuid?: SortOrderInput | SortOrder
+    name?: SortOrderInput | SortOrder
+    query?: SortOrder
+    min_score?: SortOrderInput | SortOrder
+    time_range?: SortOrderInput | SortOrder
+    created_at?: SortOrder
+    user?: UserOrderByWithRelationInput
+    research_project?: ResearchProjectOrderByWithRelationInput
+  }
+
+  export type SavedSearchWhereUniqueInput = Prisma.AtLeast<{
+    id?: string
+    AND?: SavedSearchWhereInput | SavedSearchWhereInput[]
+    OR?: SavedSearchWhereInput[]
+    NOT?: SavedSearchWhereInput | SavedSearchWhereInput[]
+    user_uuid?: StringFilter<"SavedSearch"> | string
+    research_project_uuid?: StringNullableFilter<"SavedSearch"> | string | null
+    name?: StringNullableFilter<"SavedSearch"> | string | null
+    query?: StringFilter<"SavedSearch"> | string
+    min_score?: IntNullableFilter<"SavedSearch"> | number | null
+    time_range?: EnumTopTimeRangeNullableFilter<"SavedSearch"> | $Enums.TopTimeRange | null
+    created_at?: DateTimeFilter<"SavedSearch"> | Date | string
+    user?: XOR<UserScalarRelationFilter, UserWhereInput>
+    research_project?: XOR<ResearchProjectNullableScalarRelationFilter, ResearchProjectWhereInput> | null
+  }, "id">
+
+  export type SavedSearchOrderByWithAggregationInput = {
+    id?: SortOrder
+    user_uuid?: SortOrder
+    research_project_uuid?: SortOrderInput | SortOrder
+    name?: SortOrderInput | SortOrder
+    query?: SortOrder
+    min_score?: SortOrderInput | SortOrder
+    time_range?: SortOrderInput | SortOrder
+    created_at?: SortOrder
+    _count?: SavedSearchCountOrderByAggregateInput
+    _avg?: SavedSearchAvgOrderByAggregateInput
+    _max?: SavedSearchMaxOrderByAggregateInput
+    _min?: SavedSearchMinOrderByAggregateInput
+    _sum?: SavedSearchSumOrderByAggregateInput
+  }
+
+  export type SavedSearchScalarWhereWithAggregatesInput = {
+    AND?: SavedSearchScalarWhereWithAggregatesInput | SavedSearchScalarWhereWithAggregatesInput[]
+    OR?: SavedSearchScalarWhereWithAggregatesInput[]
+    NOT?: SavedSearchScalarWhereWithAggregatesInput | SavedSearchScalarWhereWithAggregatesInput[]
+    id?: StringWithAggregatesFilter<"SavedSearch"> | string
+    user_uuid?: StringWithAggregatesFilter<"SavedSearch"> | string
+    research_project_uuid?: StringNullableWithAggregatesFilter<"SavedSearch"> | string | null
+    name?: StringNullableWithAggregatesFilter<"SavedSearch"> | string | null
+    query?: StringWithAggregatesFilter<"SavedSearch"> | string
+    min_score?: IntNullableWithAggregatesFilter<"SavedSearch"> | number | null
+    time_range?: EnumTopTimeRangeNullableWithAggregatesFilter<"SavedSearch"> | $Enums.TopTimeRange | null
+    created_at?: DateTimeWithAggregatesFilter<"SavedSearch"> | Date | string
   }
 
   export type UserCreateInput = {
@@ -28709,6 +33143,8 @@ export namespace Prisma {
     research_projects?: ResearchProjectCreateNestedManyWithoutUserInput
     conversations?: ConversationCreateNestedManyWithoutUserInput
     saved_insights?: SavedInsightCreateNestedManyWithoutUserInput
+    saved_insight_collections?: SavedInsightCollectionCreateNestedManyWithoutUserInput
+    saved_searches?: SavedSearchCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateInput = {
@@ -28723,6 +33159,8 @@ export namespace Prisma {
     research_projects?: ResearchProjectUncheckedCreateNestedManyWithoutUserInput
     conversations?: ConversationUncheckedCreateNestedManyWithoutUserInput
     saved_insights?: SavedInsightUncheckedCreateNestedManyWithoutUserInput
+    saved_insight_collections?: SavedInsightCollectionUncheckedCreateNestedManyWithoutUserInput
+    saved_searches?: SavedSearchUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserUpdateInput = {
@@ -28737,6 +33175,8 @@ export namespace Prisma {
     research_projects?: ResearchProjectUpdateManyWithoutUserNestedInput
     conversations?: ConversationUpdateManyWithoutUserNestedInput
     saved_insights?: SavedInsightUpdateManyWithoutUserNestedInput
+    saved_insight_collections?: SavedInsightCollectionUpdateManyWithoutUserNestedInput
+    saved_searches?: SavedSearchUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateInput = {
@@ -28751,6 +33191,8 @@ export namespace Prisma {
     research_projects?: ResearchProjectUncheckedUpdateManyWithoutUserNestedInput
     conversations?: ConversationUncheckedUpdateManyWithoutUserNestedInput
     saved_insights?: SavedInsightUncheckedUpdateManyWithoutUserNestedInput
+    saved_insight_collections?: SavedInsightCollectionUncheckedUpdateManyWithoutUserNestedInput
+    saved_searches?: SavedSearchUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type UserCreateManyInput = {
@@ -28937,6 +33379,9 @@ export namespace Prisma {
     comments_analyzed?: number
     created_at?: Date | string
     updated_at?: Date | string
+    sentiment_positive_pct?: number | null
+    sentiment_neutral_pct?: number | null
+    sentiment_negative_pct?: number | null
     user: UserCreateNestedOneWithoutResearch_projectsInput
     source?: ResearchSourceCreateNestedOneWithoutResearch_projectInput
     analysis_configurations?: AnalysisConfigurationCreateNestedManyWithoutResearch_projectInput
@@ -28949,6 +33394,7 @@ export namespace Prisma {
     embeddings?: EmbeddingCreateNestedManyWithoutResearch_projectInput
     conversations?: ConversationCreateNestedManyWithoutResearch_projectInput
     saved_insights?: SavedInsightCreateNestedManyWithoutResearch_projectInput
+    saved_searches?: SavedSearchCreateNestedManyWithoutResearch_projectInput
   }
 
   export type ResearchProjectUncheckedCreateInput = {
@@ -28960,6 +33406,9 @@ export namespace Prisma {
     comments_analyzed?: number
     created_at?: Date | string
     updated_at?: Date | string
+    sentiment_positive_pct?: number | null
+    sentiment_neutral_pct?: number | null
+    sentiment_negative_pct?: number | null
     source?: ResearchSourceUncheckedCreateNestedOneWithoutResearch_projectInput
     analysis_configurations?: AnalysisConfigurationUncheckedCreateNestedManyWithoutResearch_projectInput
     analysis_jobs?: AnalysisJobUncheckedCreateNestedManyWithoutResearch_projectInput
@@ -28971,6 +33420,7 @@ export namespace Prisma {
     embeddings?: EmbeddingUncheckedCreateNestedManyWithoutResearch_projectInput
     conversations?: ConversationUncheckedCreateNestedManyWithoutResearch_projectInput
     saved_insights?: SavedInsightUncheckedCreateNestedManyWithoutResearch_projectInput
+    saved_searches?: SavedSearchUncheckedCreateNestedManyWithoutResearch_projectInput
   }
 
   export type ResearchProjectUpdateInput = {
@@ -28981,6 +33431,9 @@ export namespace Prisma {
     comments_analyzed?: IntFieldUpdateOperationsInput | number
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
     updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    sentiment_positive_pct?: NullableFloatFieldUpdateOperationsInput | number | null
+    sentiment_neutral_pct?: NullableFloatFieldUpdateOperationsInput | number | null
+    sentiment_negative_pct?: NullableFloatFieldUpdateOperationsInput | number | null
     user?: UserUpdateOneRequiredWithoutResearch_projectsNestedInput
     source?: ResearchSourceUpdateOneWithoutResearch_projectNestedInput
     analysis_configurations?: AnalysisConfigurationUpdateManyWithoutResearch_projectNestedInput
@@ -28993,6 +33446,7 @@ export namespace Prisma {
     embeddings?: EmbeddingUpdateManyWithoutResearch_projectNestedInput
     conversations?: ConversationUpdateManyWithoutResearch_projectNestedInput
     saved_insights?: SavedInsightUpdateManyWithoutResearch_projectNestedInput
+    saved_searches?: SavedSearchUpdateManyWithoutResearch_projectNestedInput
   }
 
   export type ResearchProjectUncheckedUpdateInput = {
@@ -29004,6 +33458,9 @@ export namespace Prisma {
     comments_analyzed?: IntFieldUpdateOperationsInput | number
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
     updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    sentiment_positive_pct?: NullableFloatFieldUpdateOperationsInput | number | null
+    sentiment_neutral_pct?: NullableFloatFieldUpdateOperationsInput | number | null
+    sentiment_negative_pct?: NullableFloatFieldUpdateOperationsInput | number | null
     source?: ResearchSourceUncheckedUpdateOneWithoutResearch_projectNestedInput
     analysis_configurations?: AnalysisConfigurationUncheckedUpdateManyWithoutResearch_projectNestedInput
     analysis_jobs?: AnalysisJobUncheckedUpdateManyWithoutResearch_projectNestedInput
@@ -29015,6 +33472,7 @@ export namespace Prisma {
     embeddings?: EmbeddingUncheckedUpdateManyWithoutResearch_projectNestedInput
     conversations?: ConversationUncheckedUpdateManyWithoutResearch_projectNestedInput
     saved_insights?: SavedInsightUncheckedUpdateManyWithoutResearch_projectNestedInput
+    saved_searches?: SavedSearchUncheckedUpdateManyWithoutResearch_projectNestedInput
   }
 
   export type ResearchProjectCreateManyInput = {
@@ -29026,6 +33484,9 @@ export namespace Prisma {
     comments_analyzed?: number
     created_at?: Date | string
     updated_at?: Date | string
+    sentiment_positive_pct?: number | null
+    sentiment_neutral_pct?: number | null
+    sentiment_negative_pct?: number | null
   }
 
   export type ResearchProjectUpdateManyMutationInput = {
@@ -29036,6 +33497,9 @@ export namespace Prisma {
     comments_analyzed?: IntFieldUpdateOperationsInput | number
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
     updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    sentiment_positive_pct?: NullableFloatFieldUpdateOperationsInput | number | null
+    sentiment_neutral_pct?: NullableFloatFieldUpdateOperationsInput | number | null
+    sentiment_negative_pct?: NullableFloatFieldUpdateOperationsInput | number | null
   }
 
   export type ResearchProjectUncheckedUpdateManyInput = {
@@ -29047,6 +33511,9 @@ export namespace Prisma {
     comments_analyzed?: IntFieldUpdateOperationsInput | number
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
     updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    sentiment_positive_pct?: NullableFloatFieldUpdateOperationsInput | number | null
+    sentiment_neutral_pct?: NullableFloatFieldUpdateOperationsInput | number | null
+    sentiment_negative_pct?: NullableFloatFieldUpdateOperationsInput | number | null
   }
 
   export type ResearchSourceCreateInput = {
@@ -29318,6 +33785,10 @@ export namespace Prisma {
     posts_total?: number
     comments_processed?: number
     comments_total?: number
+    prompt_tokens?: number
+    completion_tokens?: number
+    estimated_cost_usd?: number | null
+    actual_cost_usd?: number | null
     error_message?: string | null
     started_at?: Date | string | null
     completed_at?: Date | string | null
@@ -29328,6 +33799,7 @@ export namespace Prisma {
     batch_submissions?: BatchSubmissionCreateNestedManyWithoutAnalysis_jobInput
     knowledge_chunks?: KnowledgeChunkCreateNestedManyWithoutAnalysis_jobInput
     knowledge_insights?: KnowledgeInsightCreateNestedManyWithoutAnalysis_jobInput
+    job_events?: JobEventCreateNestedManyWithoutAnalysis_jobInput
   }
 
   export type AnalysisJobUncheckedCreateInput = {
@@ -29340,6 +33812,10 @@ export namespace Prisma {
     posts_total?: number
     comments_processed?: number
     comments_total?: number
+    prompt_tokens?: number
+    completion_tokens?: number
+    estimated_cost_usd?: number | null
+    actual_cost_usd?: number | null
     error_message?: string | null
     started_at?: Date | string | null
     completed_at?: Date | string | null
@@ -29348,6 +33824,7 @@ export namespace Prisma {
     batch_submissions?: BatchSubmissionUncheckedCreateNestedManyWithoutAnalysis_jobInput
     knowledge_chunks?: KnowledgeChunkUncheckedCreateNestedManyWithoutAnalysis_jobInput
     knowledge_insights?: KnowledgeInsightUncheckedCreateNestedManyWithoutAnalysis_jobInput
+    job_events?: JobEventUncheckedCreateNestedManyWithoutAnalysis_jobInput
   }
 
   export type AnalysisJobUpdateInput = {
@@ -29358,6 +33835,10 @@ export namespace Prisma {
     posts_total?: IntFieldUpdateOperationsInput | number
     comments_processed?: IntFieldUpdateOperationsInput | number
     comments_total?: IntFieldUpdateOperationsInput | number
+    prompt_tokens?: IntFieldUpdateOperationsInput | number
+    completion_tokens?: IntFieldUpdateOperationsInput | number
+    estimated_cost_usd?: NullableFloatFieldUpdateOperationsInput | number | null
+    actual_cost_usd?: NullableFloatFieldUpdateOperationsInput | number | null
     error_message?: NullableStringFieldUpdateOperationsInput | string | null
     started_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     completed_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -29368,6 +33849,7 @@ export namespace Prisma {
     batch_submissions?: BatchSubmissionUpdateManyWithoutAnalysis_jobNestedInput
     knowledge_chunks?: KnowledgeChunkUpdateManyWithoutAnalysis_jobNestedInput
     knowledge_insights?: KnowledgeInsightUpdateManyWithoutAnalysis_jobNestedInput
+    job_events?: JobEventUpdateManyWithoutAnalysis_jobNestedInput
   }
 
   export type AnalysisJobUncheckedUpdateInput = {
@@ -29380,6 +33862,10 @@ export namespace Prisma {
     posts_total?: IntFieldUpdateOperationsInput | number
     comments_processed?: IntFieldUpdateOperationsInput | number
     comments_total?: IntFieldUpdateOperationsInput | number
+    prompt_tokens?: IntFieldUpdateOperationsInput | number
+    completion_tokens?: IntFieldUpdateOperationsInput | number
+    estimated_cost_usd?: NullableFloatFieldUpdateOperationsInput | number | null
+    actual_cost_usd?: NullableFloatFieldUpdateOperationsInput | number | null
     error_message?: NullableStringFieldUpdateOperationsInput | string | null
     started_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     completed_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -29388,6 +33874,7 @@ export namespace Prisma {
     batch_submissions?: BatchSubmissionUncheckedUpdateManyWithoutAnalysis_jobNestedInput
     knowledge_chunks?: KnowledgeChunkUncheckedUpdateManyWithoutAnalysis_jobNestedInput
     knowledge_insights?: KnowledgeInsightUncheckedUpdateManyWithoutAnalysis_jobNestedInput
+    job_events?: JobEventUncheckedUpdateManyWithoutAnalysis_jobNestedInput
   }
 
   export type AnalysisJobCreateManyInput = {
@@ -29400,6 +33887,10 @@ export namespace Prisma {
     posts_total?: number
     comments_processed?: number
     comments_total?: number
+    prompt_tokens?: number
+    completion_tokens?: number
+    estimated_cost_usd?: number | null
+    actual_cost_usd?: number | null
     error_message?: string | null
     started_at?: Date | string | null
     completed_at?: Date | string | null
@@ -29415,6 +33906,10 @@ export namespace Prisma {
     posts_total?: IntFieldUpdateOperationsInput | number
     comments_processed?: IntFieldUpdateOperationsInput | number
     comments_total?: IntFieldUpdateOperationsInput | number
+    prompt_tokens?: IntFieldUpdateOperationsInput | number
+    completion_tokens?: IntFieldUpdateOperationsInput | number
+    estimated_cost_usd?: NullableFloatFieldUpdateOperationsInput | number | null
+    actual_cost_usd?: NullableFloatFieldUpdateOperationsInput | number | null
     error_message?: NullableStringFieldUpdateOperationsInput | string | null
     started_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     completed_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -29432,6 +33927,10 @@ export namespace Prisma {
     posts_total?: IntFieldUpdateOperationsInput | number
     comments_processed?: IntFieldUpdateOperationsInput | number
     comments_total?: IntFieldUpdateOperationsInput | number
+    prompt_tokens?: IntFieldUpdateOperationsInput | number
+    completion_tokens?: IntFieldUpdateOperationsInput | number
+    estimated_cost_usd?: NullableFloatFieldUpdateOperationsInput | number | null
+    actual_cost_usd?: NullableFloatFieldUpdateOperationsInput | number | null
     error_message?: NullableStringFieldUpdateOperationsInput | string | null
     started_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     completed_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -29446,6 +33945,9 @@ export namespace Prisma {
     request_file_id?: string | null
     response_file_id?: string | null
     error_file_id?: string | null
+    prompt_tokens?: number
+    completion_tokens?: number
+    cost_usd?: number | null
     submitted_at?: Date | string | null
     completed_at?: Date | string | null
     created_at?: Date | string
@@ -29461,6 +33963,9 @@ export namespace Prisma {
     request_file_id?: string | null
     response_file_id?: string | null
     error_file_id?: string | null
+    prompt_tokens?: number
+    completion_tokens?: number
+    cost_usd?: number | null
     submitted_at?: Date | string | null
     completed_at?: Date | string | null
     created_at?: Date | string
@@ -29474,6 +33979,9 @@ export namespace Prisma {
     request_file_id?: NullableStringFieldUpdateOperationsInput | string | null
     response_file_id?: NullableStringFieldUpdateOperationsInput | string | null
     error_file_id?: NullableStringFieldUpdateOperationsInput | string | null
+    prompt_tokens?: IntFieldUpdateOperationsInput | number
+    completion_tokens?: IntFieldUpdateOperationsInput | number
+    cost_usd?: NullableFloatFieldUpdateOperationsInput | number | null
     submitted_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     completed_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -29489,6 +33997,9 @@ export namespace Prisma {
     request_file_id?: NullableStringFieldUpdateOperationsInput | string | null
     response_file_id?: NullableStringFieldUpdateOperationsInput | string | null
     error_file_id?: NullableStringFieldUpdateOperationsInput | string | null
+    prompt_tokens?: IntFieldUpdateOperationsInput | number
+    completion_tokens?: IntFieldUpdateOperationsInput | number
+    cost_usd?: NullableFloatFieldUpdateOperationsInput | number | null
     submitted_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     completed_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -29503,6 +34014,9 @@ export namespace Prisma {
     request_file_id?: string | null
     response_file_id?: string | null
     error_file_id?: string | null
+    prompt_tokens?: number
+    completion_tokens?: number
+    cost_usd?: number | null
     submitted_at?: Date | string | null
     completed_at?: Date | string | null
     created_at?: Date | string
@@ -29516,6 +34030,9 @@ export namespace Prisma {
     request_file_id?: NullableStringFieldUpdateOperationsInput | string | null
     response_file_id?: NullableStringFieldUpdateOperationsInput | string | null
     error_file_id?: NullableStringFieldUpdateOperationsInput | string | null
+    prompt_tokens?: IntFieldUpdateOperationsInput | number
+    completion_tokens?: IntFieldUpdateOperationsInput | number
+    cost_usd?: NullableFloatFieldUpdateOperationsInput | number | null
     submitted_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     completed_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -29530,10 +34047,82 @@ export namespace Prisma {
     request_file_id?: NullableStringFieldUpdateOperationsInput | string | null
     response_file_id?: NullableStringFieldUpdateOperationsInput | string | null
     error_file_id?: NullableStringFieldUpdateOperationsInput | string | null
+    prompt_tokens?: IntFieldUpdateOperationsInput | number
+    completion_tokens?: IntFieldUpdateOperationsInput | number
+    cost_usd?: NullableFloatFieldUpdateOperationsInput | number | null
     submitted_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     completed_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
     updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type JobEventCreateInput = {
+    id?: string
+    step: string
+    message: string
+    level?: $Enums.JobEventLevel
+    metadata?: NullableJsonNullValueInput | InputJsonValue
+    created_at?: Date | string
+    analysis_job: AnalysisJobCreateNestedOneWithoutJob_eventsInput
+  }
+
+  export type JobEventUncheckedCreateInput = {
+    id?: string
+    analysis_job_uuid: string
+    step: string
+    message: string
+    level?: $Enums.JobEventLevel
+    metadata?: NullableJsonNullValueInput | InputJsonValue
+    created_at?: Date | string
+  }
+
+  export type JobEventUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    step?: StringFieldUpdateOperationsInput | string
+    message?: StringFieldUpdateOperationsInput | string
+    level?: EnumJobEventLevelFieldUpdateOperationsInput | $Enums.JobEventLevel
+    metadata?: NullableJsonNullValueInput | InputJsonValue
+    created_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    analysis_job?: AnalysisJobUpdateOneRequiredWithoutJob_eventsNestedInput
+  }
+
+  export type JobEventUncheckedUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    analysis_job_uuid?: StringFieldUpdateOperationsInput | string
+    step?: StringFieldUpdateOperationsInput | string
+    message?: StringFieldUpdateOperationsInput | string
+    level?: EnumJobEventLevelFieldUpdateOperationsInput | $Enums.JobEventLevel
+    metadata?: NullableJsonNullValueInput | InputJsonValue
+    created_at?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type JobEventCreateManyInput = {
+    id?: string
+    analysis_job_uuid: string
+    step: string
+    message: string
+    level?: $Enums.JobEventLevel
+    metadata?: NullableJsonNullValueInput | InputJsonValue
+    created_at?: Date | string
+  }
+
+  export type JobEventUpdateManyMutationInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    step?: StringFieldUpdateOperationsInput | string
+    message?: StringFieldUpdateOperationsInput | string
+    level?: EnumJobEventLevelFieldUpdateOperationsInput | $Enums.JobEventLevel
+    metadata?: NullableJsonNullValueInput | InputJsonValue
+    created_at?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type JobEventUncheckedUpdateManyInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    analysis_job_uuid?: StringFieldUpdateOperationsInput | string
+    step?: StringFieldUpdateOperationsInput | string
+    message?: StringFieldUpdateOperationsInput | string
+    level?: EnumJobEventLevelFieldUpdateOperationsInput | $Enums.JobEventLevel
+    metadata?: NullableJsonNullValueInput | InputJsonValue
+    created_at?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
   export type PostCreateInput = {
@@ -30068,6 +34657,8 @@ export namespace Prisma {
     content: string
     confidence_score?: number | null
     supporting_count?: number
+    sentiment?: $Enums.SentimentLabel | null
+    sentiment_score?: number | null
     metadata?: NullableJsonNullValueInput | InputJsonValue
     created_at?: Date | string
     updated_at?: Date | string
@@ -30090,6 +34681,8 @@ export namespace Prisma {
     content: string
     confidence_score?: number | null
     supporting_count?: number
+    sentiment?: $Enums.SentimentLabel | null
+    sentiment_score?: number | null
     metadata?: NullableJsonNullValueInput | InputJsonValue
     created_at?: Date | string
     updated_at?: Date | string
@@ -30106,6 +34699,8 @@ export namespace Prisma {
     content?: StringFieldUpdateOperationsInput | string
     confidence_score?: NullableFloatFieldUpdateOperationsInput | number | null
     supporting_count?: IntFieldUpdateOperationsInput | number
+    sentiment?: NullableEnumSentimentLabelFieldUpdateOperationsInput | $Enums.SentimentLabel | null
+    sentiment_score?: NullableFloatFieldUpdateOperationsInput | number | null
     metadata?: NullableJsonNullValueInput | InputJsonValue
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
     updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -30128,6 +34723,8 @@ export namespace Prisma {
     content?: StringFieldUpdateOperationsInput | string
     confidence_score?: NullableFloatFieldUpdateOperationsInput | number | null
     supporting_count?: IntFieldUpdateOperationsInput | number
+    sentiment?: NullableEnumSentimentLabelFieldUpdateOperationsInput | $Enums.SentimentLabel | null
+    sentiment_score?: NullableFloatFieldUpdateOperationsInput | number | null
     metadata?: NullableJsonNullValueInput | InputJsonValue
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
     updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -30147,6 +34744,8 @@ export namespace Prisma {
     content: string
     confidence_score?: number | null
     supporting_count?: number
+    sentiment?: $Enums.SentimentLabel | null
+    sentiment_score?: number | null
     metadata?: NullableJsonNullValueInput | InputJsonValue
     created_at?: Date | string
     updated_at?: Date | string
@@ -30159,6 +34758,8 @@ export namespace Prisma {
     content?: StringFieldUpdateOperationsInput | string
     confidence_score?: NullableFloatFieldUpdateOperationsInput | number | null
     supporting_count?: IntFieldUpdateOperationsInput | number
+    sentiment?: NullableEnumSentimentLabelFieldUpdateOperationsInput | $Enums.SentimentLabel | null
+    sentiment_score?: NullableFloatFieldUpdateOperationsInput | number | null
     metadata?: NullableJsonNullValueInput | InputJsonValue
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
     updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -30174,6 +34775,8 @@ export namespace Prisma {
     content?: StringFieldUpdateOperationsInput | string
     confidence_score?: NullableFloatFieldUpdateOperationsInput | number | null
     supporting_count?: IntFieldUpdateOperationsInput | number
+    sentiment?: NullableEnumSentimentLabelFieldUpdateOperationsInput | $Enums.SentimentLabel | null
+    sentiment_score?: NullableFloatFieldUpdateOperationsInput | number | null
     metadata?: NullableJsonNullValueInput | InputJsonValue
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
     updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -30514,6 +35117,7 @@ export namespace Prisma {
     user: UserCreateNestedOneWithoutSaved_insightsInput
     research_project: ResearchProjectCreateNestedOneWithoutSaved_insightsInput
     knowledge_insight: KnowledgeInsightCreateNestedOneWithoutSaved_insightsInput
+    collection?: SavedInsightCollectionCreateNestedOneWithoutSaved_insightsInput
   }
 
   export type SavedInsightUncheckedCreateInput = {
@@ -30521,6 +35125,7 @@ export namespace Prisma {
     user_uuid: string
     research_project_uuid: string
     knowledge_insight_uuid: string
+    collection_uuid?: string | null
     created_at?: Date | string
   }
 
@@ -30530,6 +35135,7 @@ export namespace Prisma {
     user?: UserUpdateOneRequiredWithoutSaved_insightsNestedInput
     research_project?: ResearchProjectUpdateOneRequiredWithoutSaved_insightsNestedInput
     knowledge_insight?: KnowledgeInsightUpdateOneRequiredWithoutSaved_insightsNestedInput
+    collection?: SavedInsightCollectionUpdateOneWithoutSaved_insightsNestedInput
   }
 
   export type SavedInsightUncheckedUpdateInput = {
@@ -30537,6 +35143,7 @@ export namespace Prisma {
     user_uuid?: StringFieldUpdateOperationsInput | string
     research_project_uuid?: StringFieldUpdateOperationsInput | string
     knowledge_insight_uuid?: StringFieldUpdateOperationsInput | string
+    collection_uuid?: NullableStringFieldUpdateOperationsInput | string | null
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
@@ -30545,6 +35152,7 @@ export namespace Prisma {
     user_uuid: string
     research_project_uuid: string
     knowledge_insight_uuid: string
+    collection_uuid?: string | null
     created_at?: Date | string
   }
 
@@ -30558,6 +35166,141 @@ export namespace Prisma {
     user_uuid?: StringFieldUpdateOperationsInput | string
     research_project_uuid?: StringFieldUpdateOperationsInput | string
     knowledge_insight_uuid?: StringFieldUpdateOperationsInput | string
+    collection_uuid?: NullableStringFieldUpdateOperationsInput | string | null
+    created_at?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type SavedInsightCollectionCreateInput = {
+    id?: string
+    name: string
+    created_at?: Date | string
+    updated_at?: Date | string
+    user: UserCreateNestedOneWithoutSaved_insight_collectionsInput
+    saved_insights?: SavedInsightCreateNestedManyWithoutCollectionInput
+  }
+
+  export type SavedInsightCollectionUncheckedCreateInput = {
+    id?: string
+    user_uuid: string
+    name: string
+    created_at?: Date | string
+    updated_at?: Date | string
+    saved_insights?: SavedInsightUncheckedCreateNestedManyWithoutCollectionInput
+  }
+
+  export type SavedInsightCollectionUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    created_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    user?: UserUpdateOneRequiredWithoutSaved_insight_collectionsNestedInput
+    saved_insights?: SavedInsightUpdateManyWithoutCollectionNestedInput
+  }
+
+  export type SavedInsightCollectionUncheckedUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    user_uuid?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    created_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    saved_insights?: SavedInsightUncheckedUpdateManyWithoutCollectionNestedInput
+  }
+
+  export type SavedInsightCollectionCreateManyInput = {
+    id?: string
+    user_uuid: string
+    name: string
+    created_at?: Date | string
+    updated_at?: Date | string
+  }
+
+  export type SavedInsightCollectionUpdateManyMutationInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    created_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type SavedInsightCollectionUncheckedUpdateManyInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    user_uuid?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    created_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type SavedSearchCreateInput = {
+    id?: string
+    name?: string | null
+    query: string
+    min_score?: number | null
+    time_range?: $Enums.TopTimeRange | null
+    created_at?: Date | string
+    user: UserCreateNestedOneWithoutSaved_searchesInput
+    research_project?: ResearchProjectCreateNestedOneWithoutSaved_searchesInput
+  }
+
+  export type SavedSearchUncheckedCreateInput = {
+    id?: string
+    user_uuid: string
+    research_project_uuid?: string | null
+    name?: string | null
+    query: string
+    min_score?: number | null
+    time_range?: $Enums.TopTimeRange | null
+    created_at?: Date | string
+  }
+
+  export type SavedSearchUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: NullableStringFieldUpdateOperationsInput | string | null
+    query?: StringFieldUpdateOperationsInput | string
+    min_score?: NullableIntFieldUpdateOperationsInput | number | null
+    time_range?: NullableEnumTopTimeRangeFieldUpdateOperationsInput | $Enums.TopTimeRange | null
+    created_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    user?: UserUpdateOneRequiredWithoutSaved_searchesNestedInput
+    research_project?: ResearchProjectUpdateOneWithoutSaved_searchesNestedInput
+  }
+
+  export type SavedSearchUncheckedUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    user_uuid?: StringFieldUpdateOperationsInput | string
+    research_project_uuid?: NullableStringFieldUpdateOperationsInput | string | null
+    name?: NullableStringFieldUpdateOperationsInput | string | null
+    query?: StringFieldUpdateOperationsInput | string
+    min_score?: NullableIntFieldUpdateOperationsInput | number | null
+    time_range?: NullableEnumTopTimeRangeFieldUpdateOperationsInput | $Enums.TopTimeRange | null
+    created_at?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type SavedSearchCreateManyInput = {
+    id?: string
+    user_uuid: string
+    research_project_uuid?: string | null
+    name?: string | null
+    query: string
+    min_score?: number | null
+    time_range?: $Enums.TopTimeRange | null
+    created_at?: Date | string
+  }
+
+  export type SavedSearchUpdateManyMutationInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: NullableStringFieldUpdateOperationsInput | string | null
+    query?: StringFieldUpdateOperationsInput | string
+    min_score?: NullableIntFieldUpdateOperationsInput | number | null
+    time_range?: NullableEnumTopTimeRangeFieldUpdateOperationsInput | $Enums.TopTimeRange | null
+    created_at?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type SavedSearchUncheckedUpdateManyInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    user_uuid?: StringFieldUpdateOperationsInput | string
+    research_project_uuid?: NullableStringFieldUpdateOperationsInput | string | null
+    name?: NullableStringFieldUpdateOperationsInput | string | null
+    query?: StringFieldUpdateOperationsInput | string
+    min_score?: NullableIntFieldUpdateOperationsInput | number | null
+    time_range?: NullableEnumTopTimeRangeFieldUpdateOperationsInput | $Enums.TopTimeRange | null
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
@@ -30633,6 +35376,18 @@ export namespace Prisma {
     none?: SavedInsightWhereInput
   }
 
+  export type SavedInsightCollectionListRelationFilter = {
+    every?: SavedInsightCollectionWhereInput
+    some?: SavedInsightCollectionWhereInput
+    none?: SavedInsightCollectionWhereInput
+  }
+
+  export type SavedSearchListRelationFilter = {
+    every?: SavedSearchWhereInput
+    some?: SavedSearchWhereInput
+    none?: SavedSearchWhereInput
+  }
+
   export type SortOrderInput = {
     sort: SortOrder
     nulls?: NullsOrder
@@ -30651,6 +35406,14 @@ export namespace Prisma {
   }
 
   export type SavedInsightOrderByRelationAggregateInput = {
+    _count?: SortOrder
+  }
+
+  export type SavedInsightCollectionOrderByRelationAggregateInput = {
+    _count?: SortOrder
+  }
+
+  export type SavedSearchOrderByRelationAggregateInput = {
     _count?: SortOrder
   }
 
@@ -30896,6 +35659,17 @@ export namespace Prisma {
     not?: NestedEnumAnalysisStatusFilter<$PrismaModel> | $Enums.AnalysisStatus
   }
 
+  export type FloatNullableFilter<$PrismaModel = never> = {
+    equals?: number | FloatFieldRefInput<$PrismaModel> | null
+    in?: number[] | ListFloatFieldRefInput<$PrismaModel> | null
+    notIn?: number[] | ListFloatFieldRefInput<$PrismaModel> | null
+    lt?: number | FloatFieldRefInput<$PrismaModel>
+    lte?: number | FloatFieldRefInput<$PrismaModel>
+    gt?: number | FloatFieldRefInput<$PrismaModel>
+    gte?: number | FloatFieldRefInput<$PrismaModel>
+    not?: NestedFloatNullableFilter<$PrismaModel> | number | null
+  }
+
   export type ResearchSourceNullableScalarRelationFilter = {
     is?: ResearchSourceWhereInput | null
     isNot?: ResearchSourceWhereInput | null
@@ -30990,11 +35764,17 @@ export namespace Prisma {
     comments_analyzed?: SortOrder
     created_at?: SortOrder
     updated_at?: SortOrder
+    sentiment_positive_pct?: SortOrder
+    sentiment_neutral_pct?: SortOrder
+    sentiment_negative_pct?: SortOrder
   }
 
   export type ResearchProjectAvgOrderByAggregateInput = {
     posts_analyzed?: SortOrder
     comments_analyzed?: SortOrder
+    sentiment_positive_pct?: SortOrder
+    sentiment_neutral_pct?: SortOrder
+    sentiment_negative_pct?: SortOrder
   }
 
   export type ResearchProjectMaxOrderByAggregateInput = {
@@ -31006,6 +35786,9 @@ export namespace Prisma {
     comments_analyzed?: SortOrder
     created_at?: SortOrder
     updated_at?: SortOrder
+    sentiment_positive_pct?: SortOrder
+    sentiment_neutral_pct?: SortOrder
+    sentiment_negative_pct?: SortOrder
   }
 
   export type ResearchProjectMinOrderByAggregateInput = {
@@ -31017,11 +35800,17 @@ export namespace Prisma {
     comments_analyzed?: SortOrder
     created_at?: SortOrder
     updated_at?: SortOrder
+    sentiment_positive_pct?: SortOrder
+    sentiment_neutral_pct?: SortOrder
+    sentiment_negative_pct?: SortOrder
   }
 
   export type ResearchProjectSumOrderByAggregateInput = {
     posts_analyzed?: SortOrder
     comments_analyzed?: SortOrder
+    sentiment_positive_pct?: SortOrder
+    sentiment_neutral_pct?: SortOrder
+    sentiment_negative_pct?: SortOrder
   }
 
   export type EnumAnalysisStatusWithAggregatesFilter<$PrismaModel = never> = {
@@ -31032,6 +35821,22 @@ export namespace Prisma {
     _count?: NestedIntFilter<$PrismaModel>
     _min?: NestedEnumAnalysisStatusFilter<$PrismaModel>
     _max?: NestedEnumAnalysisStatusFilter<$PrismaModel>
+  }
+
+  export type FloatNullableWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: number | FloatFieldRefInput<$PrismaModel> | null
+    in?: number[] | ListFloatFieldRefInput<$PrismaModel> | null
+    notIn?: number[] | ListFloatFieldRefInput<$PrismaModel> | null
+    lt?: number | FloatFieldRefInput<$PrismaModel>
+    lte?: number | FloatFieldRefInput<$PrismaModel>
+    gt?: number | FloatFieldRefInput<$PrismaModel>
+    gte?: number | FloatFieldRefInput<$PrismaModel>
+    not?: NestedFloatNullableWithAggregatesFilter<$PrismaModel> | number | null
+    _count?: NestedIntNullableFilter<$PrismaModel>
+    _avg?: NestedFloatNullableFilter<$PrismaModel>
+    _sum?: NestedFloatNullableFilter<$PrismaModel>
+    _min?: NestedFloatNullableFilter<$PrismaModel>
+    _max?: NestedFloatNullableFilter<$PrismaModel>
   }
 
   export type EnumSourcePlatformFilter<$PrismaModel = never> = {
@@ -31309,7 +36114,17 @@ export namespace Prisma {
     none?: BatchSubmissionWhereInput
   }
 
+  export type JobEventListRelationFilter = {
+    every?: JobEventWhereInput
+    some?: JobEventWhereInput
+    none?: JobEventWhereInput
+  }
+
   export type BatchSubmissionOrderByRelationAggregateInput = {
+    _count?: SortOrder
+  }
+
+  export type JobEventOrderByRelationAggregateInput = {
     _count?: SortOrder
   }
 
@@ -31323,6 +36138,10 @@ export namespace Prisma {
     posts_total?: SortOrder
     comments_processed?: SortOrder
     comments_total?: SortOrder
+    prompt_tokens?: SortOrder
+    completion_tokens?: SortOrder
+    estimated_cost_usd?: SortOrder
+    actual_cost_usd?: SortOrder
     error_message?: SortOrder
     started_at?: SortOrder
     completed_at?: SortOrder
@@ -31335,6 +36154,10 @@ export namespace Prisma {
     posts_total?: SortOrder
     comments_processed?: SortOrder
     comments_total?: SortOrder
+    prompt_tokens?: SortOrder
+    completion_tokens?: SortOrder
+    estimated_cost_usd?: SortOrder
+    actual_cost_usd?: SortOrder
   }
 
   export type AnalysisJobMaxOrderByAggregateInput = {
@@ -31347,6 +36170,10 @@ export namespace Prisma {
     posts_total?: SortOrder
     comments_processed?: SortOrder
     comments_total?: SortOrder
+    prompt_tokens?: SortOrder
+    completion_tokens?: SortOrder
+    estimated_cost_usd?: SortOrder
+    actual_cost_usd?: SortOrder
     error_message?: SortOrder
     started_at?: SortOrder
     completed_at?: SortOrder
@@ -31364,6 +36191,10 @@ export namespace Prisma {
     posts_total?: SortOrder
     comments_processed?: SortOrder
     comments_total?: SortOrder
+    prompt_tokens?: SortOrder
+    completion_tokens?: SortOrder
+    estimated_cost_usd?: SortOrder
+    actual_cost_usd?: SortOrder
     error_message?: SortOrder
     started_at?: SortOrder
     completed_at?: SortOrder
@@ -31376,6 +36207,10 @@ export namespace Prisma {
     posts_total?: SortOrder
     comments_processed?: SortOrder
     comments_total?: SortOrder
+    prompt_tokens?: SortOrder
+    completion_tokens?: SortOrder
+    estimated_cost_usd?: SortOrder
+    actual_cost_usd?: SortOrder
   }
 
   export type EnumBatchSubmissionStatusFilter<$PrismaModel = never> = {
@@ -31398,10 +36233,19 @@ export namespace Prisma {
     request_file_id?: SortOrder
     response_file_id?: SortOrder
     error_file_id?: SortOrder
+    prompt_tokens?: SortOrder
+    completion_tokens?: SortOrder
+    cost_usd?: SortOrder
     submitted_at?: SortOrder
     completed_at?: SortOrder
     created_at?: SortOrder
     updated_at?: SortOrder
+  }
+
+  export type BatchSubmissionAvgOrderByAggregateInput = {
+    prompt_tokens?: SortOrder
+    completion_tokens?: SortOrder
+    cost_usd?: SortOrder
   }
 
   export type BatchSubmissionMaxOrderByAggregateInput = {
@@ -31412,6 +36256,9 @@ export namespace Prisma {
     request_file_id?: SortOrder
     response_file_id?: SortOrder
     error_file_id?: SortOrder
+    prompt_tokens?: SortOrder
+    completion_tokens?: SortOrder
+    cost_usd?: SortOrder
     submitted_at?: SortOrder
     completed_at?: SortOrder
     created_at?: SortOrder
@@ -31426,10 +36273,19 @@ export namespace Prisma {
     request_file_id?: SortOrder
     response_file_id?: SortOrder
     error_file_id?: SortOrder
+    prompt_tokens?: SortOrder
+    completion_tokens?: SortOrder
+    cost_usd?: SortOrder
     submitted_at?: SortOrder
     completed_at?: SortOrder
     created_at?: SortOrder
     updated_at?: SortOrder
+  }
+
+  export type BatchSubmissionSumOrderByAggregateInput = {
+    prompt_tokens?: SortOrder
+    completion_tokens?: SortOrder
+    cost_usd?: SortOrder
   }
 
   export type EnumBatchSubmissionStatusWithAggregatesFilter<$PrismaModel = never> = {
@@ -31442,15 +36298,98 @@ export namespace Prisma {
     _max?: NestedEnumBatchSubmissionStatusFilter<$PrismaModel>
   }
 
-  export type FloatNullableFilter<$PrismaModel = never> = {
-    equals?: number | FloatFieldRefInput<$PrismaModel> | null
-    in?: number[] | ListFloatFieldRefInput<$PrismaModel> | null
-    notIn?: number[] | ListFloatFieldRefInput<$PrismaModel> | null
-    lt?: number | FloatFieldRefInput<$PrismaModel>
-    lte?: number | FloatFieldRefInput<$PrismaModel>
-    gt?: number | FloatFieldRefInput<$PrismaModel>
-    gte?: number | FloatFieldRefInput<$PrismaModel>
-    not?: NestedFloatNullableFilter<$PrismaModel> | number | null
+  export type EnumJobEventLevelFilter<$PrismaModel = never> = {
+    equals?: $Enums.JobEventLevel | EnumJobEventLevelFieldRefInput<$PrismaModel>
+    in?: $Enums.JobEventLevel[] | ListEnumJobEventLevelFieldRefInput<$PrismaModel>
+    notIn?: $Enums.JobEventLevel[] | ListEnumJobEventLevelFieldRefInput<$PrismaModel>
+    not?: NestedEnumJobEventLevelFilter<$PrismaModel> | $Enums.JobEventLevel
+  }
+  export type JsonNullableFilter<$PrismaModel = never> =
+    | PatchUndefined<
+        Either<Required<JsonNullableFilterBase<$PrismaModel>>, Exclude<keyof Required<JsonNullableFilterBase<$PrismaModel>>, 'path'>>,
+        Required<JsonNullableFilterBase<$PrismaModel>>
+      >
+    | OptionalFlat<Omit<Required<JsonNullableFilterBase<$PrismaModel>>, 'path'>>
+
+  export type JsonNullableFilterBase<$PrismaModel = never> = {
+    equals?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | JsonNullValueFilter
+    path?: string[]
+    mode?: QueryMode | EnumQueryModeFieldRefInput<$PrismaModel>
+    string_contains?: string | StringFieldRefInput<$PrismaModel>
+    string_starts_with?: string | StringFieldRefInput<$PrismaModel>
+    string_ends_with?: string | StringFieldRefInput<$PrismaModel>
+    array_starts_with?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | null
+    array_ends_with?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | null
+    array_contains?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | null
+    lt?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
+    lte?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
+    gt?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
+    gte?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
+    not?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | JsonNullValueFilter
+  }
+
+  export type JobEventCountOrderByAggregateInput = {
+    id?: SortOrder
+    analysis_job_uuid?: SortOrder
+    step?: SortOrder
+    message?: SortOrder
+    level?: SortOrder
+    metadata?: SortOrder
+    created_at?: SortOrder
+  }
+
+  export type JobEventMaxOrderByAggregateInput = {
+    id?: SortOrder
+    analysis_job_uuid?: SortOrder
+    step?: SortOrder
+    message?: SortOrder
+    level?: SortOrder
+    created_at?: SortOrder
+  }
+
+  export type JobEventMinOrderByAggregateInput = {
+    id?: SortOrder
+    analysis_job_uuid?: SortOrder
+    step?: SortOrder
+    message?: SortOrder
+    level?: SortOrder
+    created_at?: SortOrder
+  }
+
+  export type EnumJobEventLevelWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.JobEventLevel | EnumJobEventLevelFieldRefInput<$PrismaModel>
+    in?: $Enums.JobEventLevel[] | ListEnumJobEventLevelFieldRefInput<$PrismaModel>
+    notIn?: $Enums.JobEventLevel[] | ListEnumJobEventLevelFieldRefInput<$PrismaModel>
+    not?: NestedEnumJobEventLevelWithAggregatesFilter<$PrismaModel> | $Enums.JobEventLevel
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedEnumJobEventLevelFilter<$PrismaModel>
+    _max?: NestedEnumJobEventLevelFilter<$PrismaModel>
+  }
+  export type JsonNullableWithAggregatesFilter<$PrismaModel = never> =
+    | PatchUndefined<
+        Either<Required<JsonNullableWithAggregatesFilterBase<$PrismaModel>>, Exclude<keyof Required<JsonNullableWithAggregatesFilterBase<$PrismaModel>>, 'path'>>,
+        Required<JsonNullableWithAggregatesFilterBase<$PrismaModel>>
+      >
+    | OptionalFlat<Omit<Required<JsonNullableWithAggregatesFilterBase<$PrismaModel>>, 'path'>>
+
+  export type JsonNullableWithAggregatesFilterBase<$PrismaModel = never> = {
+    equals?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | JsonNullValueFilter
+    path?: string[]
+    mode?: QueryMode | EnumQueryModeFieldRefInput<$PrismaModel>
+    string_contains?: string | StringFieldRefInput<$PrismaModel>
+    string_starts_with?: string | StringFieldRefInput<$PrismaModel>
+    string_ends_with?: string | StringFieldRefInput<$PrismaModel>
+    array_starts_with?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | null
+    array_ends_with?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | null
+    array_contains?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | null
+    lt?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
+    lte?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
+    gt?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
+    gte?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
+    not?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | JsonNullValueFilter
+    _count?: NestedIntNullableFilter<$PrismaModel>
+    _min?: NestedJsonNullableFilter<$PrismaModel>
+    _max?: NestedJsonNullableFilter<$PrismaModel>
   }
 
   export type CitationListRelationFilter = {
@@ -31565,22 +36504,6 @@ export namespace Prisma {
     score?: SortOrder
     upvote_ratio?: SortOrder
     num_comments?: SortOrder
-  }
-
-  export type FloatNullableWithAggregatesFilter<$PrismaModel = never> = {
-    equals?: number | FloatFieldRefInput<$PrismaModel> | null
-    in?: number[] | ListFloatFieldRefInput<$PrismaModel> | null
-    notIn?: number[] | ListFloatFieldRefInput<$PrismaModel> | null
-    lt?: number | FloatFieldRefInput<$PrismaModel>
-    lte?: number | FloatFieldRefInput<$PrismaModel>
-    gt?: number | FloatFieldRefInput<$PrismaModel>
-    gte?: number | FloatFieldRefInput<$PrismaModel>
-    not?: NestedFloatNullableWithAggregatesFilter<$PrismaModel> | number | null
-    _count?: NestedIntNullableFilter<$PrismaModel>
-    _avg?: NestedFloatNullableFilter<$PrismaModel>
-    _sum?: NestedFloatNullableFilter<$PrismaModel>
-    _min?: NestedFloatNullableFilter<$PrismaModel>
-    _max?: NestedFloatNullableFilter<$PrismaModel>
   }
 
   export type PostScalarRelationFilter = {
@@ -31793,28 +36716,12 @@ export namespace Prisma {
     notIn?: $Enums.InsightType[] | ListEnumInsightTypeFieldRefInput<$PrismaModel>
     not?: NestedEnumInsightTypeFilter<$PrismaModel> | $Enums.InsightType
   }
-  export type JsonNullableFilter<$PrismaModel = never> =
-    | PatchUndefined<
-        Either<Required<JsonNullableFilterBase<$PrismaModel>>, Exclude<keyof Required<JsonNullableFilterBase<$PrismaModel>>, 'path'>>,
-        Required<JsonNullableFilterBase<$PrismaModel>>
-      >
-    | OptionalFlat<Omit<Required<JsonNullableFilterBase<$PrismaModel>>, 'path'>>
 
-  export type JsonNullableFilterBase<$PrismaModel = never> = {
-    equals?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | JsonNullValueFilter
-    path?: string[]
-    mode?: QueryMode | EnumQueryModeFieldRefInput<$PrismaModel>
-    string_contains?: string | StringFieldRefInput<$PrismaModel>
-    string_starts_with?: string | StringFieldRefInput<$PrismaModel>
-    string_ends_with?: string | StringFieldRefInput<$PrismaModel>
-    array_starts_with?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | null
-    array_ends_with?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | null
-    array_contains?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | null
-    lt?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
-    lte?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
-    gt?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
-    gte?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
-    not?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | JsonNullValueFilter
+  export type EnumSentimentLabelNullableFilter<$PrismaModel = never> = {
+    equals?: $Enums.SentimentLabel | EnumSentimentLabelFieldRefInput<$PrismaModel> | null
+    in?: $Enums.SentimentLabel[] | ListEnumSentimentLabelFieldRefInput<$PrismaModel> | null
+    notIn?: $Enums.SentimentLabel[] | ListEnumSentimentLabelFieldRefInput<$PrismaModel> | null
+    not?: NestedEnumSentimentLabelNullableFilter<$PrismaModel> | $Enums.SentimentLabel | null
   }
 
   export type TopicNullableScalarRelationFilter = {
@@ -31832,6 +36739,8 @@ export namespace Prisma {
     content?: SortOrder
     confidence_score?: SortOrder
     supporting_count?: SortOrder
+    sentiment?: SortOrder
+    sentiment_score?: SortOrder
     metadata?: SortOrder
     created_at?: SortOrder
     updated_at?: SortOrder
@@ -31840,6 +36749,7 @@ export namespace Prisma {
   export type KnowledgeInsightAvgOrderByAggregateInput = {
     confidence_score?: SortOrder
     supporting_count?: SortOrder
+    sentiment_score?: SortOrder
   }
 
   export type KnowledgeInsightMaxOrderByAggregateInput = {
@@ -31852,6 +36762,8 @@ export namespace Prisma {
     content?: SortOrder
     confidence_score?: SortOrder
     supporting_count?: SortOrder
+    sentiment?: SortOrder
+    sentiment_score?: SortOrder
     created_at?: SortOrder
     updated_at?: SortOrder
   }
@@ -31866,6 +36778,8 @@ export namespace Prisma {
     content?: SortOrder
     confidence_score?: SortOrder
     supporting_count?: SortOrder
+    sentiment?: SortOrder
+    sentiment_score?: SortOrder
     created_at?: SortOrder
     updated_at?: SortOrder
   }
@@ -31873,6 +36787,7 @@ export namespace Prisma {
   export type KnowledgeInsightSumOrderByAggregateInput = {
     confidence_score?: SortOrder
     supporting_count?: SortOrder
+    sentiment_score?: SortOrder
   }
 
   export type EnumInsightTypeWithAggregatesFilter<$PrismaModel = never> = {
@@ -31884,31 +36799,15 @@ export namespace Prisma {
     _min?: NestedEnumInsightTypeFilter<$PrismaModel>
     _max?: NestedEnumInsightTypeFilter<$PrismaModel>
   }
-  export type JsonNullableWithAggregatesFilter<$PrismaModel = never> =
-    | PatchUndefined<
-        Either<Required<JsonNullableWithAggregatesFilterBase<$PrismaModel>>, Exclude<keyof Required<JsonNullableWithAggregatesFilterBase<$PrismaModel>>, 'path'>>,
-        Required<JsonNullableWithAggregatesFilterBase<$PrismaModel>>
-      >
-    | OptionalFlat<Omit<Required<JsonNullableWithAggregatesFilterBase<$PrismaModel>>, 'path'>>
 
-  export type JsonNullableWithAggregatesFilterBase<$PrismaModel = never> = {
-    equals?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | JsonNullValueFilter
-    path?: string[]
-    mode?: QueryMode | EnumQueryModeFieldRefInput<$PrismaModel>
-    string_contains?: string | StringFieldRefInput<$PrismaModel>
-    string_starts_with?: string | StringFieldRefInput<$PrismaModel>
-    string_ends_with?: string | StringFieldRefInput<$PrismaModel>
-    array_starts_with?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | null
-    array_ends_with?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | null
-    array_contains?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | null
-    lt?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
-    lte?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
-    gt?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
-    gte?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
-    not?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | JsonNullValueFilter
+  export type EnumSentimentLabelNullableWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.SentimentLabel | EnumSentimentLabelFieldRefInput<$PrismaModel> | null
+    in?: $Enums.SentimentLabel[] | ListEnumSentimentLabelFieldRefInput<$PrismaModel> | null
+    notIn?: $Enums.SentimentLabel[] | ListEnumSentimentLabelFieldRefInput<$PrismaModel> | null
+    not?: NestedEnumSentimentLabelNullableWithAggregatesFilter<$PrismaModel> | $Enums.SentimentLabel | null
     _count?: NestedIntNullableFilter<$PrismaModel>
-    _min?: NestedJsonNullableFilter<$PrismaModel>
-    _max?: NestedJsonNullableFilter<$PrismaModel>
+    _min?: NestedEnumSentimentLabelNullableFilter<$PrismaModel>
+    _max?: NestedEnumSentimentLabelNullableFilter<$PrismaModel>
   }
 
   export type TopicCountOrderByAggregateInput = {
@@ -32111,6 +37010,11 @@ export namespace Prisma {
     created_at?: SortOrder
   }
 
+  export type SavedInsightCollectionNullableScalarRelationFilter = {
+    is?: SavedInsightCollectionWhereInput | null
+    isNot?: SavedInsightCollectionWhereInput | null
+  }
+
   export type SavedInsightUser_uuidKnowledge_insight_uuidCompoundUniqueInput = {
     user_uuid: string
     knowledge_insight_uuid: string
@@ -32121,6 +37025,7 @@ export namespace Prisma {
     user_uuid?: SortOrder
     research_project_uuid?: SortOrder
     knowledge_insight_uuid?: SortOrder
+    collection_uuid?: SortOrder
     created_at?: SortOrder
   }
 
@@ -32129,6 +37034,7 @@ export namespace Prisma {
     user_uuid?: SortOrder
     research_project_uuid?: SortOrder
     knowledge_insight_uuid?: SortOrder
+    collection_uuid?: SortOrder
     created_at?: SortOrder
   }
 
@@ -32137,7 +37043,83 @@ export namespace Prisma {
     user_uuid?: SortOrder
     research_project_uuid?: SortOrder
     knowledge_insight_uuid?: SortOrder
+    collection_uuid?: SortOrder
     created_at?: SortOrder
+  }
+
+  export type SavedInsightCollectionUser_uuidNameCompoundUniqueInput = {
+    user_uuid: string
+    name: string
+  }
+
+  export type SavedInsightCollectionCountOrderByAggregateInput = {
+    id?: SortOrder
+    user_uuid?: SortOrder
+    name?: SortOrder
+    created_at?: SortOrder
+    updated_at?: SortOrder
+  }
+
+  export type SavedInsightCollectionMaxOrderByAggregateInput = {
+    id?: SortOrder
+    user_uuid?: SortOrder
+    name?: SortOrder
+    created_at?: SortOrder
+    updated_at?: SortOrder
+  }
+
+  export type SavedInsightCollectionMinOrderByAggregateInput = {
+    id?: SortOrder
+    user_uuid?: SortOrder
+    name?: SortOrder
+    created_at?: SortOrder
+    updated_at?: SortOrder
+  }
+
+  export type ResearchProjectNullableScalarRelationFilter = {
+    is?: ResearchProjectWhereInput | null
+    isNot?: ResearchProjectWhereInput | null
+  }
+
+  export type SavedSearchCountOrderByAggregateInput = {
+    id?: SortOrder
+    user_uuid?: SortOrder
+    research_project_uuid?: SortOrder
+    name?: SortOrder
+    query?: SortOrder
+    min_score?: SortOrder
+    time_range?: SortOrder
+    created_at?: SortOrder
+  }
+
+  export type SavedSearchAvgOrderByAggregateInput = {
+    min_score?: SortOrder
+  }
+
+  export type SavedSearchMaxOrderByAggregateInput = {
+    id?: SortOrder
+    user_uuid?: SortOrder
+    research_project_uuid?: SortOrder
+    name?: SortOrder
+    query?: SortOrder
+    min_score?: SortOrder
+    time_range?: SortOrder
+    created_at?: SortOrder
+  }
+
+  export type SavedSearchMinOrderByAggregateInput = {
+    id?: SortOrder
+    user_uuid?: SortOrder
+    research_project_uuid?: SortOrder
+    name?: SortOrder
+    query?: SortOrder
+    min_score?: SortOrder
+    time_range?: SortOrder
+    created_at?: SortOrder
+  }
+
+  export type SavedSearchSumOrderByAggregateInput = {
+    min_score?: SortOrder
   }
 
   export type PasswordResetTokenCreateNestedManyWithoutUserInput = {
@@ -32168,6 +37150,20 @@ export namespace Prisma {
     connect?: SavedInsightWhereUniqueInput | SavedInsightWhereUniqueInput[]
   }
 
+  export type SavedInsightCollectionCreateNestedManyWithoutUserInput = {
+    create?: XOR<SavedInsightCollectionCreateWithoutUserInput, SavedInsightCollectionUncheckedCreateWithoutUserInput> | SavedInsightCollectionCreateWithoutUserInput[] | SavedInsightCollectionUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: SavedInsightCollectionCreateOrConnectWithoutUserInput | SavedInsightCollectionCreateOrConnectWithoutUserInput[]
+    createMany?: SavedInsightCollectionCreateManyUserInputEnvelope
+    connect?: SavedInsightCollectionWhereUniqueInput | SavedInsightCollectionWhereUniqueInput[]
+  }
+
+  export type SavedSearchCreateNestedManyWithoutUserInput = {
+    create?: XOR<SavedSearchCreateWithoutUserInput, SavedSearchUncheckedCreateWithoutUserInput> | SavedSearchCreateWithoutUserInput[] | SavedSearchUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: SavedSearchCreateOrConnectWithoutUserInput | SavedSearchCreateOrConnectWithoutUserInput[]
+    createMany?: SavedSearchCreateManyUserInputEnvelope
+    connect?: SavedSearchWhereUniqueInput | SavedSearchWhereUniqueInput[]
+  }
+
   export type PasswordResetTokenUncheckedCreateNestedManyWithoutUserInput = {
     create?: XOR<PasswordResetTokenCreateWithoutUserInput, PasswordResetTokenUncheckedCreateWithoutUserInput> | PasswordResetTokenCreateWithoutUserInput[] | PasswordResetTokenUncheckedCreateWithoutUserInput[]
     connectOrCreate?: PasswordResetTokenCreateOrConnectWithoutUserInput | PasswordResetTokenCreateOrConnectWithoutUserInput[]
@@ -32194,6 +37190,20 @@ export namespace Prisma {
     connectOrCreate?: SavedInsightCreateOrConnectWithoutUserInput | SavedInsightCreateOrConnectWithoutUserInput[]
     createMany?: SavedInsightCreateManyUserInputEnvelope
     connect?: SavedInsightWhereUniqueInput | SavedInsightWhereUniqueInput[]
+  }
+
+  export type SavedInsightCollectionUncheckedCreateNestedManyWithoutUserInput = {
+    create?: XOR<SavedInsightCollectionCreateWithoutUserInput, SavedInsightCollectionUncheckedCreateWithoutUserInput> | SavedInsightCollectionCreateWithoutUserInput[] | SavedInsightCollectionUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: SavedInsightCollectionCreateOrConnectWithoutUserInput | SavedInsightCollectionCreateOrConnectWithoutUserInput[]
+    createMany?: SavedInsightCollectionCreateManyUserInputEnvelope
+    connect?: SavedInsightCollectionWhereUniqueInput | SavedInsightCollectionWhereUniqueInput[]
+  }
+
+  export type SavedSearchUncheckedCreateNestedManyWithoutUserInput = {
+    create?: XOR<SavedSearchCreateWithoutUserInput, SavedSearchUncheckedCreateWithoutUserInput> | SavedSearchCreateWithoutUserInput[] | SavedSearchUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: SavedSearchCreateOrConnectWithoutUserInput | SavedSearchCreateOrConnectWithoutUserInput[]
+    createMany?: SavedSearchCreateManyUserInputEnvelope
+    connect?: SavedSearchWhereUniqueInput | SavedSearchWhereUniqueInput[]
   }
 
   export type StringFieldUpdateOperationsInput = {
@@ -32268,6 +37278,34 @@ export namespace Prisma {
     deleteMany?: SavedInsightScalarWhereInput | SavedInsightScalarWhereInput[]
   }
 
+  export type SavedInsightCollectionUpdateManyWithoutUserNestedInput = {
+    create?: XOR<SavedInsightCollectionCreateWithoutUserInput, SavedInsightCollectionUncheckedCreateWithoutUserInput> | SavedInsightCollectionCreateWithoutUserInput[] | SavedInsightCollectionUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: SavedInsightCollectionCreateOrConnectWithoutUserInput | SavedInsightCollectionCreateOrConnectWithoutUserInput[]
+    upsert?: SavedInsightCollectionUpsertWithWhereUniqueWithoutUserInput | SavedInsightCollectionUpsertWithWhereUniqueWithoutUserInput[]
+    createMany?: SavedInsightCollectionCreateManyUserInputEnvelope
+    set?: SavedInsightCollectionWhereUniqueInput | SavedInsightCollectionWhereUniqueInput[]
+    disconnect?: SavedInsightCollectionWhereUniqueInput | SavedInsightCollectionWhereUniqueInput[]
+    delete?: SavedInsightCollectionWhereUniqueInput | SavedInsightCollectionWhereUniqueInput[]
+    connect?: SavedInsightCollectionWhereUniqueInput | SavedInsightCollectionWhereUniqueInput[]
+    update?: SavedInsightCollectionUpdateWithWhereUniqueWithoutUserInput | SavedInsightCollectionUpdateWithWhereUniqueWithoutUserInput[]
+    updateMany?: SavedInsightCollectionUpdateManyWithWhereWithoutUserInput | SavedInsightCollectionUpdateManyWithWhereWithoutUserInput[]
+    deleteMany?: SavedInsightCollectionScalarWhereInput | SavedInsightCollectionScalarWhereInput[]
+  }
+
+  export type SavedSearchUpdateManyWithoutUserNestedInput = {
+    create?: XOR<SavedSearchCreateWithoutUserInput, SavedSearchUncheckedCreateWithoutUserInput> | SavedSearchCreateWithoutUserInput[] | SavedSearchUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: SavedSearchCreateOrConnectWithoutUserInput | SavedSearchCreateOrConnectWithoutUserInput[]
+    upsert?: SavedSearchUpsertWithWhereUniqueWithoutUserInput | SavedSearchUpsertWithWhereUniqueWithoutUserInput[]
+    createMany?: SavedSearchCreateManyUserInputEnvelope
+    set?: SavedSearchWhereUniqueInput | SavedSearchWhereUniqueInput[]
+    disconnect?: SavedSearchWhereUniqueInput | SavedSearchWhereUniqueInput[]
+    delete?: SavedSearchWhereUniqueInput | SavedSearchWhereUniqueInput[]
+    connect?: SavedSearchWhereUniqueInput | SavedSearchWhereUniqueInput[]
+    update?: SavedSearchUpdateWithWhereUniqueWithoutUserInput | SavedSearchUpdateWithWhereUniqueWithoutUserInput[]
+    updateMany?: SavedSearchUpdateManyWithWhereWithoutUserInput | SavedSearchUpdateManyWithWhereWithoutUserInput[]
+    deleteMany?: SavedSearchScalarWhereInput | SavedSearchScalarWhereInput[]
+  }
+
   export type PasswordResetTokenUncheckedUpdateManyWithoutUserNestedInput = {
     create?: XOR<PasswordResetTokenCreateWithoutUserInput, PasswordResetTokenUncheckedCreateWithoutUserInput> | PasswordResetTokenCreateWithoutUserInput[] | PasswordResetTokenUncheckedCreateWithoutUserInput[]
     connectOrCreate?: PasswordResetTokenCreateOrConnectWithoutUserInput | PasswordResetTokenCreateOrConnectWithoutUserInput[]
@@ -32322,6 +37360,34 @@ export namespace Prisma {
     update?: SavedInsightUpdateWithWhereUniqueWithoutUserInput | SavedInsightUpdateWithWhereUniqueWithoutUserInput[]
     updateMany?: SavedInsightUpdateManyWithWhereWithoutUserInput | SavedInsightUpdateManyWithWhereWithoutUserInput[]
     deleteMany?: SavedInsightScalarWhereInput | SavedInsightScalarWhereInput[]
+  }
+
+  export type SavedInsightCollectionUncheckedUpdateManyWithoutUserNestedInput = {
+    create?: XOR<SavedInsightCollectionCreateWithoutUserInput, SavedInsightCollectionUncheckedCreateWithoutUserInput> | SavedInsightCollectionCreateWithoutUserInput[] | SavedInsightCollectionUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: SavedInsightCollectionCreateOrConnectWithoutUserInput | SavedInsightCollectionCreateOrConnectWithoutUserInput[]
+    upsert?: SavedInsightCollectionUpsertWithWhereUniqueWithoutUserInput | SavedInsightCollectionUpsertWithWhereUniqueWithoutUserInput[]
+    createMany?: SavedInsightCollectionCreateManyUserInputEnvelope
+    set?: SavedInsightCollectionWhereUniqueInput | SavedInsightCollectionWhereUniqueInput[]
+    disconnect?: SavedInsightCollectionWhereUniqueInput | SavedInsightCollectionWhereUniqueInput[]
+    delete?: SavedInsightCollectionWhereUniqueInput | SavedInsightCollectionWhereUniqueInput[]
+    connect?: SavedInsightCollectionWhereUniqueInput | SavedInsightCollectionWhereUniqueInput[]
+    update?: SavedInsightCollectionUpdateWithWhereUniqueWithoutUserInput | SavedInsightCollectionUpdateWithWhereUniqueWithoutUserInput[]
+    updateMany?: SavedInsightCollectionUpdateManyWithWhereWithoutUserInput | SavedInsightCollectionUpdateManyWithWhereWithoutUserInput[]
+    deleteMany?: SavedInsightCollectionScalarWhereInput | SavedInsightCollectionScalarWhereInput[]
+  }
+
+  export type SavedSearchUncheckedUpdateManyWithoutUserNestedInput = {
+    create?: XOR<SavedSearchCreateWithoutUserInput, SavedSearchUncheckedCreateWithoutUserInput> | SavedSearchCreateWithoutUserInput[] | SavedSearchUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: SavedSearchCreateOrConnectWithoutUserInput | SavedSearchCreateOrConnectWithoutUserInput[]
+    upsert?: SavedSearchUpsertWithWhereUniqueWithoutUserInput | SavedSearchUpsertWithWhereUniqueWithoutUserInput[]
+    createMany?: SavedSearchCreateManyUserInputEnvelope
+    set?: SavedSearchWhereUniqueInput | SavedSearchWhereUniqueInput[]
+    disconnect?: SavedSearchWhereUniqueInput | SavedSearchWhereUniqueInput[]
+    delete?: SavedSearchWhereUniqueInput | SavedSearchWhereUniqueInput[]
+    connect?: SavedSearchWhereUniqueInput | SavedSearchWhereUniqueInput[]
+    update?: SavedSearchUpdateWithWhereUniqueWithoutUserInput | SavedSearchUpdateWithWhereUniqueWithoutUserInput[]
+    updateMany?: SavedSearchUpdateManyWithWhereWithoutUserInput | SavedSearchUpdateManyWithWhereWithoutUserInput[]
+    deleteMany?: SavedSearchScalarWhereInput | SavedSearchScalarWhereInput[]
   }
 
   export type UserCreateNestedOneWithoutPassword_reset_tokensInput = {
@@ -32436,6 +37502,13 @@ export namespace Prisma {
     connect?: SavedInsightWhereUniqueInput | SavedInsightWhereUniqueInput[]
   }
 
+  export type SavedSearchCreateNestedManyWithoutResearch_projectInput = {
+    create?: XOR<SavedSearchCreateWithoutResearch_projectInput, SavedSearchUncheckedCreateWithoutResearch_projectInput> | SavedSearchCreateWithoutResearch_projectInput[] | SavedSearchUncheckedCreateWithoutResearch_projectInput[]
+    connectOrCreate?: SavedSearchCreateOrConnectWithoutResearch_projectInput | SavedSearchCreateOrConnectWithoutResearch_projectInput[]
+    createMany?: SavedSearchCreateManyResearch_projectInputEnvelope
+    connect?: SavedSearchWhereUniqueInput | SavedSearchWhereUniqueInput[]
+  }
+
   export type ResearchSourceUncheckedCreateNestedOneWithoutResearch_projectInput = {
     create?: XOR<ResearchSourceCreateWithoutResearch_projectInput, ResearchSourceUncheckedCreateWithoutResearch_projectInput>
     connectOrCreate?: ResearchSourceCreateOrConnectWithoutResearch_projectInput
@@ -32512,8 +37585,23 @@ export namespace Prisma {
     connect?: SavedInsightWhereUniqueInput | SavedInsightWhereUniqueInput[]
   }
 
+  export type SavedSearchUncheckedCreateNestedManyWithoutResearch_projectInput = {
+    create?: XOR<SavedSearchCreateWithoutResearch_projectInput, SavedSearchUncheckedCreateWithoutResearch_projectInput> | SavedSearchCreateWithoutResearch_projectInput[] | SavedSearchUncheckedCreateWithoutResearch_projectInput[]
+    connectOrCreate?: SavedSearchCreateOrConnectWithoutResearch_projectInput | SavedSearchCreateOrConnectWithoutResearch_projectInput[]
+    createMany?: SavedSearchCreateManyResearch_projectInputEnvelope
+    connect?: SavedSearchWhereUniqueInput | SavedSearchWhereUniqueInput[]
+  }
+
   export type EnumAnalysisStatusFieldUpdateOperationsInput = {
     set?: $Enums.AnalysisStatus
+  }
+
+  export type NullableFloatFieldUpdateOperationsInput = {
+    set?: number | null
+    increment?: number
+    decrement?: number
+    multiply?: number
+    divide?: number
   }
 
   export type UserUpdateOneRequiredWithoutResearch_projectsNestedInput = {
@@ -32674,6 +37762,20 @@ export namespace Prisma {
     deleteMany?: SavedInsightScalarWhereInput | SavedInsightScalarWhereInput[]
   }
 
+  export type SavedSearchUpdateManyWithoutResearch_projectNestedInput = {
+    create?: XOR<SavedSearchCreateWithoutResearch_projectInput, SavedSearchUncheckedCreateWithoutResearch_projectInput> | SavedSearchCreateWithoutResearch_projectInput[] | SavedSearchUncheckedCreateWithoutResearch_projectInput[]
+    connectOrCreate?: SavedSearchCreateOrConnectWithoutResearch_projectInput | SavedSearchCreateOrConnectWithoutResearch_projectInput[]
+    upsert?: SavedSearchUpsertWithWhereUniqueWithoutResearch_projectInput | SavedSearchUpsertWithWhereUniqueWithoutResearch_projectInput[]
+    createMany?: SavedSearchCreateManyResearch_projectInputEnvelope
+    set?: SavedSearchWhereUniqueInput | SavedSearchWhereUniqueInput[]
+    disconnect?: SavedSearchWhereUniqueInput | SavedSearchWhereUniqueInput[]
+    delete?: SavedSearchWhereUniqueInput | SavedSearchWhereUniqueInput[]
+    connect?: SavedSearchWhereUniqueInput | SavedSearchWhereUniqueInput[]
+    update?: SavedSearchUpdateWithWhereUniqueWithoutResearch_projectInput | SavedSearchUpdateWithWhereUniqueWithoutResearch_projectInput[]
+    updateMany?: SavedSearchUpdateManyWithWhereWithoutResearch_projectInput | SavedSearchUpdateManyWithWhereWithoutResearch_projectInput[]
+    deleteMany?: SavedSearchScalarWhereInput | SavedSearchScalarWhereInput[]
+  }
+
   export type ResearchSourceUncheckedUpdateOneWithoutResearch_projectNestedInput = {
     create?: XOR<ResearchSourceCreateWithoutResearch_projectInput, ResearchSourceUncheckedCreateWithoutResearch_projectInput>
     connectOrCreate?: ResearchSourceCreateOrConnectWithoutResearch_projectInput
@@ -32824,6 +37926,20 @@ export namespace Prisma {
     deleteMany?: SavedInsightScalarWhereInput | SavedInsightScalarWhereInput[]
   }
 
+  export type SavedSearchUncheckedUpdateManyWithoutResearch_projectNestedInput = {
+    create?: XOR<SavedSearchCreateWithoutResearch_projectInput, SavedSearchUncheckedCreateWithoutResearch_projectInput> | SavedSearchCreateWithoutResearch_projectInput[] | SavedSearchUncheckedCreateWithoutResearch_projectInput[]
+    connectOrCreate?: SavedSearchCreateOrConnectWithoutResearch_projectInput | SavedSearchCreateOrConnectWithoutResearch_projectInput[]
+    upsert?: SavedSearchUpsertWithWhereUniqueWithoutResearch_projectInput | SavedSearchUpsertWithWhereUniqueWithoutResearch_projectInput[]
+    createMany?: SavedSearchCreateManyResearch_projectInputEnvelope
+    set?: SavedSearchWhereUniqueInput | SavedSearchWhereUniqueInput[]
+    disconnect?: SavedSearchWhereUniqueInput | SavedSearchWhereUniqueInput[]
+    delete?: SavedSearchWhereUniqueInput | SavedSearchWhereUniqueInput[]
+    connect?: SavedSearchWhereUniqueInput | SavedSearchWhereUniqueInput[]
+    update?: SavedSearchUpdateWithWhereUniqueWithoutResearch_projectInput | SavedSearchUpdateWithWhereUniqueWithoutResearch_projectInput[]
+    updateMany?: SavedSearchUpdateManyWithWhereWithoutResearch_projectInput | SavedSearchUpdateManyWithWhereWithoutResearch_projectInput[]
+    deleteMany?: SavedSearchScalarWhereInput | SavedSearchScalarWhereInput[]
+  }
+
   export type ResearchProjectCreateNestedOneWithoutSourceInput = {
     create?: XOR<ResearchProjectCreateWithoutSourceInput, ResearchProjectUncheckedCreateWithoutSourceInput>
     connectOrCreate?: ResearchProjectCreateOrConnectWithoutSourceInput
@@ -32949,6 +38065,13 @@ export namespace Prisma {
     connect?: KnowledgeInsightWhereUniqueInput | KnowledgeInsightWhereUniqueInput[]
   }
 
+  export type JobEventCreateNestedManyWithoutAnalysis_jobInput = {
+    create?: XOR<JobEventCreateWithoutAnalysis_jobInput, JobEventUncheckedCreateWithoutAnalysis_jobInput> | JobEventCreateWithoutAnalysis_jobInput[] | JobEventUncheckedCreateWithoutAnalysis_jobInput[]
+    connectOrCreate?: JobEventCreateOrConnectWithoutAnalysis_jobInput | JobEventCreateOrConnectWithoutAnalysis_jobInput[]
+    createMany?: JobEventCreateManyAnalysis_jobInputEnvelope
+    connect?: JobEventWhereUniqueInput | JobEventWhereUniqueInput[]
+  }
+
   export type BatchSubmissionUncheckedCreateNestedManyWithoutAnalysis_jobInput = {
     create?: XOR<BatchSubmissionCreateWithoutAnalysis_jobInput, BatchSubmissionUncheckedCreateWithoutAnalysis_jobInput> | BatchSubmissionCreateWithoutAnalysis_jobInput[] | BatchSubmissionUncheckedCreateWithoutAnalysis_jobInput[]
     connectOrCreate?: BatchSubmissionCreateOrConnectWithoutAnalysis_jobInput | BatchSubmissionCreateOrConnectWithoutAnalysis_jobInput[]
@@ -32968,6 +38091,13 @@ export namespace Prisma {
     connectOrCreate?: KnowledgeInsightCreateOrConnectWithoutAnalysis_jobInput | KnowledgeInsightCreateOrConnectWithoutAnalysis_jobInput[]
     createMany?: KnowledgeInsightCreateManyAnalysis_jobInputEnvelope
     connect?: KnowledgeInsightWhereUniqueInput | KnowledgeInsightWhereUniqueInput[]
+  }
+
+  export type JobEventUncheckedCreateNestedManyWithoutAnalysis_jobInput = {
+    create?: XOR<JobEventCreateWithoutAnalysis_jobInput, JobEventUncheckedCreateWithoutAnalysis_jobInput> | JobEventCreateWithoutAnalysis_jobInput[] | JobEventUncheckedCreateWithoutAnalysis_jobInput[]
+    connectOrCreate?: JobEventCreateOrConnectWithoutAnalysis_jobInput | JobEventCreateOrConnectWithoutAnalysis_jobInput[]
+    createMany?: JobEventCreateManyAnalysis_jobInputEnvelope
+    connect?: JobEventWhereUniqueInput | JobEventWhereUniqueInput[]
   }
 
   export type ResearchProjectUpdateOneRequiredWithoutAnalysis_jobsNestedInput = {
@@ -33028,6 +38158,20 @@ export namespace Prisma {
     deleteMany?: KnowledgeInsightScalarWhereInput | KnowledgeInsightScalarWhereInput[]
   }
 
+  export type JobEventUpdateManyWithoutAnalysis_jobNestedInput = {
+    create?: XOR<JobEventCreateWithoutAnalysis_jobInput, JobEventUncheckedCreateWithoutAnalysis_jobInput> | JobEventCreateWithoutAnalysis_jobInput[] | JobEventUncheckedCreateWithoutAnalysis_jobInput[]
+    connectOrCreate?: JobEventCreateOrConnectWithoutAnalysis_jobInput | JobEventCreateOrConnectWithoutAnalysis_jobInput[]
+    upsert?: JobEventUpsertWithWhereUniqueWithoutAnalysis_jobInput | JobEventUpsertWithWhereUniqueWithoutAnalysis_jobInput[]
+    createMany?: JobEventCreateManyAnalysis_jobInputEnvelope
+    set?: JobEventWhereUniqueInput | JobEventWhereUniqueInput[]
+    disconnect?: JobEventWhereUniqueInput | JobEventWhereUniqueInput[]
+    delete?: JobEventWhereUniqueInput | JobEventWhereUniqueInput[]
+    connect?: JobEventWhereUniqueInput | JobEventWhereUniqueInput[]
+    update?: JobEventUpdateWithWhereUniqueWithoutAnalysis_jobInput | JobEventUpdateWithWhereUniqueWithoutAnalysis_jobInput[]
+    updateMany?: JobEventUpdateManyWithWhereWithoutAnalysis_jobInput | JobEventUpdateManyWithWhereWithoutAnalysis_jobInput[]
+    deleteMany?: JobEventScalarWhereInput | JobEventScalarWhereInput[]
+  }
+
   export type BatchSubmissionUncheckedUpdateManyWithoutAnalysis_jobNestedInput = {
     create?: XOR<BatchSubmissionCreateWithoutAnalysis_jobInput, BatchSubmissionUncheckedCreateWithoutAnalysis_jobInput> | BatchSubmissionCreateWithoutAnalysis_jobInput[] | BatchSubmissionUncheckedCreateWithoutAnalysis_jobInput[]
     connectOrCreate?: BatchSubmissionCreateOrConnectWithoutAnalysis_jobInput | BatchSubmissionCreateOrConnectWithoutAnalysis_jobInput[]
@@ -33070,6 +38214,20 @@ export namespace Prisma {
     deleteMany?: KnowledgeInsightScalarWhereInput | KnowledgeInsightScalarWhereInput[]
   }
 
+  export type JobEventUncheckedUpdateManyWithoutAnalysis_jobNestedInput = {
+    create?: XOR<JobEventCreateWithoutAnalysis_jobInput, JobEventUncheckedCreateWithoutAnalysis_jobInput> | JobEventCreateWithoutAnalysis_jobInput[] | JobEventUncheckedCreateWithoutAnalysis_jobInput[]
+    connectOrCreate?: JobEventCreateOrConnectWithoutAnalysis_jobInput | JobEventCreateOrConnectWithoutAnalysis_jobInput[]
+    upsert?: JobEventUpsertWithWhereUniqueWithoutAnalysis_jobInput | JobEventUpsertWithWhereUniqueWithoutAnalysis_jobInput[]
+    createMany?: JobEventCreateManyAnalysis_jobInputEnvelope
+    set?: JobEventWhereUniqueInput | JobEventWhereUniqueInput[]
+    disconnect?: JobEventWhereUniqueInput | JobEventWhereUniqueInput[]
+    delete?: JobEventWhereUniqueInput | JobEventWhereUniqueInput[]
+    connect?: JobEventWhereUniqueInput | JobEventWhereUniqueInput[]
+    update?: JobEventUpdateWithWhereUniqueWithoutAnalysis_jobInput | JobEventUpdateWithWhereUniqueWithoutAnalysis_jobInput[]
+    updateMany?: JobEventUpdateManyWithWhereWithoutAnalysis_jobInput | JobEventUpdateManyWithWhereWithoutAnalysis_jobInput[]
+    deleteMany?: JobEventScalarWhereInput | JobEventScalarWhereInput[]
+  }
+
   export type AnalysisJobCreateNestedOneWithoutBatch_submissionsInput = {
     create?: XOR<AnalysisJobCreateWithoutBatch_submissionsInput, AnalysisJobUncheckedCreateWithoutBatch_submissionsInput>
     connectOrCreate?: AnalysisJobCreateOrConnectWithoutBatch_submissionsInput
@@ -33086,6 +38244,24 @@ export namespace Prisma {
     upsert?: AnalysisJobUpsertWithoutBatch_submissionsInput
     connect?: AnalysisJobWhereUniqueInput
     update?: XOR<XOR<AnalysisJobUpdateToOneWithWhereWithoutBatch_submissionsInput, AnalysisJobUpdateWithoutBatch_submissionsInput>, AnalysisJobUncheckedUpdateWithoutBatch_submissionsInput>
+  }
+
+  export type AnalysisJobCreateNestedOneWithoutJob_eventsInput = {
+    create?: XOR<AnalysisJobCreateWithoutJob_eventsInput, AnalysisJobUncheckedCreateWithoutJob_eventsInput>
+    connectOrCreate?: AnalysisJobCreateOrConnectWithoutJob_eventsInput
+    connect?: AnalysisJobWhereUniqueInput
+  }
+
+  export type EnumJobEventLevelFieldUpdateOperationsInput = {
+    set?: $Enums.JobEventLevel
+  }
+
+  export type AnalysisJobUpdateOneRequiredWithoutJob_eventsNestedInput = {
+    create?: XOR<AnalysisJobCreateWithoutJob_eventsInput, AnalysisJobUncheckedCreateWithoutJob_eventsInput>
+    connectOrCreate?: AnalysisJobCreateOrConnectWithoutJob_eventsInput
+    upsert?: AnalysisJobUpsertWithoutJob_eventsInput
+    connect?: AnalysisJobWhereUniqueInput
+    update?: XOR<XOR<AnalysisJobUpdateToOneWithWhereWithoutJob_eventsInput, AnalysisJobUpdateWithoutJob_eventsInput>, AnalysisJobUncheckedUpdateWithoutJob_eventsInput>
   }
 
   export type ResearchProjectCreateNestedOneWithoutPostsInput = {
@@ -33160,14 +38336,6 @@ export namespace Prisma {
     create?: XOR<EmbeddingCreateWithoutPostInput, EmbeddingUncheckedCreateWithoutPostInput>
     connectOrCreate?: EmbeddingCreateOrConnectWithoutPostInput
     connect?: EmbeddingWhereUniqueInput
-  }
-
-  export type NullableFloatFieldUpdateOperationsInput = {
-    set?: number | null
-    increment?: number
-    decrement?: number
-    multiply?: number
-    divide?: number
   }
 
   export type ResearchProjectUpdateOneRequiredWithoutPostsNestedInput = {
@@ -33851,6 +39019,10 @@ export namespace Prisma {
     set?: $Enums.InsightType
   }
 
+  export type NullableEnumSentimentLabelFieldUpdateOperationsInput = {
+    set?: $Enums.SentimentLabel | null
+  }
+
   export type ResearchProjectUpdateOneRequiredWithoutKnowledge_insightsNestedInput = {
     create?: XOR<ResearchProjectCreateWithoutKnowledge_insightsInput, ResearchProjectUncheckedCreateWithoutKnowledge_insightsInput>
     connectOrCreate?: ResearchProjectCreateOrConnectWithoutKnowledge_insightsInput
@@ -34315,6 +39487,12 @@ export namespace Prisma {
     connect?: KnowledgeInsightWhereUniqueInput
   }
 
+  export type SavedInsightCollectionCreateNestedOneWithoutSaved_insightsInput = {
+    create?: XOR<SavedInsightCollectionCreateWithoutSaved_insightsInput, SavedInsightCollectionUncheckedCreateWithoutSaved_insightsInput>
+    connectOrCreate?: SavedInsightCollectionCreateOrConnectWithoutSaved_insightsInput
+    connect?: SavedInsightCollectionWhereUniqueInput
+  }
+
   export type UserUpdateOneRequiredWithoutSaved_insightsNestedInput = {
     create?: XOR<UserCreateWithoutSaved_insightsInput, UserUncheckedCreateWithoutSaved_insightsInput>
     connectOrCreate?: UserCreateOrConnectWithoutSaved_insightsInput
@@ -34337,6 +39515,102 @@ export namespace Prisma {
     upsert?: KnowledgeInsightUpsertWithoutSaved_insightsInput
     connect?: KnowledgeInsightWhereUniqueInput
     update?: XOR<XOR<KnowledgeInsightUpdateToOneWithWhereWithoutSaved_insightsInput, KnowledgeInsightUpdateWithoutSaved_insightsInput>, KnowledgeInsightUncheckedUpdateWithoutSaved_insightsInput>
+  }
+
+  export type SavedInsightCollectionUpdateOneWithoutSaved_insightsNestedInput = {
+    create?: XOR<SavedInsightCollectionCreateWithoutSaved_insightsInput, SavedInsightCollectionUncheckedCreateWithoutSaved_insightsInput>
+    connectOrCreate?: SavedInsightCollectionCreateOrConnectWithoutSaved_insightsInput
+    upsert?: SavedInsightCollectionUpsertWithoutSaved_insightsInput
+    disconnect?: SavedInsightCollectionWhereInput | boolean
+    delete?: SavedInsightCollectionWhereInput | boolean
+    connect?: SavedInsightCollectionWhereUniqueInput
+    update?: XOR<XOR<SavedInsightCollectionUpdateToOneWithWhereWithoutSaved_insightsInput, SavedInsightCollectionUpdateWithoutSaved_insightsInput>, SavedInsightCollectionUncheckedUpdateWithoutSaved_insightsInput>
+  }
+
+  export type UserCreateNestedOneWithoutSaved_insight_collectionsInput = {
+    create?: XOR<UserCreateWithoutSaved_insight_collectionsInput, UserUncheckedCreateWithoutSaved_insight_collectionsInput>
+    connectOrCreate?: UserCreateOrConnectWithoutSaved_insight_collectionsInput
+    connect?: UserWhereUniqueInput
+  }
+
+  export type SavedInsightCreateNestedManyWithoutCollectionInput = {
+    create?: XOR<SavedInsightCreateWithoutCollectionInput, SavedInsightUncheckedCreateWithoutCollectionInput> | SavedInsightCreateWithoutCollectionInput[] | SavedInsightUncheckedCreateWithoutCollectionInput[]
+    connectOrCreate?: SavedInsightCreateOrConnectWithoutCollectionInput | SavedInsightCreateOrConnectWithoutCollectionInput[]
+    createMany?: SavedInsightCreateManyCollectionInputEnvelope
+    connect?: SavedInsightWhereUniqueInput | SavedInsightWhereUniqueInput[]
+  }
+
+  export type SavedInsightUncheckedCreateNestedManyWithoutCollectionInput = {
+    create?: XOR<SavedInsightCreateWithoutCollectionInput, SavedInsightUncheckedCreateWithoutCollectionInput> | SavedInsightCreateWithoutCollectionInput[] | SavedInsightUncheckedCreateWithoutCollectionInput[]
+    connectOrCreate?: SavedInsightCreateOrConnectWithoutCollectionInput | SavedInsightCreateOrConnectWithoutCollectionInput[]
+    createMany?: SavedInsightCreateManyCollectionInputEnvelope
+    connect?: SavedInsightWhereUniqueInput | SavedInsightWhereUniqueInput[]
+  }
+
+  export type UserUpdateOneRequiredWithoutSaved_insight_collectionsNestedInput = {
+    create?: XOR<UserCreateWithoutSaved_insight_collectionsInput, UserUncheckedCreateWithoutSaved_insight_collectionsInput>
+    connectOrCreate?: UserCreateOrConnectWithoutSaved_insight_collectionsInput
+    upsert?: UserUpsertWithoutSaved_insight_collectionsInput
+    connect?: UserWhereUniqueInput
+    update?: XOR<XOR<UserUpdateToOneWithWhereWithoutSaved_insight_collectionsInput, UserUpdateWithoutSaved_insight_collectionsInput>, UserUncheckedUpdateWithoutSaved_insight_collectionsInput>
+  }
+
+  export type SavedInsightUpdateManyWithoutCollectionNestedInput = {
+    create?: XOR<SavedInsightCreateWithoutCollectionInput, SavedInsightUncheckedCreateWithoutCollectionInput> | SavedInsightCreateWithoutCollectionInput[] | SavedInsightUncheckedCreateWithoutCollectionInput[]
+    connectOrCreate?: SavedInsightCreateOrConnectWithoutCollectionInput | SavedInsightCreateOrConnectWithoutCollectionInput[]
+    upsert?: SavedInsightUpsertWithWhereUniqueWithoutCollectionInput | SavedInsightUpsertWithWhereUniqueWithoutCollectionInput[]
+    createMany?: SavedInsightCreateManyCollectionInputEnvelope
+    set?: SavedInsightWhereUniqueInput | SavedInsightWhereUniqueInput[]
+    disconnect?: SavedInsightWhereUniqueInput | SavedInsightWhereUniqueInput[]
+    delete?: SavedInsightWhereUniqueInput | SavedInsightWhereUniqueInput[]
+    connect?: SavedInsightWhereUniqueInput | SavedInsightWhereUniqueInput[]
+    update?: SavedInsightUpdateWithWhereUniqueWithoutCollectionInput | SavedInsightUpdateWithWhereUniqueWithoutCollectionInput[]
+    updateMany?: SavedInsightUpdateManyWithWhereWithoutCollectionInput | SavedInsightUpdateManyWithWhereWithoutCollectionInput[]
+    deleteMany?: SavedInsightScalarWhereInput | SavedInsightScalarWhereInput[]
+  }
+
+  export type SavedInsightUncheckedUpdateManyWithoutCollectionNestedInput = {
+    create?: XOR<SavedInsightCreateWithoutCollectionInput, SavedInsightUncheckedCreateWithoutCollectionInput> | SavedInsightCreateWithoutCollectionInput[] | SavedInsightUncheckedCreateWithoutCollectionInput[]
+    connectOrCreate?: SavedInsightCreateOrConnectWithoutCollectionInput | SavedInsightCreateOrConnectWithoutCollectionInput[]
+    upsert?: SavedInsightUpsertWithWhereUniqueWithoutCollectionInput | SavedInsightUpsertWithWhereUniqueWithoutCollectionInput[]
+    createMany?: SavedInsightCreateManyCollectionInputEnvelope
+    set?: SavedInsightWhereUniqueInput | SavedInsightWhereUniqueInput[]
+    disconnect?: SavedInsightWhereUniqueInput | SavedInsightWhereUniqueInput[]
+    delete?: SavedInsightWhereUniqueInput | SavedInsightWhereUniqueInput[]
+    connect?: SavedInsightWhereUniqueInput | SavedInsightWhereUniqueInput[]
+    update?: SavedInsightUpdateWithWhereUniqueWithoutCollectionInput | SavedInsightUpdateWithWhereUniqueWithoutCollectionInput[]
+    updateMany?: SavedInsightUpdateManyWithWhereWithoutCollectionInput | SavedInsightUpdateManyWithWhereWithoutCollectionInput[]
+    deleteMany?: SavedInsightScalarWhereInput | SavedInsightScalarWhereInput[]
+  }
+
+  export type UserCreateNestedOneWithoutSaved_searchesInput = {
+    create?: XOR<UserCreateWithoutSaved_searchesInput, UserUncheckedCreateWithoutSaved_searchesInput>
+    connectOrCreate?: UserCreateOrConnectWithoutSaved_searchesInput
+    connect?: UserWhereUniqueInput
+  }
+
+  export type ResearchProjectCreateNestedOneWithoutSaved_searchesInput = {
+    create?: XOR<ResearchProjectCreateWithoutSaved_searchesInput, ResearchProjectUncheckedCreateWithoutSaved_searchesInput>
+    connectOrCreate?: ResearchProjectCreateOrConnectWithoutSaved_searchesInput
+    connect?: ResearchProjectWhereUniqueInput
+  }
+
+  export type UserUpdateOneRequiredWithoutSaved_searchesNestedInput = {
+    create?: XOR<UserCreateWithoutSaved_searchesInput, UserUncheckedCreateWithoutSaved_searchesInput>
+    connectOrCreate?: UserCreateOrConnectWithoutSaved_searchesInput
+    upsert?: UserUpsertWithoutSaved_searchesInput
+    connect?: UserWhereUniqueInput
+    update?: XOR<XOR<UserUpdateToOneWithWhereWithoutSaved_searchesInput, UserUpdateWithoutSaved_searchesInput>, UserUncheckedUpdateWithoutSaved_searchesInput>
+  }
+
+  export type ResearchProjectUpdateOneWithoutSaved_searchesNestedInput = {
+    create?: XOR<ResearchProjectCreateWithoutSaved_searchesInput, ResearchProjectUncheckedCreateWithoutSaved_searchesInput>
+    connectOrCreate?: ResearchProjectCreateOrConnectWithoutSaved_searchesInput
+    upsert?: ResearchProjectUpsertWithoutSaved_searchesInput
+    disconnect?: ResearchProjectWhereInput | boolean
+    delete?: ResearchProjectWhereInput | boolean
+    connect?: ResearchProjectWhereUniqueInput
+    update?: XOR<XOR<ResearchProjectUpdateToOneWithWhereWithoutSaved_searchesInput, ResearchProjectUpdateWithoutSaved_searchesInput>, ResearchProjectUncheckedUpdateWithoutSaved_searchesInput>
   }
 
   export type NestedStringFilter<$PrismaModel = never> = {
@@ -34541,6 +39815,17 @@ export namespace Prisma {
     not?: NestedEnumAnalysisStatusFilter<$PrismaModel> | $Enums.AnalysisStatus
   }
 
+  export type NestedFloatNullableFilter<$PrismaModel = never> = {
+    equals?: number | FloatFieldRefInput<$PrismaModel> | null
+    in?: number[] | ListFloatFieldRefInput<$PrismaModel> | null
+    notIn?: number[] | ListFloatFieldRefInput<$PrismaModel> | null
+    lt?: number | FloatFieldRefInput<$PrismaModel>
+    lte?: number | FloatFieldRefInput<$PrismaModel>
+    gt?: number | FloatFieldRefInput<$PrismaModel>
+    gte?: number | FloatFieldRefInput<$PrismaModel>
+    not?: NestedFloatNullableFilter<$PrismaModel> | number | null
+  }
+
   export type NestedEnumAnalysisStatusWithAggregatesFilter<$PrismaModel = never> = {
     equals?: $Enums.AnalysisStatus | EnumAnalysisStatusFieldRefInput<$PrismaModel>
     in?: $Enums.AnalysisStatus[] | ListEnumAnalysisStatusFieldRefInput<$PrismaModel>
@@ -34549,6 +39834,22 @@ export namespace Prisma {
     _count?: NestedIntFilter<$PrismaModel>
     _min?: NestedEnumAnalysisStatusFilter<$PrismaModel>
     _max?: NestedEnumAnalysisStatusFilter<$PrismaModel>
+  }
+
+  export type NestedFloatNullableWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: number | FloatFieldRefInput<$PrismaModel> | null
+    in?: number[] | ListFloatFieldRefInput<$PrismaModel> | null
+    notIn?: number[] | ListFloatFieldRefInput<$PrismaModel> | null
+    lt?: number | FloatFieldRefInput<$PrismaModel>
+    lte?: number | FloatFieldRefInput<$PrismaModel>
+    gt?: number | FloatFieldRefInput<$PrismaModel>
+    gte?: number | FloatFieldRefInput<$PrismaModel>
+    not?: NestedFloatNullableWithAggregatesFilter<$PrismaModel> | number | null
+    _count?: NestedIntNullableFilter<$PrismaModel>
+    _avg?: NestedFloatNullableFilter<$PrismaModel>
+    _sum?: NestedFloatNullableFilter<$PrismaModel>
+    _min?: NestedFloatNullableFilter<$PrismaModel>
+    _max?: NestedFloatNullableFilter<$PrismaModel>
   }
 
   export type NestedEnumSourcePlatformFilter<$PrismaModel = never> = {
@@ -34657,17 +39958,6 @@ export namespace Prisma {
     _max?: NestedIntNullableFilter<$PrismaModel>
   }
 
-  export type NestedFloatNullableFilter<$PrismaModel = never> = {
-    equals?: number | FloatFieldRefInput<$PrismaModel> | null
-    in?: number[] | ListFloatFieldRefInput<$PrismaModel> | null
-    notIn?: number[] | ListFloatFieldRefInput<$PrismaModel> | null
-    lt?: number | FloatFieldRefInput<$PrismaModel>
-    lte?: number | FloatFieldRefInput<$PrismaModel>
-    gt?: number | FloatFieldRefInput<$PrismaModel>
-    gte?: number | FloatFieldRefInput<$PrismaModel>
-    not?: NestedFloatNullableFilter<$PrismaModel> | number | null
-  }
-
   export type NestedBoolWithAggregatesFilter<$PrismaModel = never> = {
     equals?: boolean | BooleanFieldRefInput<$PrismaModel>
     not?: NestedBoolWithAggregatesFilter<$PrismaModel> | boolean
@@ -34693,37 +39983,21 @@ export namespace Prisma {
     _max?: NestedEnumBatchSubmissionStatusFilter<$PrismaModel>
   }
 
-  export type NestedFloatNullableWithAggregatesFilter<$PrismaModel = never> = {
-    equals?: number | FloatFieldRefInput<$PrismaModel> | null
-    in?: number[] | ListFloatFieldRefInput<$PrismaModel> | null
-    notIn?: number[] | ListFloatFieldRefInput<$PrismaModel> | null
-    lt?: number | FloatFieldRefInput<$PrismaModel>
-    lte?: number | FloatFieldRefInput<$PrismaModel>
-    gt?: number | FloatFieldRefInput<$PrismaModel>
-    gte?: number | FloatFieldRefInput<$PrismaModel>
-    not?: NestedFloatNullableWithAggregatesFilter<$PrismaModel> | number | null
-    _count?: NestedIntNullableFilter<$PrismaModel>
-    _avg?: NestedFloatNullableFilter<$PrismaModel>
-    _sum?: NestedFloatNullableFilter<$PrismaModel>
-    _min?: NestedFloatNullableFilter<$PrismaModel>
-    _max?: NestedFloatNullableFilter<$PrismaModel>
+  export type NestedEnumJobEventLevelFilter<$PrismaModel = never> = {
+    equals?: $Enums.JobEventLevel | EnumJobEventLevelFieldRefInput<$PrismaModel>
+    in?: $Enums.JobEventLevel[] | ListEnumJobEventLevelFieldRefInput<$PrismaModel>
+    notIn?: $Enums.JobEventLevel[] | ListEnumJobEventLevelFieldRefInput<$PrismaModel>
+    not?: NestedEnumJobEventLevelFilter<$PrismaModel> | $Enums.JobEventLevel
   }
 
-  export type NestedEnumInsightTypeFilter<$PrismaModel = never> = {
-    equals?: $Enums.InsightType | EnumInsightTypeFieldRefInput<$PrismaModel>
-    in?: $Enums.InsightType[] | ListEnumInsightTypeFieldRefInput<$PrismaModel>
-    notIn?: $Enums.InsightType[] | ListEnumInsightTypeFieldRefInput<$PrismaModel>
-    not?: NestedEnumInsightTypeFilter<$PrismaModel> | $Enums.InsightType
-  }
-
-  export type NestedEnumInsightTypeWithAggregatesFilter<$PrismaModel = never> = {
-    equals?: $Enums.InsightType | EnumInsightTypeFieldRefInput<$PrismaModel>
-    in?: $Enums.InsightType[] | ListEnumInsightTypeFieldRefInput<$PrismaModel>
-    notIn?: $Enums.InsightType[] | ListEnumInsightTypeFieldRefInput<$PrismaModel>
-    not?: NestedEnumInsightTypeWithAggregatesFilter<$PrismaModel> | $Enums.InsightType
+  export type NestedEnumJobEventLevelWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.JobEventLevel | EnumJobEventLevelFieldRefInput<$PrismaModel>
+    in?: $Enums.JobEventLevel[] | ListEnumJobEventLevelFieldRefInput<$PrismaModel>
+    notIn?: $Enums.JobEventLevel[] | ListEnumJobEventLevelFieldRefInput<$PrismaModel>
+    not?: NestedEnumJobEventLevelWithAggregatesFilter<$PrismaModel> | $Enums.JobEventLevel
     _count?: NestedIntFilter<$PrismaModel>
-    _min?: NestedEnumInsightTypeFilter<$PrismaModel>
-    _max?: NestedEnumInsightTypeFilter<$PrismaModel>
+    _min?: NestedEnumJobEventLevelFilter<$PrismaModel>
+    _max?: NestedEnumJobEventLevelFilter<$PrismaModel>
   }
   export type NestedJsonNullableFilter<$PrismaModel = never> =
     | PatchUndefined<
@@ -34747,6 +40021,40 @@ export namespace Prisma {
     gt?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
     gte?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
     not?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | JsonNullValueFilter
+  }
+
+  export type NestedEnumInsightTypeFilter<$PrismaModel = never> = {
+    equals?: $Enums.InsightType | EnumInsightTypeFieldRefInput<$PrismaModel>
+    in?: $Enums.InsightType[] | ListEnumInsightTypeFieldRefInput<$PrismaModel>
+    notIn?: $Enums.InsightType[] | ListEnumInsightTypeFieldRefInput<$PrismaModel>
+    not?: NestedEnumInsightTypeFilter<$PrismaModel> | $Enums.InsightType
+  }
+
+  export type NestedEnumSentimentLabelNullableFilter<$PrismaModel = never> = {
+    equals?: $Enums.SentimentLabel | EnumSentimentLabelFieldRefInput<$PrismaModel> | null
+    in?: $Enums.SentimentLabel[] | ListEnumSentimentLabelFieldRefInput<$PrismaModel> | null
+    notIn?: $Enums.SentimentLabel[] | ListEnumSentimentLabelFieldRefInput<$PrismaModel> | null
+    not?: NestedEnumSentimentLabelNullableFilter<$PrismaModel> | $Enums.SentimentLabel | null
+  }
+
+  export type NestedEnumInsightTypeWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.InsightType | EnumInsightTypeFieldRefInput<$PrismaModel>
+    in?: $Enums.InsightType[] | ListEnumInsightTypeFieldRefInput<$PrismaModel>
+    notIn?: $Enums.InsightType[] | ListEnumInsightTypeFieldRefInput<$PrismaModel>
+    not?: NestedEnumInsightTypeWithAggregatesFilter<$PrismaModel> | $Enums.InsightType
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedEnumInsightTypeFilter<$PrismaModel>
+    _max?: NestedEnumInsightTypeFilter<$PrismaModel>
+  }
+
+  export type NestedEnumSentimentLabelNullableWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.SentimentLabel | EnumSentimentLabelFieldRefInput<$PrismaModel> | null
+    in?: $Enums.SentimentLabel[] | ListEnumSentimentLabelFieldRefInput<$PrismaModel> | null
+    notIn?: $Enums.SentimentLabel[] | ListEnumSentimentLabelFieldRefInput<$PrismaModel> | null
+    not?: NestedEnumSentimentLabelNullableWithAggregatesFilter<$PrismaModel> | $Enums.SentimentLabel | null
+    _count?: NestedIntNullableFilter<$PrismaModel>
+    _min?: NestedEnumSentimentLabelNullableFilter<$PrismaModel>
+    _max?: NestedEnumSentimentLabelNullableFilter<$PrismaModel>
   }
 
   export type NestedEnumConversationModeFilter<$PrismaModel = never> = {
@@ -34817,6 +40125,9 @@ export namespace Prisma {
     comments_analyzed?: number
     created_at?: Date | string
     updated_at?: Date | string
+    sentiment_positive_pct?: number | null
+    sentiment_neutral_pct?: number | null
+    sentiment_negative_pct?: number | null
     source?: ResearchSourceCreateNestedOneWithoutResearch_projectInput
     analysis_configurations?: AnalysisConfigurationCreateNestedManyWithoutResearch_projectInput
     analysis_jobs?: AnalysisJobCreateNestedManyWithoutResearch_projectInput
@@ -34828,6 +40139,7 @@ export namespace Prisma {
     embeddings?: EmbeddingCreateNestedManyWithoutResearch_projectInput
     conversations?: ConversationCreateNestedManyWithoutResearch_projectInput
     saved_insights?: SavedInsightCreateNestedManyWithoutResearch_projectInput
+    saved_searches?: SavedSearchCreateNestedManyWithoutResearch_projectInput
   }
 
   export type ResearchProjectUncheckedCreateWithoutUserInput = {
@@ -34838,6 +40150,9 @@ export namespace Prisma {
     comments_analyzed?: number
     created_at?: Date | string
     updated_at?: Date | string
+    sentiment_positive_pct?: number | null
+    sentiment_neutral_pct?: number | null
+    sentiment_negative_pct?: number | null
     source?: ResearchSourceUncheckedCreateNestedOneWithoutResearch_projectInput
     analysis_configurations?: AnalysisConfigurationUncheckedCreateNestedManyWithoutResearch_projectInput
     analysis_jobs?: AnalysisJobUncheckedCreateNestedManyWithoutResearch_projectInput
@@ -34849,6 +40164,7 @@ export namespace Prisma {
     embeddings?: EmbeddingUncheckedCreateNestedManyWithoutResearch_projectInput
     conversations?: ConversationUncheckedCreateNestedManyWithoutResearch_projectInput
     saved_insights?: SavedInsightUncheckedCreateNestedManyWithoutResearch_projectInput
+    saved_searches?: SavedSearchUncheckedCreateNestedManyWithoutResearch_projectInput
   }
 
   export type ResearchProjectCreateOrConnectWithoutUserInput = {
@@ -34896,12 +40212,14 @@ export namespace Prisma {
     created_at?: Date | string
     research_project: ResearchProjectCreateNestedOneWithoutSaved_insightsInput
     knowledge_insight: KnowledgeInsightCreateNestedOneWithoutSaved_insightsInput
+    collection?: SavedInsightCollectionCreateNestedOneWithoutSaved_insightsInput
   }
 
   export type SavedInsightUncheckedCreateWithoutUserInput = {
     id?: string
     research_project_uuid: string
     knowledge_insight_uuid: string
+    collection_uuid?: string | null
     created_at?: Date | string
   }
 
@@ -34912,6 +40230,62 @@ export namespace Prisma {
 
   export type SavedInsightCreateManyUserInputEnvelope = {
     data: SavedInsightCreateManyUserInput | SavedInsightCreateManyUserInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type SavedInsightCollectionCreateWithoutUserInput = {
+    id?: string
+    name: string
+    created_at?: Date | string
+    updated_at?: Date | string
+    saved_insights?: SavedInsightCreateNestedManyWithoutCollectionInput
+  }
+
+  export type SavedInsightCollectionUncheckedCreateWithoutUserInput = {
+    id?: string
+    name: string
+    created_at?: Date | string
+    updated_at?: Date | string
+    saved_insights?: SavedInsightUncheckedCreateNestedManyWithoutCollectionInput
+  }
+
+  export type SavedInsightCollectionCreateOrConnectWithoutUserInput = {
+    where: SavedInsightCollectionWhereUniqueInput
+    create: XOR<SavedInsightCollectionCreateWithoutUserInput, SavedInsightCollectionUncheckedCreateWithoutUserInput>
+  }
+
+  export type SavedInsightCollectionCreateManyUserInputEnvelope = {
+    data: SavedInsightCollectionCreateManyUserInput | SavedInsightCollectionCreateManyUserInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type SavedSearchCreateWithoutUserInput = {
+    id?: string
+    name?: string | null
+    query: string
+    min_score?: number | null
+    time_range?: $Enums.TopTimeRange | null
+    created_at?: Date | string
+    research_project?: ResearchProjectCreateNestedOneWithoutSaved_searchesInput
+  }
+
+  export type SavedSearchUncheckedCreateWithoutUserInput = {
+    id?: string
+    research_project_uuid?: string | null
+    name?: string | null
+    query: string
+    min_score?: number | null
+    time_range?: $Enums.TopTimeRange | null
+    created_at?: Date | string
+  }
+
+  export type SavedSearchCreateOrConnectWithoutUserInput = {
+    where: SavedSearchWhereUniqueInput
+    create: XOR<SavedSearchCreateWithoutUserInput, SavedSearchUncheckedCreateWithoutUserInput>
+  }
+
+  export type SavedSearchCreateManyUserInputEnvelope = {
+    data: SavedSearchCreateManyUserInput | SavedSearchCreateManyUserInput[]
     skipDuplicates?: boolean
   }
 
@@ -34971,6 +40345,9 @@ export namespace Prisma {
     comments_analyzed?: IntFilter<"ResearchProject"> | number
     created_at?: DateTimeFilter<"ResearchProject"> | Date | string
     updated_at?: DateTimeFilter<"ResearchProject"> | Date | string
+    sentiment_positive_pct?: FloatNullableFilter<"ResearchProject"> | number | null
+    sentiment_neutral_pct?: FloatNullableFilter<"ResearchProject"> | number | null
+    sentiment_negative_pct?: FloatNullableFilter<"ResearchProject"> | number | null
   }
 
   export type ConversationUpsertWithWhereUniqueWithoutUserInput = {
@@ -35026,7 +40403,65 @@ export namespace Prisma {
     user_uuid?: StringFilter<"SavedInsight"> | string
     research_project_uuid?: StringFilter<"SavedInsight"> | string
     knowledge_insight_uuid?: StringFilter<"SavedInsight"> | string
+    collection_uuid?: StringNullableFilter<"SavedInsight"> | string | null
     created_at?: DateTimeFilter<"SavedInsight"> | Date | string
+  }
+
+  export type SavedInsightCollectionUpsertWithWhereUniqueWithoutUserInput = {
+    where: SavedInsightCollectionWhereUniqueInput
+    update: XOR<SavedInsightCollectionUpdateWithoutUserInput, SavedInsightCollectionUncheckedUpdateWithoutUserInput>
+    create: XOR<SavedInsightCollectionCreateWithoutUserInput, SavedInsightCollectionUncheckedCreateWithoutUserInput>
+  }
+
+  export type SavedInsightCollectionUpdateWithWhereUniqueWithoutUserInput = {
+    where: SavedInsightCollectionWhereUniqueInput
+    data: XOR<SavedInsightCollectionUpdateWithoutUserInput, SavedInsightCollectionUncheckedUpdateWithoutUserInput>
+  }
+
+  export type SavedInsightCollectionUpdateManyWithWhereWithoutUserInput = {
+    where: SavedInsightCollectionScalarWhereInput
+    data: XOR<SavedInsightCollectionUpdateManyMutationInput, SavedInsightCollectionUncheckedUpdateManyWithoutUserInput>
+  }
+
+  export type SavedInsightCollectionScalarWhereInput = {
+    AND?: SavedInsightCollectionScalarWhereInput | SavedInsightCollectionScalarWhereInput[]
+    OR?: SavedInsightCollectionScalarWhereInput[]
+    NOT?: SavedInsightCollectionScalarWhereInput | SavedInsightCollectionScalarWhereInput[]
+    id?: StringFilter<"SavedInsightCollection"> | string
+    user_uuid?: StringFilter<"SavedInsightCollection"> | string
+    name?: StringFilter<"SavedInsightCollection"> | string
+    created_at?: DateTimeFilter<"SavedInsightCollection"> | Date | string
+    updated_at?: DateTimeFilter<"SavedInsightCollection"> | Date | string
+  }
+
+  export type SavedSearchUpsertWithWhereUniqueWithoutUserInput = {
+    where: SavedSearchWhereUniqueInput
+    update: XOR<SavedSearchUpdateWithoutUserInput, SavedSearchUncheckedUpdateWithoutUserInput>
+    create: XOR<SavedSearchCreateWithoutUserInput, SavedSearchUncheckedCreateWithoutUserInput>
+  }
+
+  export type SavedSearchUpdateWithWhereUniqueWithoutUserInput = {
+    where: SavedSearchWhereUniqueInput
+    data: XOR<SavedSearchUpdateWithoutUserInput, SavedSearchUncheckedUpdateWithoutUserInput>
+  }
+
+  export type SavedSearchUpdateManyWithWhereWithoutUserInput = {
+    where: SavedSearchScalarWhereInput
+    data: XOR<SavedSearchUpdateManyMutationInput, SavedSearchUncheckedUpdateManyWithoutUserInput>
+  }
+
+  export type SavedSearchScalarWhereInput = {
+    AND?: SavedSearchScalarWhereInput | SavedSearchScalarWhereInput[]
+    OR?: SavedSearchScalarWhereInput[]
+    NOT?: SavedSearchScalarWhereInput | SavedSearchScalarWhereInput[]
+    id?: StringFilter<"SavedSearch"> | string
+    user_uuid?: StringFilter<"SavedSearch"> | string
+    research_project_uuid?: StringNullableFilter<"SavedSearch"> | string | null
+    name?: StringNullableFilter<"SavedSearch"> | string | null
+    query?: StringFilter<"SavedSearch"> | string
+    min_score?: IntNullableFilter<"SavedSearch"> | number | null
+    time_range?: EnumTopTimeRangeNullableFilter<"SavedSearch"> | $Enums.TopTimeRange | null
+    created_at?: DateTimeFilter<"SavedSearch"> | Date | string
   }
 
   export type UserCreateWithoutPassword_reset_tokensInput = {
@@ -35040,6 +40475,8 @@ export namespace Prisma {
     research_projects?: ResearchProjectCreateNestedManyWithoutUserInput
     conversations?: ConversationCreateNestedManyWithoutUserInput
     saved_insights?: SavedInsightCreateNestedManyWithoutUserInput
+    saved_insight_collections?: SavedInsightCollectionCreateNestedManyWithoutUserInput
+    saved_searches?: SavedSearchCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutPassword_reset_tokensInput = {
@@ -35053,6 +40490,8 @@ export namespace Prisma {
     research_projects?: ResearchProjectUncheckedCreateNestedManyWithoutUserInput
     conversations?: ConversationUncheckedCreateNestedManyWithoutUserInput
     saved_insights?: SavedInsightUncheckedCreateNestedManyWithoutUserInput
+    saved_insight_collections?: SavedInsightCollectionUncheckedCreateNestedManyWithoutUserInput
+    saved_searches?: SavedSearchUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutPassword_reset_tokensInput = {
@@ -35082,6 +40521,8 @@ export namespace Prisma {
     research_projects?: ResearchProjectUpdateManyWithoutUserNestedInput
     conversations?: ConversationUpdateManyWithoutUserNestedInput
     saved_insights?: SavedInsightUpdateManyWithoutUserNestedInput
+    saved_insight_collections?: SavedInsightCollectionUpdateManyWithoutUserNestedInput
+    saved_searches?: SavedSearchUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutPassword_reset_tokensInput = {
@@ -35095,6 +40536,8 @@ export namespace Prisma {
     research_projects?: ResearchProjectUncheckedUpdateManyWithoutUserNestedInput
     conversations?: ConversationUncheckedUpdateManyWithoutUserNestedInput
     saved_insights?: SavedInsightUncheckedUpdateManyWithoutUserNestedInput
+    saved_insight_collections?: SavedInsightCollectionUncheckedUpdateManyWithoutUserNestedInput
+    saved_searches?: SavedSearchUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type UserCreateWithoutResearch_projectsInput = {
@@ -35108,6 +40551,8 @@ export namespace Prisma {
     password_reset_tokens?: PasswordResetTokenCreateNestedManyWithoutUserInput
     conversations?: ConversationCreateNestedManyWithoutUserInput
     saved_insights?: SavedInsightCreateNestedManyWithoutUserInput
+    saved_insight_collections?: SavedInsightCollectionCreateNestedManyWithoutUserInput
+    saved_searches?: SavedSearchCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutResearch_projectsInput = {
@@ -35121,6 +40566,8 @@ export namespace Prisma {
     password_reset_tokens?: PasswordResetTokenUncheckedCreateNestedManyWithoutUserInput
     conversations?: ConversationUncheckedCreateNestedManyWithoutUserInput
     saved_insights?: SavedInsightUncheckedCreateNestedManyWithoutUserInput
+    saved_insight_collections?: SavedInsightCollectionUncheckedCreateNestedManyWithoutUserInput
+    saved_searches?: SavedSearchUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutResearch_projectsInput = {
@@ -35223,6 +40670,10 @@ export namespace Prisma {
     posts_total?: number
     comments_processed?: number
     comments_total?: number
+    prompt_tokens?: number
+    completion_tokens?: number
+    estimated_cost_usd?: number | null
+    actual_cost_usd?: number | null
     error_message?: string | null
     started_at?: Date | string | null
     completed_at?: Date | string | null
@@ -35232,6 +40683,7 @@ export namespace Prisma {
     batch_submissions?: BatchSubmissionCreateNestedManyWithoutAnalysis_jobInput
     knowledge_chunks?: KnowledgeChunkCreateNestedManyWithoutAnalysis_jobInput
     knowledge_insights?: KnowledgeInsightCreateNestedManyWithoutAnalysis_jobInput
+    job_events?: JobEventCreateNestedManyWithoutAnalysis_jobInput
   }
 
   export type AnalysisJobUncheckedCreateWithoutResearch_projectInput = {
@@ -35243,6 +40695,10 @@ export namespace Prisma {
     posts_total?: number
     comments_processed?: number
     comments_total?: number
+    prompt_tokens?: number
+    completion_tokens?: number
+    estimated_cost_usd?: number | null
+    actual_cost_usd?: number | null
     error_message?: string | null
     started_at?: Date | string | null
     completed_at?: Date | string | null
@@ -35251,6 +40707,7 @@ export namespace Prisma {
     batch_submissions?: BatchSubmissionUncheckedCreateNestedManyWithoutAnalysis_jobInput
     knowledge_chunks?: KnowledgeChunkUncheckedCreateNestedManyWithoutAnalysis_jobInput
     knowledge_insights?: KnowledgeInsightUncheckedCreateNestedManyWithoutAnalysis_jobInput
+    job_events?: JobEventUncheckedCreateNestedManyWithoutAnalysis_jobInput
   }
 
   export type AnalysisJobCreateOrConnectWithoutResearch_projectInput = {
@@ -35432,6 +40889,8 @@ export namespace Prisma {
     content: string
     confidence_score?: number | null
     supporting_count?: number
+    sentiment?: $Enums.SentimentLabel | null
+    sentiment_score?: number | null
     metadata?: NullableJsonNullValueInput | InputJsonValue
     created_at?: Date | string
     updated_at?: Date | string
@@ -35452,6 +40911,8 @@ export namespace Prisma {
     content: string
     confidence_score?: number | null
     supporting_count?: number
+    sentiment?: $Enums.SentimentLabel | null
+    sentiment_score?: number | null
     metadata?: NullableJsonNullValueInput | InputJsonValue
     created_at?: Date | string
     updated_at?: Date | string
@@ -35568,12 +41029,14 @@ export namespace Prisma {
     created_at?: Date | string
     user: UserCreateNestedOneWithoutSaved_insightsInput
     knowledge_insight: KnowledgeInsightCreateNestedOneWithoutSaved_insightsInput
+    collection?: SavedInsightCollectionCreateNestedOneWithoutSaved_insightsInput
   }
 
   export type SavedInsightUncheckedCreateWithoutResearch_projectInput = {
     id?: string
     user_uuid: string
     knowledge_insight_uuid: string
+    collection_uuid?: string | null
     created_at?: Date | string
   }
 
@@ -35584,6 +41047,36 @@ export namespace Prisma {
 
   export type SavedInsightCreateManyResearch_projectInputEnvelope = {
     data: SavedInsightCreateManyResearch_projectInput | SavedInsightCreateManyResearch_projectInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type SavedSearchCreateWithoutResearch_projectInput = {
+    id?: string
+    name?: string | null
+    query: string
+    min_score?: number | null
+    time_range?: $Enums.TopTimeRange | null
+    created_at?: Date | string
+    user: UserCreateNestedOneWithoutSaved_searchesInput
+  }
+
+  export type SavedSearchUncheckedCreateWithoutResearch_projectInput = {
+    id?: string
+    user_uuid: string
+    name?: string | null
+    query: string
+    min_score?: number | null
+    time_range?: $Enums.TopTimeRange | null
+    created_at?: Date | string
+  }
+
+  export type SavedSearchCreateOrConnectWithoutResearch_projectInput = {
+    where: SavedSearchWhereUniqueInput
+    create: XOR<SavedSearchCreateWithoutResearch_projectInput, SavedSearchUncheckedCreateWithoutResearch_projectInput>
+  }
+
+  export type SavedSearchCreateManyResearch_projectInputEnvelope = {
+    data: SavedSearchCreateManyResearch_projectInput | SavedSearchCreateManyResearch_projectInput[]
     skipDuplicates?: boolean
   }
 
@@ -35609,6 +41102,8 @@ export namespace Prisma {
     password_reset_tokens?: PasswordResetTokenUpdateManyWithoutUserNestedInput
     conversations?: ConversationUpdateManyWithoutUserNestedInput
     saved_insights?: SavedInsightUpdateManyWithoutUserNestedInput
+    saved_insight_collections?: SavedInsightCollectionUpdateManyWithoutUserNestedInput
+    saved_searches?: SavedSearchUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutResearch_projectsInput = {
@@ -35622,6 +41117,8 @@ export namespace Prisma {
     password_reset_tokens?: PasswordResetTokenUncheckedUpdateManyWithoutUserNestedInput
     conversations?: ConversationUncheckedUpdateManyWithoutUserNestedInput
     saved_insights?: SavedInsightUncheckedUpdateManyWithoutUserNestedInput
+    saved_insight_collections?: SavedInsightCollectionUncheckedUpdateManyWithoutUserNestedInput
+    saved_searches?: SavedSearchUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type ResearchSourceUpsertWithoutResearch_projectInput = {
@@ -35730,6 +41227,10 @@ export namespace Prisma {
     posts_total?: IntFilter<"AnalysisJob"> | number
     comments_processed?: IntFilter<"AnalysisJob"> | number
     comments_total?: IntFilter<"AnalysisJob"> | number
+    prompt_tokens?: IntFilter<"AnalysisJob"> | number
+    completion_tokens?: IntFilter<"AnalysisJob"> | number
+    estimated_cost_usd?: FloatNullableFilter<"AnalysisJob"> | number | null
+    actual_cost_usd?: FloatNullableFilter<"AnalysisJob"> | number | null
     error_message?: StringNullableFilter<"AnalysisJob"> | string | null
     started_at?: DateTimeNullableFilter<"AnalysisJob"> | Date | string | null
     completed_at?: DateTimeNullableFilter<"AnalysisJob"> | Date | string | null
@@ -35880,6 +41381,8 @@ export namespace Prisma {
     content?: StringFilter<"KnowledgeInsight"> | string
     confidence_score?: FloatNullableFilter<"KnowledgeInsight"> | number | null
     supporting_count?: IntFilter<"KnowledgeInsight"> | number
+    sentiment?: EnumSentimentLabelNullableFilter<"KnowledgeInsight"> | $Enums.SentimentLabel | null
+    sentiment_score?: FloatNullableFilter<"KnowledgeInsight"> | number | null
     metadata?: JsonNullableFilter<"KnowledgeInsight">
     created_at?: DateTimeFilter<"KnowledgeInsight"> | Date | string
     updated_at?: DateTimeFilter<"KnowledgeInsight"> | Date | string
@@ -35977,6 +41480,22 @@ export namespace Prisma {
     data: XOR<SavedInsightUpdateManyMutationInput, SavedInsightUncheckedUpdateManyWithoutResearch_projectInput>
   }
 
+  export type SavedSearchUpsertWithWhereUniqueWithoutResearch_projectInput = {
+    where: SavedSearchWhereUniqueInput
+    update: XOR<SavedSearchUpdateWithoutResearch_projectInput, SavedSearchUncheckedUpdateWithoutResearch_projectInput>
+    create: XOR<SavedSearchCreateWithoutResearch_projectInput, SavedSearchUncheckedCreateWithoutResearch_projectInput>
+  }
+
+  export type SavedSearchUpdateWithWhereUniqueWithoutResearch_projectInput = {
+    where: SavedSearchWhereUniqueInput
+    data: XOR<SavedSearchUpdateWithoutResearch_projectInput, SavedSearchUncheckedUpdateWithoutResearch_projectInput>
+  }
+
+  export type SavedSearchUpdateManyWithWhereWithoutResearch_projectInput = {
+    where: SavedSearchScalarWhereInput
+    data: XOR<SavedSearchUpdateManyMutationInput, SavedSearchUncheckedUpdateManyWithoutResearch_projectInput>
+  }
+
   export type ResearchProjectCreateWithoutSourceInput = {
     id?: string
     name: string
@@ -35985,6 +41504,9 @@ export namespace Prisma {
     comments_analyzed?: number
     created_at?: Date | string
     updated_at?: Date | string
+    sentiment_positive_pct?: number | null
+    sentiment_neutral_pct?: number | null
+    sentiment_negative_pct?: number | null
     user: UserCreateNestedOneWithoutResearch_projectsInput
     analysis_configurations?: AnalysisConfigurationCreateNestedManyWithoutResearch_projectInput
     analysis_jobs?: AnalysisJobCreateNestedManyWithoutResearch_projectInput
@@ -35996,6 +41518,7 @@ export namespace Prisma {
     embeddings?: EmbeddingCreateNestedManyWithoutResearch_projectInput
     conversations?: ConversationCreateNestedManyWithoutResearch_projectInput
     saved_insights?: SavedInsightCreateNestedManyWithoutResearch_projectInput
+    saved_searches?: SavedSearchCreateNestedManyWithoutResearch_projectInput
   }
 
   export type ResearchProjectUncheckedCreateWithoutSourceInput = {
@@ -36007,6 +41530,9 @@ export namespace Prisma {
     comments_analyzed?: number
     created_at?: Date | string
     updated_at?: Date | string
+    sentiment_positive_pct?: number | null
+    sentiment_neutral_pct?: number | null
+    sentiment_negative_pct?: number | null
     analysis_configurations?: AnalysisConfigurationUncheckedCreateNestedManyWithoutResearch_projectInput
     analysis_jobs?: AnalysisJobUncheckedCreateNestedManyWithoutResearch_projectInput
     posts?: PostUncheckedCreateNestedManyWithoutResearch_projectInput
@@ -36017,6 +41543,7 @@ export namespace Prisma {
     embeddings?: EmbeddingUncheckedCreateNestedManyWithoutResearch_projectInput
     conversations?: ConversationUncheckedCreateNestedManyWithoutResearch_projectInput
     saved_insights?: SavedInsightUncheckedCreateNestedManyWithoutResearch_projectInput
+    saved_searches?: SavedSearchUncheckedCreateNestedManyWithoutResearch_projectInput
   }
 
   export type ResearchProjectCreateOrConnectWithoutSourceInput = {
@@ -36043,6 +41570,9 @@ export namespace Prisma {
     comments_analyzed?: IntFieldUpdateOperationsInput | number
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
     updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    sentiment_positive_pct?: NullableFloatFieldUpdateOperationsInput | number | null
+    sentiment_neutral_pct?: NullableFloatFieldUpdateOperationsInput | number | null
+    sentiment_negative_pct?: NullableFloatFieldUpdateOperationsInput | number | null
     user?: UserUpdateOneRequiredWithoutResearch_projectsNestedInput
     analysis_configurations?: AnalysisConfigurationUpdateManyWithoutResearch_projectNestedInput
     analysis_jobs?: AnalysisJobUpdateManyWithoutResearch_projectNestedInput
@@ -36054,6 +41584,7 @@ export namespace Prisma {
     embeddings?: EmbeddingUpdateManyWithoutResearch_projectNestedInput
     conversations?: ConversationUpdateManyWithoutResearch_projectNestedInput
     saved_insights?: SavedInsightUpdateManyWithoutResearch_projectNestedInput
+    saved_searches?: SavedSearchUpdateManyWithoutResearch_projectNestedInput
   }
 
   export type ResearchProjectUncheckedUpdateWithoutSourceInput = {
@@ -36065,6 +41596,9 @@ export namespace Prisma {
     comments_analyzed?: IntFieldUpdateOperationsInput | number
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
     updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    sentiment_positive_pct?: NullableFloatFieldUpdateOperationsInput | number | null
+    sentiment_neutral_pct?: NullableFloatFieldUpdateOperationsInput | number | null
+    sentiment_negative_pct?: NullableFloatFieldUpdateOperationsInput | number | null
     analysis_configurations?: AnalysisConfigurationUncheckedUpdateManyWithoutResearch_projectNestedInput
     analysis_jobs?: AnalysisJobUncheckedUpdateManyWithoutResearch_projectNestedInput
     posts?: PostUncheckedUpdateManyWithoutResearch_projectNestedInput
@@ -36075,6 +41609,7 @@ export namespace Prisma {
     embeddings?: EmbeddingUncheckedUpdateManyWithoutResearch_projectNestedInput
     conversations?: ConversationUncheckedUpdateManyWithoutResearch_projectNestedInput
     saved_insights?: SavedInsightUncheckedUpdateManyWithoutResearch_projectNestedInput
+    saved_searches?: SavedSearchUncheckedUpdateManyWithoutResearch_projectNestedInput
   }
 
   export type ResearchProjectCreateWithoutAnalysis_configurationsInput = {
@@ -36085,6 +41620,9 @@ export namespace Prisma {
     comments_analyzed?: number
     created_at?: Date | string
     updated_at?: Date | string
+    sentiment_positive_pct?: number | null
+    sentiment_neutral_pct?: number | null
+    sentiment_negative_pct?: number | null
     user: UserCreateNestedOneWithoutResearch_projectsInput
     source?: ResearchSourceCreateNestedOneWithoutResearch_projectInput
     analysis_jobs?: AnalysisJobCreateNestedManyWithoutResearch_projectInput
@@ -36096,6 +41634,7 @@ export namespace Prisma {
     embeddings?: EmbeddingCreateNestedManyWithoutResearch_projectInput
     conversations?: ConversationCreateNestedManyWithoutResearch_projectInput
     saved_insights?: SavedInsightCreateNestedManyWithoutResearch_projectInput
+    saved_searches?: SavedSearchCreateNestedManyWithoutResearch_projectInput
   }
 
   export type ResearchProjectUncheckedCreateWithoutAnalysis_configurationsInput = {
@@ -36107,6 +41646,9 @@ export namespace Prisma {
     comments_analyzed?: number
     created_at?: Date | string
     updated_at?: Date | string
+    sentiment_positive_pct?: number | null
+    sentiment_neutral_pct?: number | null
+    sentiment_negative_pct?: number | null
     source?: ResearchSourceUncheckedCreateNestedOneWithoutResearch_projectInput
     analysis_jobs?: AnalysisJobUncheckedCreateNestedManyWithoutResearch_projectInput
     posts?: PostUncheckedCreateNestedManyWithoutResearch_projectInput
@@ -36117,6 +41659,7 @@ export namespace Prisma {
     embeddings?: EmbeddingUncheckedCreateNestedManyWithoutResearch_projectInput
     conversations?: ConversationUncheckedCreateNestedManyWithoutResearch_projectInput
     saved_insights?: SavedInsightUncheckedCreateNestedManyWithoutResearch_projectInput
+    saved_searches?: SavedSearchUncheckedCreateNestedManyWithoutResearch_projectInput
   }
 
   export type ResearchProjectCreateOrConnectWithoutAnalysis_configurationsInput = {
@@ -36132,6 +41675,10 @@ export namespace Prisma {
     posts_total?: number
     comments_processed?: number
     comments_total?: number
+    prompt_tokens?: number
+    completion_tokens?: number
+    estimated_cost_usd?: number | null
+    actual_cost_usd?: number | null
     error_message?: string | null
     started_at?: Date | string | null
     completed_at?: Date | string | null
@@ -36141,6 +41688,7 @@ export namespace Prisma {
     batch_submissions?: BatchSubmissionCreateNestedManyWithoutAnalysis_jobInput
     knowledge_chunks?: KnowledgeChunkCreateNestedManyWithoutAnalysis_jobInput
     knowledge_insights?: KnowledgeInsightCreateNestedManyWithoutAnalysis_jobInput
+    job_events?: JobEventCreateNestedManyWithoutAnalysis_jobInput
   }
 
   export type AnalysisJobUncheckedCreateWithoutConfigurationInput = {
@@ -36152,6 +41700,10 @@ export namespace Prisma {
     posts_total?: number
     comments_processed?: number
     comments_total?: number
+    prompt_tokens?: number
+    completion_tokens?: number
+    estimated_cost_usd?: number | null
+    actual_cost_usd?: number | null
     error_message?: string | null
     started_at?: Date | string | null
     completed_at?: Date | string | null
@@ -36160,6 +41712,7 @@ export namespace Prisma {
     batch_submissions?: BatchSubmissionUncheckedCreateNestedManyWithoutAnalysis_jobInput
     knowledge_chunks?: KnowledgeChunkUncheckedCreateNestedManyWithoutAnalysis_jobInput
     knowledge_insights?: KnowledgeInsightUncheckedCreateNestedManyWithoutAnalysis_jobInput
+    job_events?: JobEventUncheckedCreateNestedManyWithoutAnalysis_jobInput
   }
 
   export type AnalysisJobCreateOrConnectWithoutConfigurationInput = {
@@ -36186,6 +41739,9 @@ export namespace Prisma {
     comments_analyzed?: IntFieldUpdateOperationsInput | number
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
     updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    sentiment_positive_pct?: NullableFloatFieldUpdateOperationsInput | number | null
+    sentiment_neutral_pct?: NullableFloatFieldUpdateOperationsInput | number | null
+    sentiment_negative_pct?: NullableFloatFieldUpdateOperationsInput | number | null
     user?: UserUpdateOneRequiredWithoutResearch_projectsNestedInput
     source?: ResearchSourceUpdateOneWithoutResearch_projectNestedInput
     analysis_jobs?: AnalysisJobUpdateManyWithoutResearch_projectNestedInput
@@ -36197,6 +41753,7 @@ export namespace Prisma {
     embeddings?: EmbeddingUpdateManyWithoutResearch_projectNestedInput
     conversations?: ConversationUpdateManyWithoutResearch_projectNestedInput
     saved_insights?: SavedInsightUpdateManyWithoutResearch_projectNestedInput
+    saved_searches?: SavedSearchUpdateManyWithoutResearch_projectNestedInput
   }
 
   export type ResearchProjectUncheckedUpdateWithoutAnalysis_configurationsInput = {
@@ -36208,6 +41765,9 @@ export namespace Prisma {
     comments_analyzed?: IntFieldUpdateOperationsInput | number
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
     updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    sentiment_positive_pct?: NullableFloatFieldUpdateOperationsInput | number | null
+    sentiment_neutral_pct?: NullableFloatFieldUpdateOperationsInput | number | null
+    sentiment_negative_pct?: NullableFloatFieldUpdateOperationsInput | number | null
     source?: ResearchSourceUncheckedUpdateOneWithoutResearch_projectNestedInput
     analysis_jobs?: AnalysisJobUncheckedUpdateManyWithoutResearch_projectNestedInput
     posts?: PostUncheckedUpdateManyWithoutResearch_projectNestedInput
@@ -36218,6 +41778,7 @@ export namespace Prisma {
     embeddings?: EmbeddingUncheckedUpdateManyWithoutResearch_projectNestedInput
     conversations?: ConversationUncheckedUpdateManyWithoutResearch_projectNestedInput
     saved_insights?: SavedInsightUncheckedUpdateManyWithoutResearch_projectNestedInput
+    saved_searches?: SavedSearchUncheckedUpdateManyWithoutResearch_projectNestedInput
   }
 
   export type AnalysisJobUpsertWithoutConfigurationInput = {
@@ -36239,6 +41800,10 @@ export namespace Prisma {
     posts_total?: IntFieldUpdateOperationsInput | number
     comments_processed?: IntFieldUpdateOperationsInput | number
     comments_total?: IntFieldUpdateOperationsInput | number
+    prompt_tokens?: IntFieldUpdateOperationsInput | number
+    completion_tokens?: IntFieldUpdateOperationsInput | number
+    estimated_cost_usd?: NullableFloatFieldUpdateOperationsInput | number | null
+    actual_cost_usd?: NullableFloatFieldUpdateOperationsInput | number | null
     error_message?: NullableStringFieldUpdateOperationsInput | string | null
     started_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     completed_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -36248,6 +41813,7 @@ export namespace Prisma {
     batch_submissions?: BatchSubmissionUpdateManyWithoutAnalysis_jobNestedInput
     knowledge_chunks?: KnowledgeChunkUpdateManyWithoutAnalysis_jobNestedInput
     knowledge_insights?: KnowledgeInsightUpdateManyWithoutAnalysis_jobNestedInput
+    job_events?: JobEventUpdateManyWithoutAnalysis_jobNestedInput
   }
 
   export type AnalysisJobUncheckedUpdateWithoutConfigurationInput = {
@@ -36259,6 +41825,10 @@ export namespace Prisma {
     posts_total?: IntFieldUpdateOperationsInput | number
     comments_processed?: IntFieldUpdateOperationsInput | number
     comments_total?: IntFieldUpdateOperationsInput | number
+    prompt_tokens?: IntFieldUpdateOperationsInput | number
+    completion_tokens?: IntFieldUpdateOperationsInput | number
+    estimated_cost_usd?: NullableFloatFieldUpdateOperationsInput | number | null
+    actual_cost_usd?: NullableFloatFieldUpdateOperationsInput | number | null
     error_message?: NullableStringFieldUpdateOperationsInput | string | null
     started_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     completed_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -36267,6 +41837,7 @@ export namespace Prisma {
     batch_submissions?: BatchSubmissionUncheckedUpdateManyWithoutAnalysis_jobNestedInput
     knowledge_chunks?: KnowledgeChunkUncheckedUpdateManyWithoutAnalysis_jobNestedInput
     knowledge_insights?: KnowledgeInsightUncheckedUpdateManyWithoutAnalysis_jobNestedInput
+    job_events?: JobEventUncheckedUpdateManyWithoutAnalysis_jobNestedInput
   }
 
   export type ResearchProjectCreateWithoutAnalysis_jobsInput = {
@@ -36277,6 +41848,9 @@ export namespace Prisma {
     comments_analyzed?: number
     created_at?: Date | string
     updated_at?: Date | string
+    sentiment_positive_pct?: number | null
+    sentiment_neutral_pct?: number | null
+    sentiment_negative_pct?: number | null
     user: UserCreateNestedOneWithoutResearch_projectsInput
     source?: ResearchSourceCreateNestedOneWithoutResearch_projectInput
     analysis_configurations?: AnalysisConfigurationCreateNestedManyWithoutResearch_projectInput
@@ -36288,6 +41862,7 @@ export namespace Prisma {
     embeddings?: EmbeddingCreateNestedManyWithoutResearch_projectInput
     conversations?: ConversationCreateNestedManyWithoutResearch_projectInput
     saved_insights?: SavedInsightCreateNestedManyWithoutResearch_projectInput
+    saved_searches?: SavedSearchCreateNestedManyWithoutResearch_projectInput
   }
 
   export type ResearchProjectUncheckedCreateWithoutAnalysis_jobsInput = {
@@ -36299,6 +41874,9 @@ export namespace Prisma {
     comments_analyzed?: number
     created_at?: Date | string
     updated_at?: Date | string
+    sentiment_positive_pct?: number | null
+    sentiment_neutral_pct?: number | null
+    sentiment_negative_pct?: number | null
     source?: ResearchSourceUncheckedCreateNestedOneWithoutResearch_projectInput
     analysis_configurations?: AnalysisConfigurationUncheckedCreateNestedManyWithoutResearch_projectInput
     posts?: PostUncheckedCreateNestedManyWithoutResearch_projectInput
@@ -36309,6 +41887,7 @@ export namespace Prisma {
     embeddings?: EmbeddingUncheckedCreateNestedManyWithoutResearch_projectInput
     conversations?: ConversationUncheckedCreateNestedManyWithoutResearch_projectInput
     saved_insights?: SavedInsightUncheckedCreateNestedManyWithoutResearch_projectInput
+    saved_searches?: SavedSearchUncheckedCreateNestedManyWithoutResearch_projectInput
   }
 
   export type ResearchProjectCreateOrConnectWithoutAnalysis_jobsInput = {
@@ -36378,6 +41957,9 @@ export namespace Prisma {
     request_file_id?: string | null
     response_file_id?: string | null
     error_file_id?: string | null
+    prompt_tokens?: number
+    completion_tokens?: number
+    cost_usd?: number | null
     submitted_at?: Date | string | null
     completed_at?: Date | string | null
     created_at?: Date | string
@@ -36391,6 +41973,9 @@ export namespace Prisma {
     request_file_id?: string | null
     response_file_id?: string | null
     error_file_id?: string | null
+    prompt_tokens?: number
+    completion_tokens?: number
+    cost_usd?: number | null
     submitted_at?: Date | string | null
     completed_at?: Date | string | null
     created_at?: Date | string
@@ -36452,6 +42037,8 @@ export namespace Prisma {
     content: string
     confidence_score?: number | null
     supporting_count?: number
+    sentiment?: $Enums.SentimentLabel | null
+    sentiment_score?: number | null
     metadata?: NullableJsonNullValueInput | InputJsonValue
     created_at?: Date | string
     updated_at?: Date | string
@@ -36472,6 +42059,8 @@ export namespace Prisma {
     content: string
     confidence_score?: number | null
     supporting_count?: number
+    sentiment?: $Enums.SentimentLabel | null
+    sentiment_score?: number | null
     metadata?: NullableJsonNullValueInput | InputJsonValue
     created_at?: Date | string
     updated_at?: Date | string
@@ -36488,6 +42077,34 @@ export namespace Prisma {
 
   export type KnowledgeInsightCreateManyAnalysis_jobInputEnvelope = {
     data: KnowledgeInsightCreateManyAnalysis_jobInput | KnowledgeInsightCreateManyAnalysis_jobInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type JobEventCreateWithoutAnalysis_jobInput = {
+    id?: string
+    step: string
+    message: string
+    level?: $Enums.JobEventLevel
+    metadata?: NullableJsonNullValueInput | InputJsonValue
+    created_at?: Date | string
+  }
+
+  export type JobEventUncheckedCreateWithoutAnalysis_jobInput = {
+    id?: string
+    step: string
+    message: string
+    level?: $Enums.JobEventLevel
+    metadata?: NullableJsonNullValueInput | InputJsonValue
+    created_at?: Date | string
+  }
+
+  export type JobEventCreateOrConnectWithoutAnalysis_jobInput = {
+    where: JobEventWhereUniqueInput
+    create: XOR<JobEventCreateWithoutAnalysis_jobInput, JobEventUncheckedCreateWithoutAnalysis_jobInput>
+  }
+
+  export type JobEventCreateManyAnalysis_jobInputEnvelope = {
+    data: JobEventCreateManyAnalysis_jobInput | JobEventCreateManyAnalysis_jobInput[]
     skipDuplicates?: boolean
   }
 
@@ -36510,6 +42127,9 @@ export namespace Prisma {
     comments_analyzed?: IntFieldUpdateOperationsInput | number
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
     updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    sentiment_positive_pct?: NullableFloatFieldUpdateOperationsInput | number | null
+    sentiment_neutral_pct?: NullableFloatFieldUpdateOperationsInput | number | null
+    sentiment_negative_pct?: NullableFloatFieldUpdateOperationsInput | number | null
     user?: UserUpdateOneRequiredWithoutResearch_projectsNestedInput
     source?: ResearchSourceUpdateOneWithoutResearch_projectNestedInput
     analysis_configurations?: AnalysisConfigurationUpdateManyWithoutResearch_projectNestedInput
@@ -36521,6 +42141,7 @@ export namespace Prisma {
     embeddings?: EmbeddingUpdateManyWithoutResearch_projectNestedInput
     conversations?: ConversationUpdateManyWithoutResearch_projectNestedInput
     saved_insights?: SavedInsightUpdateManyWithoutResearch_projectNestedInput
+    saved_searches?: SavedSearchUpdateManyWithoutResearch_projectNestedInput
   }
 
   export type ResearchProjectUncheckedUpdateWithoutAnalysis_jobsInput = {
@@ -36532,6 +42153,9 @@ export namespace Prisma {
     comments_analyzed?: IntFieldUpdateOperationsInput | number
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
     updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    sentiment_positive_pct?: NullableFloatFieldUpdateOperationsInput | number | null
+    sentiment_neutral_pct?: NullableFloatFieldUpdateOperationsInput | number | null
+    sentiment_negative_pct?: NullableFloatFieldUpdateOperationsInput | number | null
     source?: ResearchSourceUncheckedUpdateOneWithoutResearch_projectNestedInput
     analysis_configurations?: AnalysisConfigurationUncheckedUpdateManyWithoutResearch_projectNestedInput
     posts?: PostUncheckedUpdateManyWithoutResearch_projectNestedInput
@@ -36542,6 +42166,7 @@ export namespace Prisma {
     embeddings?: EmbeddingUncheckedUpdateManyWithoutResearch_projectNestedInput
     conversations?: ConversationUncheckedUpdateManyWithoutResearch_projectNestedInput
     saved_insights?: SavedInsightUncheckedUpdateManyWithoutResearch_projectNestedInput
+    saved_searches?: SavedSearchUncheckedUpdateManyWithoutResearch_projectNestedInput
   }
 
   export type AnalysisConfigurationUpsertWithoutAnalysis_jobInput = {
@@ -36632,6 +42257,9 @@ export namespace Prisma {
     request_file_id?: StringNullableFilter<"BatchSubmission"> | string | null
     response_file_id?: StringNullableFilter<"BatchSubmission"> | string | null
     error_file_id?: StringNullableFilter<"BatchSubmission"> | string | null
+    prompt_tokens?: IntFilter<"BatchSubmission"> | number
+    completion_tokens?: IntFilter<"BatchSubmission"> | number
+    cost_usd?: FloatNullableFilter<"BatchSubmission"> | number | null
     submitted_at?: DateTimeNullableFilter<"BatchSubmission"> | Date | string | null
     completed_at?: DateTimeNullableFilter<"BatchSubmission"> | Date | string | null
     created_at?: DateTimeFilter<"BatchSubmission"> | Date | string
@@ -36670,6 +42298,35 @@ export namespace Prisma {
     data: XOR<KnowledgeInsightUpdateManyMutationInput, KnowledgeInsightUncheckedUpdateManyWithoutAnalysis_jobInput>
   }
 
+  export type JobEventUpsertWithWhereUniqueWithoutAnalysis_jobInput = {
+    where: JobEventWhereUniqueInput
+    update: XOR<JobEventUpdateWithoutAnalysis_jobInput, JobEventUncheckedUpdateWithoutAnalysis_jobInput>
+    create: XOR<JobEventCreateWithoutAnalysis_jobInput, JobEventUncheckedCreateWithoutAnalysis_jobInput>
+  }
+
+  export type JobEventUpdateWithWhereUniqueWithoutAnalysis_jobInput = {
+    where: JobEventWhereUniqueInput
+    data: XOR<JobEventUpdateWithoutAnalysis_jobInput, JobEventUncheckedUpdateWithoutAnalysis_jobInput>
+  }
+
+  export type JobEventUpdateManyWithWhereWithoutAnalysis_jobInput = {
+    where: JobEventScalarWhereInput
+    data: XOR<JobEventUpdateManyMutationInput, JobEventUncheckedUpdateManyWithoutAnalysis_jobInput>
+  }
+
+  export type JobEventScalarWhereInput = {
+    AND?: JobEventScalarWhereInput | JobEventScalarWhereInput[]
+    OR?: JobEventScalarWhereInput[]
+    NOT?: JobEventScalarWhereInput | JobEventScalarWhereInput[]
+    id?: StringFilter<"JobEvent"> | string
+    analysis_job_uuid?: StringFilter<"JobEvent"> | string
+    step?: StringFilter<"JobEvent"> | string
+    message?: StringFilter<"JobEvent"> | string
+    level?: EnumJobEventLevelFilter<"JobEvent"> | $Enums.JobEventLevel
+    metadata?: JsonNullableFilter<"JobEvent">
+    created_at?: DateTimeFilter<"JobEvent"> | Date | string
+  }
+
   export type AnalysisJobCreateWithoutBatch_submissionsInput = {
     id?: string
     status?: $Enums.AnalysisStatus
@@ -36678,6 +42335,10 @@ export namespace Prisma {
     posts_total?: number
     comments_processed?: number
     comments_total?: number
+    prompt_tokens?: number
+    completion_tokens?: number
+    estimated_cost_usd?: number | null
+    actual_cost_usd?: number | null
     error_message?: string | null
     started_at?: Date | string | null
     completed_at?: Date | string | null
@@ -36687,6 +42348,7 @@ export namespace Prisma {
     configuration: AnalysisConfigurationCreateNestedOneWithoutAnalysis_jobInput
     knowledge_chunks?: KnowledgeChunkCreateNestedManyWithoutAnalysis_jobInput
     knowledge_insights?: KnowledgeInsightCreateNestedManyWithoutAnalysis_jobInput
+    job_events?: JobEventCreateNestedManyWithoutAnalysis_jobInput
   }
 
   export type AnalysisJobUncheckedCreateWithoutBatch_submissionsInput = {
@@ -36699,6 +42361,10 @@ export namespace Prisma {
     posts_total?: number
     comments_processed?: number
     comments_total?: number
+    prompt_tokens?: number
+    completion_tokens?: number
+    estimated_cost_usd?: number | null
+    actual_cost_usd?: number | null
     error_message?: string | null
     started_at?: Date | string | null
     completed_at?: Date | string | null
@@ -36706,6 +42372,7 @@ export namespace Prisma {
     updated_at?: Date | string
     knowledge_chunks?: KnowledgeChunkUncheckedCreateNestedManyWithoutAnalysis_jobInput
     knowledge_insights?: KnowledgeInsightUncheckedCreateNestedManyWithoutAnalysis_jobInput
+    job_events?: JobEventUncheckedCreateNestedManyWithoutAnalysis_jobInput
   }
 
   export type AnalysisJobCreateOrConnectWithoutBatch_submissionsInput = {
@@ -36732,6 +42399,10 @@ export namespace Prisma {
     posts_total?: IntFieldUpdateOperationsInput | number
     comments_processed?: IntFieldUpdateOperationsInput | number
     comments_total?: IntFieldUpdateOperationsInput | number
+    prompt_tokens?: IntFieldUpdateOperationsInput | number
+    completion_tokens?: IntFieldUpdateOperationsInput | number
+    estimated_cost_usd?: NullableFloatFieldUpdateOperationsInput | number | null
+    actual_cost_usd?: NullableFloatFieldUpdateOperationsInput | number | null
     error_message?: NullableStringFieldUpdateOperationsInput | string | null
     started_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     completed_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -36741,6 +42412,7 @@ export namespace Prisma {
     configuration?: AnalysisConfigurationUpdateOneRequiredWithoutAnalysis_jobNestedInput
     knowledge_chunks?: KnowledgeChunkUpdateManyWithoutAnalysis_jobNestedInput
     knowledge_insights?: KnowledgeInsightUpdateManyWithoutAnalysis_jobNestedInput
+    job_events?: JobEventUpdateManyWithoutAnalysis_jobNestedInput
   }
 
   export type AnalysisJobUncheckedUpdateWithoutBatch_submissionsInput = {
@@ -36753,11 +42425,128 @@ export namespace Prisma {
     posts_total?: IntFieldUpdateOperationsInput | number
     comments_processed?: IntFieldUpdateOperationsInput | number
     comments_total?: IntFieldUpdateOperationsInput | number
+    prompt_tokens?: IntFieldUpdateOperationsInput | number
+    completion_tokens?: IntFieldUpdateOperationsInput | number
+    estimated_cost_usd?: NullableFloatFieldUpdateOperationsInput | number | null
+    actual_cost_usd?: NullableFloatFieldUpdateOperationsInput | number | null
     error_message?: NullableStringFieldUpdateOperationsInput | string | null
     started_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     completed_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
     updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    knowledge_chunks?: KnowledgeChunkUncheckedUpdateManyWithoutAnalysis_jobNestedInput
+    knowledge_insights?: KnowledgeInsightUncheckedUpdateManyWithoutAnalysis_jobNestedInput
+    job_events?: JobEventUncheckedUpdateManyWithoutAnalysis_jobNestedInput
+  }
+
+  export type AnalysisJobCreateWithoutJob_eventsInput = {
+    id?: string
+    status?: $Enums.AnalysisStatus
+    current_step?: string | null
+    posts_processed?: number
+    posts_total?: number
+    comments_processed?: number
+    comments_total?: number
+    prompt_tokens?: number
+    completion_tokens?: number
+    estimated_cost_usd?: number | null
+    actual_cost_usd?: number | null
+    error_message?: string | null
+    started_at?: Date | string | null
+    completed_at?: Date | string | null
+    created_at?: Date | string
+    updated_at?: Date | string
+    research_project: ResearchProjectCreateNestedOneWithoutAnalysis_jobsInput
+    configuration: AnalysisConfigurationCreateNestedOneWithoutAnalysis_jobInput
+    batch_submissions?: BatchSubmissionCreateNestedManyWithoutAnalysis_jobInput
+    knowledge_chunks?: KnowledgeChunkCreateNestedManyWithoutAnalysis_jobInput
+    knowledge_insights?: KnowledgeInsightCreateNestedManyWithoutAnalysis_jobInput
+  }
+
+  export type AnalysisJobUncheckedCreateWithoutJob_eventsInput = {
+    id?: string
+    research_project_uuid: string
+    analysis_configuration_uuid: string
+    status?: $Enums.AnalysisStatus
+    current_step?: string | null
+    posts_processed?: number
+    posts_total?: number
+    comments_processed?: number
+    comments_total?: number
+    prompt_tokens?: number
+    completion_tokens?: number
+    estimated_cost_usd?: number | null
+    actual_cost_usd?: number | null
+    error_message?: string | null
+    started_at?: Date | string | null
+    completed_at?: Date | string | null
+    created_at?: Date | string
+    updated_at?: Date | string
+    batch_submissions?: BatchSubmissionUncheckedCreateNestedManyWithoutAnalysis_jobInput
+    knowledge_chunks?: KnowledgeChunkUncheckedCreateNestedManyWithoutAnalysis_jobInput
+    knowledge_insights?: KnowledgeInsightUncheckedCreateNestedManyWithoutAnalysis_jobInput
+  }
+
+  export type AnalysisJobCreateOrConnectWithoutJob_eventsInput = {
+    where: AnalysisJobWhereUniqueInput
+    create: XOR<AnalysisJobCreateWithoutJob_eventsInput, AnalysisJobUncheckedCreateWithoutJob_eventsInput>
+  }
+
+  export type AnalysisJobUpsertWithoutJob_eventsInput = {
+    update: XOR<AnalysisJobUpdateWithoutJob_eventsInput, AnalysisJobUncheckedUpdateWithoutJob_eventsInput>
+    create: XOR<AnalysisJobCreateWithoutJob_eventsInput, AnalysisJobUncheckedCreateWithoutJob_eventsInput>
+    where?: AnalysisJobWhereInput
+  }
+
+  export type AnalysisJobUpdateToOneWithWhereWithoutJob_eventsInput = {
+    where?: AnalysisJobWhereInput
+    data: XOR<AnalysisJobUpdateWithoutJob_eventsInput, AnalysisJobUncheckedUpdateWithoutJob_eventsInput>
+  }
+
+  export type AnalysisJobUpdateWithoutJob_eventsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    status?: EnumAnalysisStatusFieldUpdateOperationsInput | $Enums.AnalysisStatus
+    current_step?: NullableStringFieldUpdateOperationsInput | string | null
+    posts_processed?: IntFieldUpdateOperationsInput | number
+    posts_total?: IntFieldUpdateOperationsInput | number
+    comments_processed?: IntFieldUpdateOperationsInput | number
+    comments_total?: IntFieldUpdateOperationsInput | number
+    prompt_tokens?: IntFieldUpdateOperationsInput | number
+    completion_tokens?: IntFieldUpdateOperationsInput | number
+    estimated_cost_usd?: NullableFloatFieldUpdateOperationsInput | number | null
+    actual_cost_usd?: NullableFloatFieldUpdateOperationsInput | number | null
+    error_message?: NullableStringFieldUpdateOperationsInput | string | null
+    started_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    completed_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    created_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    research_project?: ResearchProjectUpdateOneRequiredWithoutAnalysis_jobsNestedInput
+    configuration?: AnalysisConfigurationUpdateOneRequiredWithoutAnalysis_jobNestedInput
+    batch_submissions?: BatchSubmissionUpdateManyWithoutAnalysis_jobNestedInput
+    knowledge_chunks?: KnowledgeChunkUpdateManyWithoutAnalysis_jobNestedInput
+    knowledge_insights?: KnowledgeInsightUpdateManyWithoutAnalysis_jobNestedInput
+  }
+
+  export type AnalysisJobUncheckedUpdateWithoutJob_eventsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    research_project_uuid?: StringFieldUpdateOperationsInput | string
+    analysis_configuration_uuid?: StringFieldUpdateOperationsInput | string
+    status?: EnumAnalysisStatusFieldUpdateOperationsInput | $Enums.AnalysisStatus
+    current_step?: NullableStringFieldUpdateOperationsInput | string | null
+    posts_processed?: IntFieldUpdateOperationsInput | number
+    posts_total?: IntFieldUpdateOperationsInput | number
+    comments_processed?: IntFieldUpdateOperationsInput | number
+    comments_total?: IntFieldUpdateOperationsInput | number
+    prompt_tokens?: IntFieldUpdateOperationsInput | number
+    completion_tokens?: IntFieldUpdateOperationsInput | number
+    estimated_cost_usd?: NullableFloatFieldUpdateOperationsInput | number | null
+    actual_cost_usd?: NullableFloatFieldUpdateOperationsInput | number | null
+    error_message?: NullableStringFieldUpdateOperationsInput | string | null
+    started_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    completed_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    created_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    batch_submissions?: BatchSubmissionUncheckedUpdateManyWithoutAnalysis_jobNestedInput
     knowledge_chunks?: KnowledgeChunkUncheckedUpdateManyWithoutAnalysis_jobNestedInput
     knowledge_insights?: KnowledgeInsightUncheckedUpdateManyWithoutAnalysis_jobNestedInput
   }
@@ -36770,6 +42559,9 @@ export namespace Prisma {
     comments_analyzed?: number
     created_at?: Date | string
     updated_at?: Date | string
+    sentiment_positive_pct?: number | null
+    sentiment_neutral_pct?: number | null
+    sentiment_negative_pct?: number | null
     user: UserCreateNestedOneWithoutResearch_projectsInput
     source?: ResearchSourceCreateNestedOneWithoutResearch_projectInput
     analysis_configurations?: AnalysisConfigurationCreateNestedManyWithoutResearch_projectInput
@@ -36781,6 +42573,7 @@ export namespace Prisma {
     embeddings?: EmbeddingCreateNestedManyWithoutResearch_projectInput
     conversations?: ConversationCreateNestedManyWithoutResearch_projectInput
     saved_insights?: SavedInsightCreateNestedManyWithoutResearch_projectInput
+    saved_searches?: SavedSearchCreateNestedManyWithoutResearch_projectInput
   }
 
   export type ResearchProjectUncheckedCreateWithoutPostsInput = {
@@ -36792,6 +42585,9 @@ export namespace Prisma {
     comments_analyzed?: number
     created_at?: Date | string
     updated_at?: Date | string
+    sentiment_positive_pct?: number | null
+    sentiment_neutral_pct?: number | null
+    sentiment_negative_pct?: number | null
     source?: ResearchSourceUncheckedCreateNestedOneWithoutResearch_projectInput
     analysis_configurations?: AnalysisConfigurationUncheckedCreateNestedManyWithoutResearch_projectInput
     analysis_jobs?: AnalysisJobUncheckedCreateNestedManyWithoutResearch_projectInput
@@ -36802,6 +42598,7 @@ export namespace Prisma {
     embeddings?: EmbeddingUncheckedCreateNestedManyWithoutResearch_projectInput
     conversations?: ConversationUncheckedCreateNestedManyWithoutResearch_projectInput
     saved_insights?: SavedInsightUncheckedCreateNestedManyWithoutResearch_projectInput
+    saved_searches?: SavedSearchUncheckedCreateNestedManyWithoutResearch_projectInput
   }
 
   export type ResearchProjectCreateOrConnectWithoutPostsInput = {
@@ -37009,6 +42806,9 @@ export namespace Prisma {
     comments_analyzed?: IntFieldUpdateOperationsInput | number
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
     updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    sentiment_positive_pct?: NullableFloatFieldUpdateOperationsInput | number | null
+    sentiment_neutral_pct?: NullableFloatFieldUpdateOperationsInput | number | null
+    sentiment_negative_pct?: NullableFloatFieldUpdateOperationsInput | number | null
     user?: UserUpdateOneRequiredWithoutResearch_projectsNestedInput
     source?: ResearchSourceUpdateOneWithoutResearch_projectNestedInput
     analysis_configurations?: AnalysisConfigurationUpdateManyWithoutResearch_projectNestedInput
@@ -37020,6 +42820,7 @@ export namespace Prisma {
     embeddings?: EmbeddingUpdateManyWithoutResearch_projectNestedInput
     conversations?: ConversationUpdateManyWithoutResearch_projectNestedInput
     saved_insights?: SavedInsightUpdateManyWithoutResearch_projectNestedInput
+    saved_searches?: SavedSearchUpdateManyWithoutResearch_projectNestedInput
   }
 
   export type ResearchProjectUncheckedUpdateWithoutPostsInput = {
@@ -37031,6 +42832,9 @@ export namespace Prisma {
     comments_analyzed?: IntFieldUpdateOperationsInput | number
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
     updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    sentiment_positive_pct?: NullableFloatFieldUpdateOperationsInput | number | null
+    sentiment_neutral_pct?: NullableFloatFieldUpdateOperationsInput | number | null
+    sentiment_negative_pct?: NullableFloatFieldUpdateOperationsInput | number | null
     source?: ResearchSourceUncheckedUpdateOneWithoutResearch_projectNestedInput
     analysis_configurations?: AnalysisConfigurationUncheckedUpdateManyWithoutResearch_projectNestedInput
     analysis_jobs?: AnalysisJobUncheckedUpdateManyWithoutResearch_projectNestedInput
@@ -37041,6 +42845,7 @@ export namespace Prisma {
     embeddings?: EmbeddingUncheckedUpdateManyWithoutResearch_projectNestedInput
     conversations?: ConversationUncheckedUpdateManyWithoutResearch_projectNestedInput
     saved_insights?: SavedInsightUncheckedUpdateManyWithoutResearch_projectNestedInput
+    saved_searches?: SavedSearchUncheckedUpdateManyWithoutResearch_projectNestedInput
   }
 
   export type CommentUpsertWithWhereUniqueWithoutPostInput = {
@@ -37176,6 +42981,9 @@ export namespace Prisma {
     comments_analyzed?: number
     created_at?: Date | string
     updated_at?: Date | string
+    sentiment_positive_pct?: number | null
+    sentiment_neutral_pct?: number | null
+    sentiment_negative_pct?: number | null
     user: UserCreateNestedOneWithoutResearch_projectsInput
     source?: ResearchSourceCreateNestedOneWithoutResearch_projectInput
     analysis_configurations?: AnalysisConfigurationCreateNestedManyWithoutResearch_projectInput
@@ -37187,6 +42995,7 @@ export namespace Prisma {
     embeddings?: EmbeddingCreateNestedManyWithoutResearch_projectInput
     conversations?: ConversationCreateNestedManyWithoutResearch_projectInput
     saved_insights?: SavedInsightCreateNestedManyWithoutResearch_projectInput
+    saved_searches?: SavedSearchCreateNestedManyWithoutResearch_projectInput
   }
 
   export type ResearchProjectUncheckedCreateWithoutCommentsInput = {
@@ -37198,6 +43007,9 @@ export namespace Prisma {
     comments_analyzed?: number
     created_at?: Date | string
     updated_at?: Date | string
+    sentiment_positive_pct?: number | null
+    sentiment_neutral_pct?: number | null
+    sentiment_negative_pct?: number | null
     source?: ResearchSourceUncheckedCreateNestedOneWithoutResearch_projectInput
     analysis_configurations?: AnalysisConfigurationUncheckedCreateNestedManyWithoutResearch_projectInput
     analysis_jobs?: AnalysisJobUncheckedCreateNestedManyWithoutResearch_projectInput
@@ -37208,6 +43020,7 @@ export namespace Prisma {
     embeddings?: EmbeddingUncheckedCreateNestedManyWithoutResearch_projectInput
     conversations?: ConversationUncheckedCreateNestedManyWithoutResearch_projectInput
     saved_insights?: SavedInsightUncheckedCreateNestedManyWithoutResearch_projectInput
+    saved_searches?: SavedSearchUncheckedCreateNestedManyWithoutResearch_projectInput
   }
 
   export type ResearchProjectCreateOrConnectWithoutCommentsInput = {
@@ -37529,6 +43342,9 @@ export namespace Prisma {
     comments_analyzed?: IntFieldUpdateOperationsInput | number
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
     updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    sentiment_positive_pct?: NullableFloatFieldUpdateOperationsInput | number | null
+    sentiment_neutral_pct?: NullableFloatFieldUpdateOperationsInput | number | null
+    sentiment_negative_pct?: NullableFloatFieldUpdateOperationsInput | number | null
     user?: UserUpdateOneRequiredWithoutResearch_projectsNestedInput
     source?: ResearchSourceUpdateOneWithoutResearch_projectNestedInput
     analysis_configurations?: AnalysisConfigurationUpdateManyWithoutResearch_projectNestedInput
@@ -37540,6 +43356,7 @@ export namespace Prisma {
     embeddings?: EmbeddingUpdateManyWithoutResearch_projectNestedInput
     conversations?: ConversationUpdateManyWithoutResearch_projectNestedInput
     saved_insights?: SavedInsightUpdateManyWithoutResearch_projectNestedInput
+    saved_searches?: SavedSearchUpdateManyWithoutResearch_projectNestedInput
   }
 
   export type ResearchProjectUncheckedUpdateWithoutCommentsInput = {
@@ -37551,6 +43368,9 @@ export namespace Prisma {
     comments_analyzed?: IntFieldUpdateOperationsInput | number
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
     updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    sentiment_positive_pct?: NullableFloatFieldUpdateOperationsInput | number | null
+    sentiment_neutral_pct?: NullableFloatFieldUpdateOperationsInput | number | null
+    sentiment_negative_pct?: NullableFloatFieldUpdateOperationsInput | number | null
     source?: ResearchSourceUncheckedUpdateOneWithoutResearch_projectNestedInput
     analysis_configurations?: AnalysisConfigurationUncheckedUpdateManyWithoutResearch_projectNestedInput
     analysis_jobs?: AnalysisJobUncheckedUpdateManyWithoutResearch_projectNestedInput
@@ -37561,6 +43381,7 @@ export namespace Prisma {
     embeddings?: EmbeddingUncheckedUpdateManyWithoutResearch_projectNestedInput
     conversations?: ConversationUncheckedUpdateManyWithoutResearch_projectNestedInput
     saved_insights?: SavedInsightUncheckedUpdateManyWithoutResearch_projectNestedInput
+    saved_searches?: SavedSearchUncheckedUpdateManyWithoutResearch_projectNestedInput
   }
 
   export type PostUpsertWithoutCommentsInput = {
@@ -37796,6 +43617,9 @@ export namespace Prisma {
     comments_analyzed?: number
     created_at?: Date | string
     updated_at?: Date | string
+    sentiment_positive_pct?: number | null
+    sentiment_neutral_pct?: number | null
+    sentiment_negative_pct?: number | null
     user: UserCreateNestedOneWithoutResearch_projectsInput
     source?: ResearchSourceCreateNestedOneWithoutResearch_projectInput
     analysis_configurations?: AnalysisConfigurationCreateNestedManyWithoutResearch_projectInput
@@ -37807,6 +43631,7 @@ export namespace Prisma {
     embeddings?: EmbeddingCreateNestedManyWithoutResearch_projectInput
     conversations?: ConversationCreateNestedManyWithoutResearch_projectInput
     saved_insights?: SavedInsightCreateNestedManyWithoutResearch_projectInput
+    saved_searches?: SavedSearchCreateNestedManyWithoutResearch_projectInput
   }
 
   export type ResearchProjectUncheckedCreateWithoutKnowledge_chunksInput = {
@@ -37818,6 +43643,9 @@ export namespace Prisma {
     comments_analyzed?: number
     created_at?: Date | string
     updated_at?: Date | string
+    sentiment_positive_pct?: number | null
+    sentiment_neutral_pct?: number | null
+    sentiment_negative_pct?: number | null
     source?: ResearchSourceUncheckedCreateNestedOneWithoutResearch_projectInput
     analysis_configurations?: AnalysisConfigurationUncheckedCreateNestedManyWithoutResearch_projectInput
     analysis_jobs?: AnalysisJobUncheckedCreateNestedManyWithoutResearch_projectInput
@@ -37828,6 +43656,7 @@ export namespace Prisma {
     embeddings?: EmbeddingUncheckedCreateNestedManyWithoutResearch_projectInput
     conversations?: ConversationUncheckedCreateNestedManyWithoutResearch_projectInput
     saved_insights?: SavedInsightUncheckedCreateNestedManyWithoutResearch_projectInput
+    saved_searches?: SavedSearchUncheckedCreateNestedManyWithoutResearch_projectInput
   }
 
   export type ResearchProjectCreateOrConnectWithoutKnowledge_chunksInput = {
@@ -37843,6 +43672,10 @@ export namespace Prisma {
     posts_total?: number
     comments_processed?: number
     comments_total?: number
+    prompt_tokens?: number
+    completion_tokens?: number
+    estimated_cost_usd?: number | null
+    actual_cost_usd?: number | null
     error_message?: string | null
     started_at?: Date | string | null
     completed_at?: Date | string | null
@@ -37852,6 +43685,7 @@ export namespace Prisma {
     configuration: AnalysisConfigurationCreateNestedOneWithoutAnalysis_jobInput
     batch_submissions?: BatchSubmissionCreateNestedManyWithoutAnalysis_jobInput
     knowledge_insights?: KnowledgeInsightCreateNestedManyWithoutAnalysis_jobInput
+    job_events?: JobEventCreateNestedManyWithoutAnalysis_jobInput
   }
 
   export type AnalysisJobUncheckedCreateWithoutKnowledge_chunksInput = {
@@ -37864,6 +43698,10 @@ export namespace Prisma {
     posts_total?: number
     comments_processed?: number
     comments_total?: number
+    prompt_tokens?: number
+    completion_tokens?: number
+    estimated_cost_usd?: number | null
+    actual_cost_usd?: number | null
     error_message?: string | null
     started_at?: Date | string | null
     completed_at?: Date | string | null
@@ -37871,6 +43709,7 @@ export namespace Prisma {
     updated_at?: Date | string
     batch_submissions?: BatchSubmissionUncheckedCreateNestedManyWithoutAnalysis_jobInput
     knowledge_insights?: KnowledgeInsightUncheckedCreateNestedManyWithoutAnalysis_jobInput
+    job_events?: JobEventUncheckedCreateNestedManyWithoutAnalysis_jobInput
   }
 
   export type AnalysisJobCreateOrConnectWithoutKnowledge_chunksInput = {
@@ -38068,6 +43907,9 @@ export namespace Prisma {
     comments_analyzed?: IntFieldUpdateOperationsInput | number
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
     updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    sentiment_positive_pct?: NullableFloatFieldUpdateOperationsInput | number | null
+    sentiment_neutral_pct?: NullableFloatFieldUpdateOperationsInput | number | null
+    sentiment_negative_pct?: NullableFloatFieldUpdateOperationsInput | number | null
     user?: UserUpdateOneRequiredWithoutResearch_projectsNestedInput
     source?: ResearchSourceUpdateOneWithoutResearch_projectNestedInput
     analysis_configurations?: AnalysisConfigurationUpdateManyWithoutResearch_projectNestedInput
@@ -38079,6 +43921,7 @@ export namespace Prisma {
     embeddings?: EmbeddingUpdateManyWithoutResearch_projectNestedInput
     conversations?: ConversationUpdateManyWithoutResearch_projectNestedInput
     saved_insights?: SavedInsightUpdateManyWithoutResearch_projectNestedInput
+    saved_searches?: SavedSearchUpdateManyWithoutResearch_projectNestedInput
   }
 
   export type ResearchProjectUncheckedUpdateWithoutKnowledge_chunksInput = {
@@ -38090,6 +43933,9 @@ export namespace Prisma {
     comments_analyzed?: IntFieldUpdateOperationsInput | number
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
     updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    sentiment_positive_pct?: NullableFloatFieldUpdateOperationsInput | number | null
+    sentiment_neutral_pct?: NullableFloatFieldUpdateOperationsInput | number | null
+    sentiment_negative_pct?: NullableFloatFieldUpdateOperationsInput | number | null
     source?: ResearchSourceUncheckedUpdateOneWithoutResearch_projectNestedInput
     analysis_configurations?: AnalysisConfigurationUncheckedUpdateManyWithoutResearch_projectNestedInput
     analysis_jobs?: AnalysisJobUncheckedUpdateManyWithoutResearch_projectNestedInput
@@ -38100,6 +43946,7 @@ export namespace Prisma {
     embeddings?: EmbeddingUncheckedUpdateManyWithoutResearch_projectNestedInput
     conversations?: ConversationUncheckedUpdateManyWithoutResearch_projectNestedInput
     saved_insights?: SavedInsightUncheckedUpdateManyWithoutResearch_projectNestedInput
+    saved_searches?: SavedSearchUncheckedUpdateManyWithoutResearch_projectNestedInput
   }
 
   export type AnalysisJobUpsertWithoutKnowledge_chunksInput = {
@@ -38121,6 +43968,10 @@ export namespace Prisma {
     posts_total?: IntFieldUpdateOperationsInput | number
     comments_processed?: IntFieldUpdateOperationsInput | number
     comments_total?: IntFieldUpdateOperationsInput | number
+    prompt_tokens?: IntFieldUpdateOperationsInput | number
+    completion_tokens?: IntFieldUpdateOperationsInput | number
+    estimated_cost_usd?: NullableFloatFieldUpdateOperationsInput | number | null
+    actual_cost_usd?: NullableFloatFieldUpdateOperationsInput | number | null
     error_message?: NullableStringFieldUpdateOperationsInput | string | null
     started_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     completed_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -38130,6 +43981,7 @@ export namespace Prisma {
     configuration?: AnalysisConfigurationUpdateOneRequiredWithoutAnalysis_jobNestedInput
     batch_submissions?: BatchSubmissionUpdateManyWithoutAnalysis_jobNestedInput
     knowledge_insights?: KnowledgeInsightUpdateManyWithoutAnalysis_jobNestedInput
+    job_events?: JobEventUpdateManyWithoutAnalysis_jobNestedInput
   }
 
   export type AnalysisJobUncheckedUpdateWithoutKnowledge_chunksInput = {
@@ -38142,6 +43994,10 @@ export namespace Prisma {
     posts_total?: IntFieldUpdateOperationsInput | number
     comments_processed?: IntFieldUpdateOperationsInput | number
     comments_total?: IntFieldUpdateOperationsInput | number
+    prompt_tokens?: IntFieldUpdateOperationsInput | number
+    completion_tokens?: IntFieldUpdateOperationsInput | number
+    estimated_cost_usd?: NullableFloatFieldUpdateOperationsInput | number | null
+    actual_cost_usd?: NullableFloatFieldUpdateOperationsInput | number | null
     error_message?: NullableStringFieldUpdateOperationsInput | string | null
     started_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     completed_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -38149,6 +44005,7 @@ export namespace Prisma {
     updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
     batch_submissions?: BatchSubmissionUncheckedUpdateManyWithoutAnalysis_jobNestedInput
     knowledge_insights?: KnowledgeInsightUncheckedUpdateManyWithoutAnalysis_jobNestedInput
+    job_events?: JobEventUncheckedUpdateManyWithoutAnalysis_jobNestedInput
   }
 
   export type PostUpsertWithoutKnowledge_chunksInput = {
@@ -38336,6 +44193,9 @@ export namespace Prisma {
     comments_analyzed?: number
     created_at?: Date | string
     updated_at?: Date | string
+    sentiment_positive_pct?: number | null
+    sentiment_neutral_pct?: number | null
+    sentiment_negative_pct?: number | null
     user: UserCreateNestedOneWithoutResearch_projectsInput
     source?: ResearchSourceCreateNestedOneWithoutResearch_projectInput
     analysis_configurations?: AnalysisConfigurationCreateNestedManyWithoutResearch_projectInput
@@ -38347,6 +44207,7 @@ export namespace Prisma {
     topics?: TopicCreateNestedManyWithoutResearch_projectInput
     conversations?: ConversationCreateNestedManyWithoutResearch_projectInput
     saved_insights?: SavedInsightCreateNestedManyWithoutResearch_projectInput
+    saved_searches?: SavedSearchCreateNestedManyWithoutResearch_projectInput
   }
 
   export type ResearchProjectUncheckedCreateWithoutEmbeddingsInput = {
@@ -38358,6 +44219,9 @@ export namespace Prisma {
     comments_analyzed?: number
     created_at?: Date | string
     updated_at?: Date | string
+    sentiment_positive_pct?: number | null
+    sentiment_neutral_pct?: number | null
+    sentiment_negative_pct?: number | null
     source?: ResearchSourceUncheckedCreateNestedOneWithoutResearch_projectInput
     analysis_configurations?: AnalysisConfigurationUncheckedCreateNestedManyWithoutResearch_projectInput
     analysis_jobs?: AnalysisJobUncheckedCreateNestedManyWithoutResearch_projectInput
@@ -38368,6 +44232,7 @@ export namespace Prisma {
     topics?: TopicUncheckedCreateNestedManyWithoutResearch_projectInput
     conversations?: ConversationUncheckedCreateNestedManyWithoutResearch_projectInput
     saved_insights?: SavedInsightUncheckedCreateNestedManyWithoutResearch_projectInput
+    saved_searches?: SavedSearchUncheckedCreateNestedManyWithoutResearch_projectInput
   }
 
   export type ResearchProjectCreateOrConnectWithoutEmbeddingsInput = {
@@ -38529,6 +44394,8 @@ export namespace Prisma {
     content: string
     confidence_score?: number | null
     supporting_count?: number
+    sentiment?: $Enums.SentimentLabel | null
+    sentiment_score?: number | null
     metadata?: NullableJsonNullValueInput | InputJsonValue
     created_at?: Date | string
     updated_at?: Date | string
@@ -38550,6 +44417,8 @@ export namespace Prisma {
     content: string
     confidence_score?: number | null
     supporting_count?: number
+    sentiment?: $Enums.SentimentLabel | null
+    sentiment_score?: number | null
     metadata?: NullableJsonNullValueInput | InputJsonValue
     created_at?: Date | string
     updated_at?: Date | string
@@ -38582,6 +44451,9 @@ export namespace Prisma {
     comments_analyzed?: IntFieldUpdateOperationsInput | number
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
     updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    sentiment_positive_pct?: NullableFloatFieldUpdateOperationsInput | number | null
+    sentiment_neutral_pct?: NullableFloatFieldUpdateOperationsInput | number | null
+    sentiment_negative_pct?: NullableFloatFieldUpdateOperationsInput | number | null
     user?: UserUpdateOneRequiredWithoutResearch_projectsNestedInput
     source?: ResearchSourceUpdateOneWithoutResearch_projectNestedInput
     analysis_configurations?: AnalysisConfigurationUpdateManyWithoutResearch_projectNestedInput
@@ -38593,6 +44465,7 @@ export namespace Prisma {
     topics?: TopicUpdateManyWithoutResearch_projectNestedInput
     conversations?: ConversationUpdateManyWithoutResearch_projectNestedInput
     saved_insights?: SavedInsightUpdateManyWithoutResearch_projectNestedInput
+    saved_searches?: SavedSearchUpdateManyWithoutResearch_projectNestedInput
   }
 
   export type ResearchProjectUncheckedUpdateWithoutEmbeddingsInput = {
@@ -38604,6 +44477,9 @@ export namespace Prisma {
     comments_analyzed?: IntFieldUpdateOperationsInput | number
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
     updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    sentiment_positive_pct?: NullableFloatFieldUpdateOperationsInput | number | null
+    sentiment_neutral_pct?: NullableFloatFieldUpdateOperationsInput | number | null
+    sentiment_negative_pct?: NullableFloatFieldUpdateOperationsInput | number | null
     source?: ResearchSourceUncheckedUpdateOneWithoutResearch_projectNestedInput
     analysis_configurations?: AnalysisConfigurationUncheckedUpdateManyWithoutResearch_projectNestedInput
     analysis_jobs?: AnalysisJobUncheckedUpdateManyWithoutResearch_projectNestedInput
@@ -38614,6 +44490,7 @@ export namespace Prisma {
     topics?: TopicUncheckedUpdateManyWithoutResearch_projectNestedInput
     conversations?: ConversationUncheckedUpdateManyWithoutResearch_projectNestedInput
     saved_insights?: SavedInsightUncheckedUpdateManyWithoutResearch_projectNestedInput
+    saved_searches?: SavedSearchUncheckedUpdateManyWithoutResearch_projectNestedInput
   }
 
   export type PostUpsertWithoutEmbeddingInput = {
@@ -38799,6 +44676,8 @@ export namespace Prisma {
     content?: StringFieldUpdateOperationsInput | string
     confidence_score?: NullableFloatFieldUpdateOperationsInput | number | null
     supporting_count?: IntFieldUpdateOperationsInput | number
+    sentiment?: NullableEnumSentimentLabelFieldUpdateOperationsInput | $Enums.SentimentLabel | null
+    sentiment_score?: NullableFloatFieldUpdateOperationsInput | number | null
     metadata?: NullableJsonNullValueInput | InputJsonValue
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
     updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -38820,6 +44699,8 @@ export namespace Prisma {
     content?: StringFieldUpdateOperationsInput | string
     confidence_score?: NullableFloatFieldUpdateOperationsInput | number | null
     supporting_count?: IntFieldUpdateOperationsInput | number
+    sentiment?: NullableEnumSentimentLabelFieldUpdateOperationsInput | $Enums.SentimentLabel | null
+    sentiment_score?: NullableFloatFieldUpdateOperationsInput | number | null
     metadata?: NullableJsonNullValueInput | InputJsonValue
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
     updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -38836,6 +44717,9 @@ export namespace Prisma {
     comments_analyzed?: number
     created_at?: Date | string
     updated_at?: Date | string
+    sentiment_positive_pct?: number | null
+    sentiment_neutral_pct?: number | null
+    sentiment_negative_pct?: number | null
     user: UserCreateNestedOneWithoutResearch_projectsInput
     source?: ResearchSourceCreateNestedOneWithoutResearch_projectInput
     analysis_configurations?: AnalysisConfigurationCreateNestedManyWithoutResearch_projectInput
@@ -38847,6 +44731,7 @@ export namespace Prisma {
     embeddings?: EmbeddingCreateNestedManyWithoutResearch_projectInput
     conversations?: ConversationCreateNestedManyWithoutResearch_projectInput
     saved_insights?: SavedInsightCreateNestedManyWithoutResearch_projectInput
+    saved_searches?: SavedSearchCreateNestedManyWithoutResearch_projectInput
   }
 
   export type ResearchProjectUncheckedCreateWithoutKnowledge_insightsInput = {
@@ -38858,6 +44743,9 @@ export namespace Prisma {
     comments_analyzed?: number
     created_at?: Date | string
     updated_at?: Date | string
+    sentiment_positive_pct?: number | null
+    sentiment_neutral_pct?: number | null
+    sentiment_negative_pct?: number | null
     source?: ResearchSourceUncheckedCreateNestedOneWithoutResearch_projectInput
     analysis_configurations?: AnalysisConfigurationUncheckedCreateNestedManyWithoutResearch_projectInput
     analysis_jobs?: AnalysisJobUncheckedCreateNestedManyWithoutResearch_projectInput
@@ -38868,6 +44756,7 @@ export namespace Prisma {
     embeddings?: EmbeddingUncheckedCreateNestedManyWithoutResearch_projectInput
     conversations?: ConversationUncheckedCreateNestedManyWithoutResearch_projectInput
     saved_insights?: SavedInsightUncheckedCreateNestedManyWithoutResearch_projectInput
+    saved_searches?: SavedSearchUncheckedCreateNestedManyWithoutResearch_projectInput
   }
 
   export type ResearchProjectCreateOrConnectWithoutKnowledge_insightsInput = {
@@ -38883,6 +44772,10 @@ export namespace Prisma {
     posts_total?: number
     comments_processed?: number
     comments_total?: number
+    prompt_tokens?: number
+    completion_tokens?: number
+    estimated_cost_usd?: number | null
+    actual_cost_usd?: number | null
     error_message?: string | null
     started_at?: Date | string | null
     completed_at?: Date | string | null
@@ -38892,6 +44785,7 @@ export namespace Prisma {
     configuration: AnalysisConfigurationCreateNestedOneWithoutAnalysis_jobInput
     batch_submissions?: BatchSubmissionCreateNestedManyWithoutAnalysis_jobInput
     knowledge_chunks?: KnowledgeChunkCreateNestedManyWithoutAnalysis_jobInput
+    job_events?: JobEventCreateNestedManyWithoutAnalysis_jobInput
   }
 
   export type AnalysisJobUncheckedCreateWithoutKnowledge_insightsInput = {
@@ -38904,6 +44798,10 @@ export namespace Prisma {
     posts_total?: number
     comments_processed?: number
     comments_total?: number
+    prompt_tokens?: number
+    completion_tokens?: number
+    estimated_cost_usd?: number | null
+    actual_cost_usd?: number | null
     error_message?: string | null
     started_at?: Date | string | null
     completed_at?: Date | string | null
@@ -38911,6 +44809,7 @@ export namespace Prisma {
     updated_at?: Date | string
     batch_submissions?: BatchSubmissionUncheckedCreateNestedManyWithoutAnalysis_jobInput
     knowledge_chunks?: KnowledgeChunkUncheckedCreateNestedManyWithoutAnalysis_jobInput
+    job_events?: JobEventUncheckedCreateNestedManyWithoutAnalysis_jobInput
   }
 
   export type AnalysisJobCreateOrConnectWithoutKnowledge_insightsInput = {
@@ -38974,12 +44873,14 @@ export namespace Prisma {
     created_at?: Date | string
     user: UserCreateNestedOneWithoutSaved_insightsInput
     research_project: ResearchProjectCreateNestedOneWithoutSaved_insightsInput
+    collection?: SavedInsightCollectionCreateNestedOneWithoutSaved_insightsInput
   }
 
   export type SavedInsightUncheckedCreateWithoutKnowledge_insightInput = {
     id?: string
     user_uuid: string
     research_project_uuid: string
+    collection_uuid?: string | null
     created_at?: Date | string
   }
 
@@ -39069,6 +44970,9 @@ export namespace Prisma {
     comments_analyzed?: IntFieldUpdateOperationsInput | number
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
     updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    sentiment_positive_pct?: NullableFloatFieldUpdateOperationsInput | number | null
+    sentiment_neutral_pct?: NullableFloatFieldUpdateOperationsInput | number | null
+    sentiment_negative_pct?: NullableFloatFieldUpdateOperationsInput | number | null
     user?: UserUpdateOneRequiredWithoutResearch_projectsNestedInput
     source?: ResearchSourceUpdateOneWithoutResearch_projectNestedInput
     analysis_configurations?: AnalysisConfigurationUpdateManyWithoutResearch_projectNestedInput
@@ -39080,6 +44984,7 @@ export namespace Prisma {
     embeddings?: EmbeddingUpdateManyWithoutResearch_projectNestedInput
     conversations?: ConversationUpdateManyWithoutResearch_projectNestedInput
     saved_insights?: SavedInsightUpdateManyWithoutResearch_projectNestedInput
+    saved_searches?: SavedSearchUpdateManyWithoutResearch_projectNestedInput
   }
 
   export type ResearchProjectUncheckedUpdateWithoutKnowledge_insightsInput = {
@@ -39091,6 +44996,9 @@ export namespace Prisma {
     comments_analyzed?: IntFieldUpdateOperationsInput | number
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
     updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    sentiment_positive_pct?: NullableFloatFieldUpdateOperationsInput | number | null
+    sentiment_neutral_pct?: NullableFloatFieldUpdateOperationsInput | number | null
+    sentiment_negative_pct?: NullableFloatFieldUpdateOperationsInput | number | null
     source?: ResearchSourceUncheckedUpdateOneWithoutResearch_projectNestedInput
     analysis_configurations?: AnalysisConfigurationUncheckedUpdateManyWithoutResearch_projectNestedInput
     analysis_jobs?: AnalysisJobUncheckedUpdateManyWithoutResearch_projectNestedInput
@@ -39101,6 +45009,7 @@ export namespace Prisma {
     embeddings?: EmbeddingUncheckedUpdateManyWithoutResearch_projectNestedInput
     conversations?: ConversationUncheckedUpdateManyWithoutResearch_projectNestedInput
     saved_insights?: SavedInsightUncheckedUpdateManyWithoutResearch_projectNestedInput
+    saved_searches?: SavedSearchUncheckedUpdateManyWithoutResearch_projectNestedInput
   }
 
   export type AnalysisJobUpsertWithoutKnowledge_insightsInput = {
@@ -39122,6 +45031,10 @@ export namespace Prisma {
     posts_total?: IntFieldUpdateOperationsInput | number
     comments_processed?: IntFieldUpdateOperationsInput | number
     comments_total?: IntFieldUpdateOperationsInput | number
+    prompt_tokens?: IntFieldUpdateOperationsInput | number
+    completion_tokens?: IntFieldUpdateOperationsInput | number
+    estimated_cost_usd?: NullableFloatFieldUpdateOperationsInput | number | null
+    actual_cost_usd?: NullableFloatFieldUpdateOperationsInput | number | null
     error_message?: NullableStringFieldUpdateOperationsInput | string | null
     started_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     completed_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -39131,6 +45044,7 @@ export namespace Prisma {
     configuration?: AnalysisConfigurationUpdateOneRequiredWithoutAnalysis_jobNestedInput
     batch_submissions?: BatchSubmissionUpdateManyWithoutAnalysis_jobNestedInput
     knowledge_chunks?: KnowledgeChunkUpdateManyWithoutAnalysis_jobNestedInput
+    job_events?: JobEventUpdateManyWithoutAnalysis_jobNestedInput
   }
 
   export type AnalysisJobUncheckedUpdateWithoutKnowledge_insightsInput = {
@@ -39143,6 +45057,10 @@ export namespace Prisma {
     posts_total?: IntFieldUpdateOperationsInput | number
     comments_processed?: IntFieldUpdateOperationsInput | number
     comments_total?: IntFieldUpdateOperationsInput | number
+    prompt_tokens?: IntFieldUpdateOperationsInput | number
+    completion_tokens?: IntFieldUpdateOperationsInput | number
+    estimated_cost_usd?: NullableFloatFieldUpdateOperationsInput | number | null
+    actual_cost_usd?: NullableFloatFieldUpdateOperationsInput | number | null
     error_message?: NullableStringFieldUpdateOperationsInput | string | null
     started_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     completed_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -39150,6 +45068,7 @@ export namespace Prisma {
     updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
     batch_submissions?: BatchSubmissionUncheckedUpdateManyWithoutAnalysis_jobNestedInput
     knowledge_chunks?: KnowledgeChunkUncheckedUpdateManyWithoutAnalysis_jobNestedInput
+    job_events?: JobEventUncheckedUpdateManyWithoutAnalysis_jobNestedInput
   }
 
   export type TopicUpsertWithoutKnowledge_insightsInput = {
@@ -39272,6 +45191,9 @@ export namespace Prisma {
     comments_analyzed?: number
     created_at?: Date | string
     updated_at?: Date | string
+    sentiment_positive_pct?: number | null
+    sentiment_neutral_pct?: number | null
+    sentiment_negative_pct?: number | null
     user: UserCreateNestedOneWithoutResearch_projectsInput
     source?: ResearchSourceCreateNestedOneWithoutResearch_projectInput
     analysis_configurations?: AnalysisConfigurationCreateNestedManyWithoutResearch_projectInput
@@ -39283,6 +45205,7 @@ export namespace Prisma {
     embeddings?: EmbeddingCreateNestedManyWithoutResearch_projectInput
     conversations?: ConversationCreateNestedManyWithoutResearch_projectInput
     saved_insights?: SavedInsightCreateNestedManyWithoutResearch_projectInput
+    saved_searches?: SavedSearchCreateNestedManyWithoutResearch_projectInput
   }
 
   export type ResearchProjectUncheckedCreateWithoutTopicsInput = {
@@ -39294,6 +45217,9 @@ export namespace Prisma {
     comments_analyzed?: number
     created_at?: Date | string
     updated_at?: Date | string
+    sentiment_positive_pct?: number | null
+    sentiment_neutral_pct?: number | null
+    sentiment_negative_pct?: number | null
     source?: ResearchSourceUncheckedCreateNestedOneWithoutResearch_projectInput
     analysis_configurations?: AnalysisConfigurationUncheckedCreateNestedManyWithoutResearch_projectInput
     analysis_jobs?: AnalysisJobUncheckedCreateNestedManyWithoutResearch_projectInput
@@ -39304,6 +45230,7 @@ export namespace Prisma {
     embeddings?: EmbeddingUncheckedCreateNestedManyWithoutResearch_projectInput
     conversations?: ConversationUncheckedCreateNestedManyWithoutResearch_projectInput
     saved_insights?: SavedInsightUncheckedCreateNestedManyWithoutResearch_projectInput
+    saved_searches?: SavedSearchUncheckedCreateNestedManyWithoutResearch_projectInput
   }
 
   export type ResearchProjectCreateOrConnectWithoutTopicsInput = {
@@ -39318,6 +45245,8 @@ export namespace Prisma {
     content: string
     confidence_score?: number | null
     supporting_count?: number
+    sentiment?: $Enums.SentimentLabel | null
+    sentiment_score?: number | null
     metadata?: NullableJsonNullValueInput | InputJsonValue
     created_at?: Date | string
     updated_at?: Date | string
@@ -39338,6 +45267,8 @@ export namespace Prisma {
     content: string
     confidence_score?: number | null
     supporting_count?: number
+    sentiment?: $Enums.SentimentLabel | null
+    sentiment_score?: number | null
     metadata?: NullableJsonNullValueInput | InputJsonValue
     created_at?: Date | string
     updated_at?: Date | string
@@ -39376,6 +45307,9 @@ export namespace Prisma {
     comments_analyzed?: IntFieldUpdateOperationsInput | number
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
     updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    sentiment_positive_pct?: NullableFloatFieldUpdateOperationsInput | number | null
+    sentiment_neutral_pct?: NullableFloatFieldUpdateOperationsInput | number | null
+    sentiment_negative_pct?: NullableFloatFieldUpdateOperationsInput | number | null
     user?: UserUpdateOneRequiredWithoutResearch_projectsNestedInput
     source?: ResearchSourceUpdateOneWithoutResearch_projectNestedInput
     analysis_configurations?: AnalysisConfigurationUpdateManyWithoutResearch_projectNestedInput
@@ -39387,6 +45321,7 @@ export namespace Prisma {
     embeddings?: EmbeddingUpdateManyWithoutResearch_projectNestedInput
     conversations?: ConversationUpdateManyWithoutResearch_projectNestedInput
     saved_insights?: SavedInsightUpdateManyWithoutResearch_projectNestedInput
+    saved_searches?: SavedSearchUpdateManyWithoutResearch_projectNestedInput
   }
 
   export type ResearchProjectUncheckedUpdateWithoutTopicsInput = {
@@ -39398,6 +45333,9 @@ export namespace Prisma {
     comments_analyzed?: IntFieldUpdateOperationsInput | number
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
     updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    sentiment_positive_pct?: NullableFloatFieldUpdateOperationsInput | number | null
+    sentiment_neutral_pct?: NullableFloatFieldUpdateOperationsInput | number | null
+    sentiment_negative_pct?: NullableFloatFieldUpdateOperationsInput | number | null
     source?: ResearchSourceUncheckedUpdateOneWithoutResearch_projectNestedInput
     analysis_configurations?: AnalysisConfigurationUncheckedUpdateManyWithoutResearch_projectNestedInput
     analysis_jobs?: AnalysisJobUncheckedUpdateManyWithoutResearch_projectNestedInput
@@ -39408,6 +45346,7 @@ export namespace Prisma {
     embeddings?: EmbeddingUncheckedUpdateManyWithoutResearch_projectNestedInput
     conversations?: ConversationUncheckedUpdateManyWithoutResearch_projectNestedInput
     saved_insights?: SavedInsightUncheckedUpdateManyWithoutResearch_projectNestedInput
+    saved_searches?: SavedSearchUncheckedUpdateManyWithoutResearch_projectNestedInput
   }
 
   export type KnowledgeInsightUpsertWithWhereUniqueWithoutTopicInput = {
@@ -39433,6 +45372,8 @@ export namespace Prisma {
     content: string
     confidence_score?: number | null
     supporting_count?: number
+    sentiment?: $Enums.SentimentLabel | null
+    sentiment_score?: number | null
     metadata?: NullableJsonNullValueInput | InputJsonValue
     created_at?: Date | string
     updated_at?: Date | string
@@ -39454,6 +45395,8 @@ export namespace Prisma {
     content: string
     confidence_score?: number | null
     supporting_count?: number
+    sentiment?: $Enums.SentimentLabel | null
+    sentiment_score?: number | null
     metadata?: NullableJsonNullValueInput | InputJsonValue
     created_at?: Date | string
     updated_at?: Date | string
@@ -39632,6 +45575,8 @@ export namespace Prisma {
     content?: StringFieldUpdateOperationsInput | string
     confidence_score?: NullableFloatFieldUpdateOperationsInput | number | null
     supporting_count?: IntFieldUpdateOperationsInput | number
+    sentiment?: NullableEnumSentimentLabelFieldUpdateOperationsInput | $Enums.SentimentLabel | null
+    sentiment_score?: NullableFloatFieldUpdateOperationsInput | number | null
     metadata?: NullableJsonNullValueInput | InputJsonValue
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
     updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -39653,6 +45598,8 @@ export namespace Prisma {
     content?: StringFieldUpdateOperationsInput | string
     confidence_score?: NullableFloatFieldUpdateOperationsInput | number | null
     supporting_count?: IntFieldUpdateOperationsInput | number
+    sentiment?: NullableEnumSentimentLabelFieldUpdateOperationsInput | $Enums.SentimentLabel | null
+    sentiment_score?: NullableFloatFieldUpdateOperationsInput | number | null
     metadata?: NullableJsonNullValueInput | InputJsonValue
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
     updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -39834,6 +45781,9 @@ export namespace Prisma {
     comments_analyzed?: number
     created_at?: Date | string
     updated_at?: Date | string
+    sentiment_positive_pct?: number | null
+    sentiment_neutral_pct?: number | null
+    sentiment_negative_pct?: number | null
     user: UserCreateNestedOneWithoutResearch_projectsInput
     source?: ResearchSourceCreateNestedOneWithoutResearch_projectInput
     analysis_configurations?: AnalysisConfigurationCreateNestedManyWithoutResearch_projectInput
@@ -39845,6 +45795,7 @@ export namespace Prisma {
     topics?: TopicCreateNestedManyWithoutResearch_projectInput
     embeddings?: EmbeddingCreateNestedManyWithoutResearch_projectInput
     saved_insights?: SavedInsightCreateNestedManyWithoutResearch_projectInput
+    saved_searches?: SavedSearchCreateNestedManyWithoutResearch_projectInput
   }
 
   export type ResearchProjectUncheckedCreateWithoutConversationsInput = {
@@ -39856,6 +45807,9 @@ export namespace Prisma {
     comments_analyzed?: number
     created_at?: Date | string
     updated_at?: Date | string
+    sentiment_positive_pct?: number | null
+    sentiment_neutral_pct?: number | null
+    sentiment_negative_pct?: number | null
     source?: ResearchSourceUncheckedCreateNestedOneWithoutResearch_projectInput
     analysis_configurations?: AnalysisConfigurationUncheckedCreateNestedManyWithoutResearch_projectInput
     analysis_jobs?: AnalysisJobUncheckedCreateNestedManyWithoutResearch_projectInput
@@ -39866,6 +45820,7 @@ export namespace Prisma {
     topics?: TopicUncheckedCreateNestedManyWithoutResearch_projectInput
     embeddings?: EmbeddingUncheckedCreateNestedManyWithoutResearch_projectInput
     saved_insights?: SavedInsightUncheckedCreateNestedManyWithoutResearch_projectInput
+    saved_searches?: SavedSearchUncheckedCreateNestedManyWithoutResearch_projectInput
   }
 
   export type ResearchProjectCreateOrConnectWithoutConversationsInput = {
@@ -39884,6 +45839,8 @@ export namespace Prisma {
     password_reset_tokens?: PasswordResetTokenCreateNestedManyWithoutUserInput
     research_projects?: ResearchProjectCreateNestedManyWithoutUserInput
     saved_insights?: SavedInsightCreateNestedManyWithoutUserInput
+    saved_insight_collections?: SavedInsightCollectionCreateNestedManyWithoutUserInput
+    saved_searches?: SavedSearchCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutConversationsInput = {
@@ -39897,6 +45854,8 @@ export namespace Prisma {
     password_reset_tokens?: PasswordResetTokenUncheckedCreateNestedManyWithoutUserInput
     research_projects?: ResearchProjectUncheckedCreateNestedManyWithoutUserInput
     saved_insights?: SavedInsightUncheckedCreateNestedManyWithoutUserInput
+    saved_insight_collections?: SavedInsightCollectionUncheckedCreateNestedManyWithoutUserInput
+    saved_searches?: SavedSearchUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutConversationsInput = {
@@ -39949,6 +45908,9 @@ export namespace Prisma {
     comments_analyzed?: IntFieldUpdateOperationsInput | number
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
     updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    sentiment_positive_pct?: NullableFloatFieldUpdateOperationsInput | number | null
+    sentiment_neutral_pct?: NullableFloatFieldUpdateOperationsInput | number | null
+    sentiment_negative_pct?: NullableFloatFieldUpdateOperationsInput | number | null
     user?: UserUpdateOneRequiredWithoutResearch_projectsNestedInput
     source?: ResearchSourceUpdateOneWithoutResearch_projectNestedInput
     analysis_configurations?: AnalysisConfigurationUpdateManyWithoutResearch_projectNestedInput
@@ -39960,6 +45922,7 @@ export namespace Prisma {
     topics?: TopicUpdateManyWithoutResearch_projectNestedInput
     embeddings?: EmbeddingUpdateManyWithoutResearch_projectNestedInput
     saved_insights?: SavedInsightUpdateManyWithoutResearch_projectNestedInput
+    saved_searches?: SavedSearchUpdateManyWithoutResearch_projectNestedInput
   }
 
   export type ResearchProjectUncheckedUpdateWithoutConversationsInput = {
@@ -39971,6 +45934,9 @@ export namespace Prisma {
     comments_analyzed?: IntFieldUpdateOperationsInput | number
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
     updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    sentiment_positive_pct?: NullableFloatFieldUpdateOperationsInput | number | null
+    sentiment_neutral_pct?: NullableFloatFieldUpdateOperationsInput | number | null
+    sentiment_negative_pct?: NullableFloatFieldUpdateOperationsInput | number | null
     source?: ResearchSourceUncheckedUpdateOneWithoutResearch_projectNestedInput
     analysis_configurations?: AnalysisConfigurationUncheckedUpdateManyWithoutResearch_projectNestedInput
     analysis_jobs?: AnalysisJobUncheckedUpdateManyWithoutResearch_projectNestedInput
@@ -39981,6 +45947,7 @@ export namespace Prisma {
     topics?: TopicUncheckedUpdateManyWithoutResearch_projectNestedInput
     embeddings?: EmbeddingUncheckedUpdateManyWithoutResearch_projectNestedInput
     saved_insights?: SavedInsightUncheckedUpdateManyWithoutResearch_projectNestedInput
+    saved_searches?: SavedSearchUncheckedUpdateManyWithoutResearch_projectNestedInput
   }
 
   export type UserUpsertWithoutConversationsInput = {
@@ -40005,6 +45972,8 @@ export namespace Prisma {
     password_reset_tokens?: PasswordResetTokenUpdateManyWithoutUserNestedInput
     research_projects?: ResearchProjectUpdateManyWithoutUserNestedInput
     saved_insights?: SavedInsightUpdateManyWithoutUserNestedInput
+    saved_insight_collections?: SavedInsightCollectionUpdateManyWithoutUserNestedInput
+    saved_searches?: SavedSearchUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutConversationsInput = {
@@ -40018,6 +45987,8 @@ export namespace Prisma {
     password_reset_tokens?: PasswordResetTokenUncheckedUpdateManyWithoutUserNestedInput
     research_projects?: ResearchProjectUncheckedUpdateManyWithoutUserNestedInput
     saved_insights?: SavedInsightUncheckedUpdateManyWithoutUserNestedInput
+    saved_insight_collections?: SavedInsightCollectionUncheckedUpdateManyWithoutUserNestedInput
+    saved_searches?: SavedSearchUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type ConversationMessageUpsertWithWhereUniqueWithoutConversationInput = {
@@ -40289,6 +46260,8 @@ export namespace Prisma {
     content: string
     confidence_score?: number | null
     supporting_count?: number
+    sentiment?: $Enums.SentimentLabel | null
+    sentiment_score?: number | null
     metadata?: NullableJsonNullValueInput | InputJsonValue
     created_at?: Date | string
     updated_at?: Date | string
@@ -40310,6 +46283,8 @@ export namespace Prisma {
     content: string
     confidence_score?: number | null
     supporting_count?: number
+    sentiment?: $Enums.SentimentLabel | null
+    sentiment_score?: number | null
     metadata?: NullableJsonNullValueInput | InputJsonValue
     created_at?: Date | string
     updated_at?: Date | string
@@ -40494,6 +46469,8 @@ export namespace Prisma {
     content?: StringFieldUpdateOperationsInput | string
     confidence_score?: NullableFloatFieldUpdateOperationsInput | number | null
     supporting_count?: IntFieldUpdateOperationsInput | number
+    sentiment?: NullableEnumSentimentLabelFieldUpdateOperationsInput | $Enums.SentimentLabel | null
+    sentiment_score?: NullableFloatFieldUpdateOperationsInput | number | null
     metadata?: NullableJsonNullValueInput | InputJsonValue
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
     updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -40515,6 +46492,8 @@ export namespace Prisma {
     content?: StringFieldUpdateOperationsInput | string
     confidence_score?: NullableFloatFieldUpdateOperationsInput | number | null
     supporting_count?: IntFieldUpdateOperationsInput | number
+    sentiment?: NullableEnumSentimentLabelFieldUpdateOperationsInput | $Enums.SentimentLabel | null
+    sentiment_score?: NullableFloatFieldUpdateOperationsInput | number | null
     metadata?: NullableJsonNullValueInput | InputJsonValue
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
     updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -40534,6 +46513,8 @@ export namespace Prisma {
     password_reset_tokens?: PasswordResetTokenCreateNestedManyWithoutUserInput
     research_projects?: ResearchProjectCreateNestedManyWithoutUserInput
     conversations?: ConversationCreateNestedManyWithoutUserInput
+    saved_insight_collections?: SavedInsightCollectionCreateNestedManyWithoutUserInput
+    saved_searches?: SavedSearchCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutSaved_insightsInput = {
@@ -40547,6 +46528,8 @@ export namespace Prisma {
     password_reset_tokens?: PasswordResetTokenUncheckedCreateNestedManyWithoutUserInput
     research_projects?: ResearchProjectUncheckedCreateNestedManyWithoutUserInput
     conversations?: ConversationUncheckedCreateNestedManyWithoutUserInput
+    saved_insight_collections?: SavedInsightCollectionUncheckedCreateNestedManyWithoutUserInput
+    saved_searches?: SavedSearchUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutSaved_insightsInput = {
@@ -40562,6 +46545,9 @@ export namespace Prisma {
     comments_analyzed?: number
     created_at?: Date | string
     updated_at?: Date | string
+    sentiment_positive_pct?: number | null
+    sentiment_neutral_pct?: number | null
+    sentiment_negative_pct?: number | null
     user: UserCreateNestedOneWithoutResearch_projectsInput
     source?: ResearchSourceCreateNestedOneWithoutResearch_projectInput
     analysis_configurations?: AnalysisConfigurationCreateNestedManyWithoutResearch_projectInput
@@ -40573,6 +46559,7 @@ export namespace Prisma {
     topics?: TopicCreateNestedManyWithoutResearch_projectInput
     embeddings?: EmbeddingCreateNestedManyWithoutResearch_projectInput
     conversations?: ConversationCreateNestedManyWithoutResearch_projectInput
+    saved_searches?: SavedSearchCreateNestedManyWithoutResearch_projectInput
   }
 
   export type ResearchProjectUncheckedCreateWithoutSaved_insightsInput = {
@@ -40584,6 +46571,9 @@ export namespace Prisma {
     comments_analyzed?: number
     created_at?: Date | string
     updated_at?: Date | string
+    sentiment_positive_pct?: number | null
+    sentiment_neutral_pct?: number | null
+    sentiment_negative_pct?: number | null
     source?: ResearchSourceUncheckedCreateNestedOneWithoutResearch_projectInput
     analysis_configurations?: AnalysisConfigurationUncheckedCreateNestedManyWithoutResearch_projectInput
     analysis_jobs?: AnalysisJobUncheckedCreateNestedManyWithoutResearch_projectInput
@@ -40594,6 +46584,7 @@ export namespace Prisma {
     topics?: TopicUncheckedCreateNestedManyWithoutResearch_projectInput
     embeddings?: EmbeddingUncheckedCreateNestedManyWithoutResearch_projectInput
     conversations?: ConversationUncheckedCreateNestedManyWithoutResearch_projectInput
+    saved_searches?: SavedSearchUncheckedCreateNestedManyWithoutResearch_projectInput
   }
 
   export type ResearchProjectCreateOrConnectWithoutSaved_insightsInput = {
@@ -40608,6 +46599,8 @@ export namespace Prisma {
     content: string
     confidence_score?: number | null
     supporting_count?: number
+    sentiment?: $Enums.SentimentLabel | null
+    sentiment_score?: number | null
     metadata?: NullableJsonNullValueInput | InputJsonValue
     created_at?: Date | string
     updated_at?: Date | string
@@ -40629,6 +46622,8 @@ export namespace Prisma {
     content: string
     confidence_score?: number | null
     supporting_count?: number
+    sentiment?: $Enums.SentimentLabel | null
+    sentiment_score?: number | null
     metadata?: NullableJsonNullValueInput | InputJsonValue
     created_at?: Date | string
     updated_at?: Date | string
@@ -40640,6 +46635,27 @@ export namespace Prisma {
   export type KnowledgeInsightCreateOrConnectWithoutSaved_insightsInput = {
     where: KnowledgeInsightWhereUniqueInput
     create: XOR<KnowledgeInsightCreateWithoutSaved_insightsInput, KnowledgeInsightUncheckedCreateWithoutSaved_insightsInput>
+  }
+
+  export type SavedInsightCollectionCreateWithoutSaved_insightsInput = {
+    id?: string
+    name: string
+    created_at?: Date | string
+    updated_at?: Date | string
+    user: UserCreateNestedOneWithoutSaved_insight_collectionsInput
+  }
+
+  export type SavedInsightCollectionUncheckedCreateWithoutSaved_insightsInput = {
+    id?: string
+    user_uuid: string
+    name: string
+    created_at?: Date | string
+    updated_at?: Date | string
+  }
+
+  export type SavedInsightCollectionCreateOrConnectWithoutSaved_insightsInput = {
+    where: SavedInsightCollectionWhereUniqueInput
+    create: XOR<SavedInsightCollectionCreateWithoutSaved_insightsInput, SavedInsightCollectionUncheckedCreateWithoutSaved_insightsInput>
   }
 
   export type UserUpsertWithoutSaved_insightsInput = {
@@ -40664,6 +46680,8 @@ export namespace Prisma {
     password_reset_tokens?: PasswordResetTokenUpdateManyWithoutUserNestedInput
     research_projects?: ResearchProjectUpdateManyWithoutUserNestedInput
     conversations?: ConversationUpdateManyWithoutUserNestedInput
+    saved_insight_collections?: SavedInsightCollectionUpdateManyWithoutUserNestedInput
+    saved_searches?: SavedSearchUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutSaved_insightsInput = {
@@ -40677,6 +46695,8 @@ export namespace Prisma {
     password_reset_tokens?: PasswordResetTokenUncheckedUpdateManyWithoutUserNestedInput
     research_projects?: ResearchProjectUncheckedUpdateManyWithoutUserNestedInput
     conversations?: ConversationUncheckedUpdateManyWithoutUserNestedInput
+    saved_insight_collections?: SavedInsightCollectionUncheckedUpdateManyWithoutUserNestedInput
+    saved_searches?: SavedSearchUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type ResearchProjectUpsertWithoutSaved_insightsInput = {
@@ -40698,6 +46718,9 @@ export namespace Prisma {
     comments_analyzed?: IntFieldUpdateOperationsInput | number
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
     updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    sentiment_positive_pct?: NullableFloatFieldUpdateOperationsInput | number | null
+    sentiment_neutral_pct?: NullableFloatFieldUpdateOperationsInput | number | null
+    sentiment_negative_pct?: NullableFloatFieldUpdateOperationsInput | number | null
     user?: UserUpdateOneRequiredWithoutResearch_projectsNestedInput
     source?: ResearchSourceUpdateOneWithoutResearch_projectNestedInput
     analysis_configurations?: AnalysisConfigurationUpdateManyWithoutResearch_projectNestedInput
@@ -40709,6 +46732,7 @@ export namespace Prisma {
     topics?: TopicUpdateManyWithoutResearch_projectNestedInput
     embeddings?: EmbeddingUpdateManyWithoutResearch_projectNestedInput
     conversations?: ConversationUpdateManyWithoutResearch_projectNestedInput
+    saved_searches?: SavedSearchUpdateManyWithoutResearch_projectNestedInput
   }
 
   export type ResearchProjectUncheckedUpdateWithoutSaved_insightsInput = {
@@ -40720,6 +46744,9 @@ export namespace Prisma {
     comments_analyzed?: IntFieldUpdateOperationsInput | number
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
     updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    sentiment_positive_pct?: NullableFloatFieldUpdateOperationsInput | number | null
+    sentiment_neutral_pct?: NullableFloatFieldUpdateOperationsInput | number | null
+    sentiment_negative_pct?: NullableFloatFieldUpdateOperationsInput | number | null
     source?: ResearchSourceUncheckedUpdateOneWithoutResearch_projectNestedInput
     analysis_configurations?: AnalysisConfigurationUncheckedUpdateManyWithoutResearch_projectNestedInput
     analysis_jobs?: AnalysisJobUncheckedUpdateManyWithoutResearch_projectNestedInput
@@ -40730,6 +46757,7 @@ export namespace Prisma {
     topics?: TopicUncheckedUpdateManyWithoutResearch_projectNestedInput
     embeddings?: EmbeddingUncheckedUpdateManyWithoutResearch_projectNestedInput
     conversations?: ConversationUncheckedUpdateManyWithoutResearch_projectNestedInput
+    saved_searches?: SavedSearchUncheckedUpdateManyWithoutResearch_projectNestedInput
   }
 
   export type KnowledgeInsightUpsertWithoutSaved_insightsInput = {
@@ -40750,6 +46778,8 @@ export namespace Prisma {
     content?: StringFieldUpdateOperationsInput | string
     confidence_score?: NullableFloatFieldUpdateOperationsInput | number | null
     supporting_count?: IntFieldUpdateOperationsInput | number
+    sentiment?: NullableEnumSentimentLabelFieldUpdateOperationsInput | $Enums.SentimentLabel | null
+    sentiment_score?: NullableFloatFieldUpdateOperationsInput | number | null
     metadata?: NullableJsonNullValueInput | InputJsonValue
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
     updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -40771,12 +46801,351 @@ export namespace Prisma {
     content?: StringFieldUpdateOperationsInput | string
     confidence_score?: NullableFloatFieldUpdateOperationsInput | number | null
     supporting_count?: IntFieldUpdateOperationsInput | number
+    sentiment?: NullableEnumSentimentLabelFieldUpdateOperationsInput | $Enums.SentimentLabel | null
+    sentiment_score?: NullableFloatFieldUpdateOperationsInput | number | null
     metadata?: NullableJsonNullValueInput | InputJsonValue
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
     updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
     citations?: CitationUncheckedUpdateManyWithoutKnowledge_insightNestedInput
     message_citations?: MessageCitationUncheckedUpdateManyWithoutKnowledge_insightNestedInput
     embedding?: EmbeddingUncheckedUpdateOneWithoutKnowledge_insightNestedInput
+  }
+
+  export type SavedInsightCollectionUpsertWithoutSaved_insightsInput = {
+    update: XOR<SavedInsightCollectionUpdateWithoutSaved_insightsInput, SavedInsightCollectionUncheckedUpdateWithoutSaved_insightsInput>
+    create: XOR<SavedInsightCollectionCreateWithoutSaved_insightsInput, SavedInsightCollectionUncheckedCreateWithoutSaved_insightsInput>
+    where?: SavedInsightCollectionWhereInput
+  }
+
+  export type SavedInsightCollectionUpdateToOneWithWhereWithoutSaved_insightsInput = {
+    where?: SavedInsightCollectionWhereInput
+    data: XOR<SavedInsightCollectionUpdateWithoutSaved_insightsInput, SavedInsightCollectionUncheckedUpdateWithoutSaved_insightsInput>
+  }
+
+  export type SavedInsightCollectionUpdateWithoutSaved_insightsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    created_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    user?: UserUpdateOneRequiredWithoutSaved_insight_collectionsNestedInput
+  }
+
+  export type SavedInsightCollectionUncheckedUpdateWithoutSaved_insightsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    user_uuid?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    created_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type UserCreateWithoutSaved_insight_collectionsInput = {
+    id?: string
+    email: string
+    phone?: string | null
+    password: string
+    role: $Enums.AuthRole
+    created_at?: Date | string
+    updated_at?: Date | string
+    password_reset_tokens?: PasswordResetTokenCreateNestedManyWithoutUserInput
+    research_projects?: ResearchProjectCreateNestedManyWithoutUserInput
+    conversations?: ConversationCreateNestedManyWithoutUserInput
+    saved_insights?: SavedInsightCreateNestedManyWithoutUserInput
+    saved_searches?: SavedSearchCreateNestedManyWithoutUserInput
+  }
+
+  export type UserUncheckedCreateWithoutSaved_insight_collectionsInput = {
+    id?: string
+    email: string
+    phone?: string | null
+    password: string
+    role: $Enums.AuthRole
+    created_at?: Date | string
+    updated_at?: Date | string
+    password_reset_tokens?: PasswordResetTokenUncheckedCreateNestedManyWithoutUserInput
+    research_projects?: ResearchProjectUncheckedCreateNestedManyWithoutUserInput
+    conversations?: ConversationUncheckedCreateNestedManyWithoutUserInput
+    saved_insights?: SavedInsightUncheckedCreateNestedManyWithoutUserInput
+    saved_searches?: SavedSearchUncheckedCreateNestedManyWithoutUserInput
+  }
+
+  export type UserCreateOrConnectWithoutSaved_insight_collectionsInput = {
+    where: UserWhereUniqueInput
+    create: XOR<UserCreateWithoutSaved_insight_collectionsInput, UserUncheckedCreateWithoutSaved_insight_collectionsInput>
+  }
+
+  export type SavedInsightCreateWithoutCollectionInput = {
+    id?: string
+    created_at?: Date | string
+    user: UserCreateNestedOneWithoutSaved_insightsInput
+    research_project: ResearchProjectCreateNestedOneWithoutSaved_insightsInput
+    knowledge_insight: KnowledgeInsightCreateNestedOneWithoutSaved_insightsInput
+  }
+
+  export type SavedInsightUncheckedCreateWithoutCollectionInput = {
+    id?: string
+    user_uuid: string
+    research_project_uuid: string
+    knowledge_insight_uuid: string
+    created_at?: Date | string
+  }
+
+  export type SavedInsightCreateOrConnectWithoutCollectionInput = {
+    where: SavedInsightWhereUniqueInput
+    create: XOR<SavedInsightCreateWithoutCollectionInput, SavedInsightUncheckedCreateWithoutCollectionInput>
+  }
+
+  export type SavedInsightCreateManyCollectionInputEnvelope = {
+    data: SavedInsightCreateManyCollectionInput | SavedInsightCreateManyCollectionInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type UserUpsertWithoutSaved_insight_collectionsInput = {
+    update: XOR<UserUpdateWithoutSaved_insight_collectionsInput, UserUncheckedUpdateWithoutSaved_insight_collectionsInput>
+    create: XOR<UserCreateWithoutSaved_insight_collectionsInput, UserUncheckedCreateWithoutSaved_insight_collectionsInput>
+    where?: UserWhereInput
+  }
+
+  export type UserUpdateToOneWithWhereWithoutSaved_insight_collectionsInput = {
+    where?: UserWhereInput
+    data: XOR<UserUpdateWithoutSaved_insight_collectionsInput, UserUncheckedUpdateWithoutSaved_insight_collectionsInput>
+  }
+
+  export type UserUpdateWithoutSaved_insight_collectionsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
+    phone?: NullableStringFieldUpdateOperationsInput | string | null
+    password?: StringFieldUpdateOperationsInput | string
+    role?: EnumAuthRoleFieldUpdateOperationsInput | $Enums.AuthRole
+    created_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    password_reset_tokens?: PasswordResetTokenUpdateManyWithoutUserNestedInput
+    research_projects?: ResearchProjectUpdateManyWithoutUserNestedInput
+    conversations?: ConversationUpdateManyWithoutUserNestedInput
+    saved_insights?: SavedInsightUpdateManyWithoutUserNestedInput
+    saved_searches?: SavedSearchUpdateManyWithoutUserNestedInput
+  }
+
+  export type UserUncheckedUpdateWithoutSaved_insight_collectionsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
+    phone?: NullableStringFieldUpdateOperationsInput | string | null
+    password?: StringFieldUpdateOperationsInput | string
+    role?: EnumAuthRoleFieldUpdateOperationsInput | $Enums.AuthRole
+    created_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    password_reset_tokens?: PasswordResetTokenUncheckedUpdateManyWithoutUserNestedInput
+    research_projects?: ResearchProjectUncheckedUpdateManyWithoutUserNestedInput
+    conversations?: ConversationUncheckedUpdateManyWithoutUserNestedInput
+    saved_insights?: SavedInsightUncheckedUpdateManyWithoutUserNestedInput
+    saved_searches?: SavedSearchUncheckedUpdateManyWithoutUserNestedInput
+  }
+
+  export type SavedInsightUpsertWithWhereUniqueWithoutCollectionInput = {
+    where: SavedInsightWhereUniqueInput
+    update: XOR<SavedInsightUpdateWithoutCollectionInput, SavedInsightUncheckedUpdateWithoutCollectionInput>
+    create: XOR<SavedInsightCreateWithoutCollectionInput, SavedInsightUncheckedCreateWithoutCollectionInput>
+  }
+
+  export type SavedInsightUpdateWithWhereUniqueWithoutCollectionInput = {
+    where: SavedInsightWhereUniqueInput
+    data: XOR<SavedInsightUpdateWithoutCollectionInput, SavedInsightUncheckedUpdateWithoutCollectionInput>
+  }
+
+  export type SavedInsightUpdateManyWithWhereWithoutCollectionInput = {
+    where: SavedInsightScalarWhereInput
+    data: XOR<SavedInsightUpdateManyMutationInput, SavedInsightUncheckedUpdateManyWithoutCollectionInput>
+  }
+
+  export type UserCreateWithoutSaved_searchesInput = {
+    id?: string
+    email: string
+    phone?: string | null
+    password: string
+    role: $Enums.AuthRole
+    created_at?: Date | string
+    updated_at?: Date | string
+    password_reset_tokens?: PasswordResetTokenCreateNestedManyWithoutUserInput
+    research_projects?: ResearchProjectCreateNestedManyWithoutUserInput
+    conversations?: ConversationCreateNestedManyWithoutUserInput
+    saved_insights?: SavedInsightCreateNestedManyWithoutUserInput
+    saved_insight_collections?: SavedInsightCollectionCreateNestedManyWithoutUserInput
+  }
+
+  export type UserUncheckedCreateWithoutSaved_searchesInput = {
+    id?: string
+    email: string
+    phone?: string | null
+    password: string
+    role: $Enums.AuthRole
+    created_at?: Date | string
+    updated_at?: Date | string
+    password_reset_tokens?: PasswordResetTokenUncheckedCreateNestedManyWithoutUserInput
+    research_projects?: ResearchProjectUncheckedCreateNestedManyWithoutUserInput
+    conversations?: ConversationUncheckedCreateNestedManyWithoutUserInput
+    saved_insights?: SavedInsightUncheckedCreateNestedManyWithoutUserInput
+    saved_insight_collections?: SavedInsightCollectionUncheckedCreateNestedManyWithoutUserInput
+  }
+
+  export type UserCreateOrConnectWithoutSaved_searchesInput = {
+    where: UserWhereUniqueInput
+    create: XOR<UserCreateWithoutSaved_searchesInput, UserUncheckedCreateWithoutSaved_searchesInput>
+  }
+
+  export type ResearchProjectCreateWithoutSaved_searchesInput = {
+    id?: string
+    name: string
+    status?: $Enums.AnalysisStatus
+    posts_analyzed?: number
+    comments_analyzed?: number
+    created_at?: Date | string
+    updated_at?: Date | string
+    sentiment_positive_pct?: number | null
+    sentiment_neutral_pct?: number | null
+    sentiment_negative_pct?: number | null
+    user: UserCreateNestedOneWithoutResearch_projectsInput
+    source?: ResearchSourceCreateNestedOneWithoutResearch_projectInput
+    analysis_configurations?: AnalysisConfigurationCreateNestedManyWithoutResearch_projectInput
+    analysis_jobs?: AnalysisJobCreateNestedManyWithoutResearch_projectInput
+    posts?: PostCreateNestedManyWithoutResearch_projectInput
+    comments?: CommentCreateNestedManyWithoutResearch_projectInput
+    knowledge_chunks?: KnowledgeChunkCreateNestedManyWithoutResearch_projectInput
+    knowledge_insights?: KnowledgeInsightCreateNestedManyWithoutResearch_projectInput
+    topics?: TopicCreateNestedManyWithoutResearch_projectInput
+    embeddings?: EmbeddingCreateNestedManyWithoutResearch_projectInput
+    conversations?: ConversationCreateNestedManyWithoutResearch_projectInput
+    saved_insights?: SavedInsightCreateNestedManyWithoutResearch_projectInput
+  }
+
+  export type ResearchProjectUncheckedCreateWithoutSaved_searchesInput = {
+    id?: string
+    user_uuid: string
+    name: string
+    status?: $Enums.AnalysisStatus
+    posts_analyzed?: number
+    comments_analyzed?: number
+    created_at?: Date | string
+    updated_at?: Date | string
+    sentiment_positive_pct?: number | null
+    sentiment_neutral_pct?: number | null
+    sentiment_negative_pct?: number | null
+    source?: ResearchSourceUncheckedCreateNestedOneWithoutResearch_projectInput
+    analysis_configurations?: AnalysisConfigurationUncheckedCreateNestedManyWithoutResearch_projectInput
+    analysis_jobs?: AnalysisJobUncheckedCreateNestedManyWithoutResearch_projectInput
+    posts?: PostUncheckedCreateNestedManyWithoutResearch_projectInput
+    comments?: CommentUncheckedCreateNestedManyWithoutResearch_projectInput
+    knowledge_chunks?: KnowledgeChunkUncheckedCreateNestedManyWithoutResearch_projectInput
+    knowledge_insights?: KnowledgeInsightUncheckedCreateNestedManyWithoutResearch_projectInput
+    topics?: TopicUncheckedCreateNestedManyWithoutResearch_projectInput
+    embeddings?: EmbeddingUncheckedCreateNestedManyWithoutResearch_projectInput
+    conversations?: ConversationUncheckedCreateNestedManyWithoutResearch_projectInput
+    saved_insights?: SavedInsightUncheckedCreateNestedManyWithoutResearch_projectInput
+  }
+
+  export type ResearchProjectCreateOrConnectWithoutSaved_searchesInput = {
+    where: ResearchProjectWhereUniqueInput
+    create: XOR<ResearchProjectCreateWithoutSaved_searchesInput, ResearchProjectUncheckedCreateWithoutSaved_searchesInput>
+  }
+
+  export type UserUpsertWithoutSaved_searchesInput = {
+    update: XOR<UserUpdateWithoutSaved_searchesInput, UserUncheckedUpdateWithoutSaved_searchesInput>
+    create: XOR<UserCreateWithoutSaved_searchesInput, UserUncheckedCreateWithoutSaved_searchesInput>
+    where?: UserWhereInput
+  }
+
+  export type UserUpdateToOneWithWhereWithoutSaved_searchesInput = {
+    where?: UserWhereInput
+    data: XOR<UserUpdateWithoutSaved_searchesInput, UserUncheckedUpdateWithoutSaved_searchesInput>
+  }
+
+  export type UserUpdateWithoutSaved_searchesInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
+    phone?: NullableStringFieldUpdateOperationsInput | string | null
+    password?: StringFieldUpdateOperationsInput | string
+    role?: EnumAuthRoleFieldUpdateOperationsInput | $Enums.AuthRole
+    created_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    password_reset_tokens?: PasswordResetTokenUpdateManyWithoutUserNestedInput
+    research_projects?: ResearchProjectUpdateManyWithoutUserNestedInput
+    conversations?: ConversationUpdateManyWithoutUserNestedInput
+    saved_insights?: SavedInsightUpdateManyWithoutUserNestedInput
+    saved_insight_collections?: SavedInsightCollectionUpdateManyWithoutUserNestedInput
+  }
+
+  export type UserUncheckedUpdateWithoutSaved_searchesInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
+    phone?: NullableStringFieldUpdateOperationsInput | string | null
+    password?: StringFieldUpdateOperationsInput | string
+    role?: EnumAuthRoleFieldUpdateOperationsInput | $Enums.AuthRole
+    created_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    password_reset_tokens?: PasswordResetTokenUncheckedUpdateManyWithoutUserNestedInput
+    research_projects?: ResearchProjectUncheckedUpdateManyWithoutUserNestedInput
+    conversations?: ConversationUncheckedUpdateManyWithoutUserNestedInput
+    saved_insights?: SavedInsightUncheckedUpdateManyWithoutUserNestedInput
+    saved_insight_collections?: SavedInsightCollectionUncheckedUpdateManyWithoutUserNestedInput
+  }
+
+  export type ResearchProjectUpsertWithoutSaved_searchesInput = {
+    update: XOR<ResearchProjectUpdateWithoutSaved_searchesInput, ResearchProjectUncheckedUpdateWithoutSaved_searchesInput>
+    create: XOR<ResearchProjectCreateWithoutSaved_searchesInput, ResearchProjectUncheckedCreateWithoutSaved_searchesInput>
+    where?: ResearchProjectWhereInput
+  }
+
+  export type ResearchProjectUpdateToOneWithWhereWithoutSaved_searchesInput = {
+    where?: ResearchProjectWhereInput
+    data: XOR<ResearchProjectUpdateWithoutSaved_searchesInput, ResearchProjectUncheckedUpdateWithoutSaved_searchesInput>
+  }
+
+  export type ResearchProjectUpdateWithoutSaved_searchesInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    status?: EnumAnalysisStatusFieldUpdateOperationsInput | $Enums.AnalysisStatus
+    posts_analyzed?: IntFieldUpdateOperationsInput | number
+    comments_analyzed?: IntFieldUpdateOperationsInput | number
+    created_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    sentiment_positive_pct?: NullableFloatFieldUpdateOperationsInput | number | null
+    sentiment_neutral_pct?: NullableFloatFieldUpdateOperationsInput | number | null
+    sentiment_negative_pct?: NullableFloatFieldUpdateOperationsInput | number | null
+    user?: UserUpdateOneRequiredWithoutResearch_projectsNestedInput
+    source?: ResearchSourceUpdateOneWithoutResearch_projectNestedInput
+    analysis_configurations?: AnalysisConfigurationUpdateManyWithoutResearch_projectNestedInput
+    analysis_jobs?: AnalysisJobUpdateManyWithoutResearch_projectNestedInput
+    posts?: PostUpdateManyWithoutResearch_projectNestedInput
+    comments?: CommentUpdateManyWithoutResearch_projectNestedInput
+    knowledge_chunks?: KnowledgeChunkUpdateManyWithoutResearch_projectNestedInput
+    knowledge_insights?: KnowledgeInsightUpdateManyWithoutResearch_projectNestedInput
+    topics?: TopicUpdateManyWithoutResearch_projectNestedInput
+    embeddings?: EmbeddingUpdateManyWithoutResearch_projectNestedInput
+    conversations?: ConversationUpdateManyWithoutResearch_projectNestedInput
+    saved_insights?: SavedInsightUpdateManyWithoutResearch_projectNestedInput
+  }
+
+  export type ResearchProjectUncheckedUpdateWithoutSaved_searchesInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    user_uuid?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    status?: EnumAnalysisStatusFieldUpdateOperationsInput | $Enums.AnalysisStatus
+    posts_analyzed?: IntFieldUpdateOperationsInput | number
+    comments_analyzed?: IntFieldUpdateOperationsInput | number
+    created_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    sentiment_positive_pct?: NullableFloatFieldUpdateOperationsInput | number | null
+    sentiment_neutral_pct?: NullableFloatFieldUpdateOperationsInput | number | null
+    sentiment_negative_pct?: NullableFloatFieldUpdateOperationsInput | number | null
+    source?: ResearchSourceUncheckedUpdateOneWithoutResearch_projectNestedInput
+    analysis_configurations?: AnalysisConfigurationUncheckedUpdateManyWithoutResearch_projectNestedInput
+    analysis_jobs?: AnalysisJobUncheckedUpdateManyWithoutResearch_projectNestedInput
+    posts?: PostUncheckedUpdateManyWithoutResearch_projectNestedInput
+    comments?: CommentUncheckedUpdateManyWithoutResearch_projectNestedInput
+    knowledge_chunks?: KnowledgeChunkUncheckedUpdateManyWithoutResearch_projectNestedInput
+    knowledge_insights?: KnowledgeInsightUncheckedUpdateManyWithoutResearch_projectNestedInput
+    topics?: TopicUncheckedUpdateManyWithoutResearch_projectNestedInput
+    embeddings?: EmbeddingUncheckedUpdateManyWithoutResearch_projectNestedInput
+    conversations?: ConversationUncheckedUpdateManyWithoutResearch_projectNestedInput
+    saved_insights?: SavedInsightUncheckedUpdateManyWithoutResearch_projectNestedInput
   }
 
   export type PasswordResetTokenCreateManyUserInput = {
@@ -40795,6 +47164,9 @@ export namespace Prisma {
     comments_analyzed?: number
     created_at?: Date | string
     updated_at?: Date | string
+    sentiment_positive_pct?: number | null
+    sentiment_neutral_pct?: number | null
+    sentiment_negative_pct?: number | null
   }
 
   export type ConversationCreateManyUserInput = {
@@ -40810,6 +47182,24 @@ export namespace Prisma {
     id?: string
     research_project_uuid: string
     knowledge_insight_uuid: string
+    collection_uuid?: string | null
+    created_at?: Date | string
+  }
+
+  export type SavedInsightCollectionCreateManyUserInput = {
+    id?: string
+    name: string
+    created_at?: Date | string
+    updated_at?: Date | string
+  }
+
+  export type SavedSearchCreateManyUserInput = {
+    id?: string
+    research_project_uuid?: string | null
+    name?: string | null
+    query: string
+    min_score?: number | null
+    time_range?: $Enums.TopTimeRange | null
     created_at?: Date | string
   }
 
@@ -40845,6 +47235,9 @@ export namespace Prisma {
     comments_analyzed?: IntFieldUpdateOperationsInput | number
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
     updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    sentiment_positive_pct?: NullableFloatFieldUpdateOperationsInput | number | null
+    sentiment_neutral_pct?: NullableFloatFieldUpdateOperationsInput | number | null
+    sentiment_negative_pct?: NullableFloatFieldUpdateOperationsInput | number | null
     source?: ResearchSourceUpdateOneWithoutResearch_projectNestedInput
     analysis_configurations?: AnalysisConfigurationUpdateManyWithoutResearch_projectNestedInput
     analysis_jobs?: AnalysisJobUpdateManyWithoutResearch_projectNestedInput
@@ -40856,6 +47249,7 @@ export namespace Prisma {
     embeddings?: EmbeddingUpdateManyWithoutResearch_projectNestedInput
     conversations?: ConversationUpdateManyWithoutResearch_projectNestedInput
     saved_insights?: SavedInsightUpdateManyWithoutResearch_projectNestedInput
+    saved_searches?: SavedSearchUpdateManyWithoutResearch_projectNestedInput
   }
 
   export type ResearchProjectUncheckedUpdateWithoutUserInput = {
@@ -40866,6 +47260,9 @@ export namespace Prisma {
     comments_analyzed?: IntFieldUpdateOperationsInput | number
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
     updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    sentiment_positive_pct?: NullableFloatFieldUpdateOperationsInput | number | null
+    sentiment_neutral_pct?: NullableFloatFieldUpdateOperationsInput | number | null
+    sentiment_negative_pct?: NullableFloatFieldUpdateOperationsInput | number | null
     source?: ResearchSourceUncheckedUpdateOneWithoutResearch_projectNestedInput
     analysis_configurations?: AnalysisConfigurationUncheckedUpdateManyWithoutResearch_projectNestedInput
     analysis_jobs?: AnalysisJobUncheckedUpdateManyWithoutResearch_projectNestedInput
@@ -40877,6 +47274,7 @@ export namespace Prisma {
     embeddings?: EmbeddingUncheckedUpdateManyWithoutResearch_projectNestedInput
     conversations?: ConversationUncheckedUpdateManyWithoutResearch_projectNestedInput
     saved_insights?: SavedInsightUncheckedUpdateManyWithoutResearch_projectNestedInput
+    saved_searches?: SavedSearchUncheckedUpdateManyWithoutResearch_projectNestedInput
   }
 
   export type ResearchProjectUncheckedUpdateManyWithoutUserInput = {
@@ -40887,6 +47285,9 @@ export namespace Prisma {
     comments_analyzed?: IntFieldUpdateOperationsInput | number
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
     updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    sentiment_positive_pct?: NullableFloatFieldUpdateOperationsInput | number | null
+    sentiment_neutral_pct?: NullableFloatFieldUpdateOperationsInput | number | null
+    sentiment_negative_pct?: NullableFloatFieldUpdateOperationsInput | number | null
   }
 
   export type ConversationUpdateWithoutUserInput = {
@@ -40923,12 +47324,14 @@ export namespace Prisma {
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
     research_project?: ResearchProjectUpdateOneRequiredWithoutSaved_insightsNestedInput
     knowledge_insight?: KnowledgeInsightUpdateOneRequiredWithoutSaved_insightsNestedInput
+    collection?: SavedInsightCollectionUpdateOneWithoutSaved_insightsNestedInput
   }
 
   export type SavedInsightUncheckedUpdateWithoutUserInput = {
     id?: StringFieldUpdateOperationsInput | string
     research_project_uuid?: StringFieldUpdateOperationsInput | string
     knowledge_insight_uuid?: StringFieldUpdateOperationsInput | string
+    collection_uuid?: NullableStringFieldUpdateOperationsInput | string | null
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
@@ -40936,6 +47339,60 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     research_project_uuid?: StringFieldUpdateOperationsInput | string
     knowledge_insight_uuid?: StringFieldUpdateOperationsInput | string
+    collection_uuid?: NullableStringFieldUpdateOperationsInput | string | null
+    created_at?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type SavedInsightCollectionUpdateWithoutUserInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    created_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    saved_insights?: SavedInsightUpdateManyWithoutCollectionNestedInput
+  }
+
+  export type SavedInsightCollectionUncheckedUpdateWithoutUserInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    created_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    saved_insights?: SavedInsightUncheckedUpdateManyWithoutCollectionNestedInput
+  }
+
+  export type SavedInsightCollectionUncheckedUpdateManyWithoutUserInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    created_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type SavedSearchUpdateWithoutUserInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: NullableStringFieldUpdateOperationsInput | string | null
+    query?: StringFieldUpdateOperationsInput | string
+    min_score?: NullableIntFieldUpdateOperationsInput | number | null
+    time_range?: NullableEnumTopTimeRangeFieldUpdateOperationsInput | $Enums.TopTimeRange | null
+    created_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    research_project?: ResearchProjectUpdateOneWithoutSaved_searchesNestedInput
+  }
+
+  export type SavedSearchUncheckedUpdateWithoutUserInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    research_project_uuid?: NullableStringFieldUpdateOperationsInput | string | null
+    name?: NullableStringFieldUpdateOperationsInput | string | null
+    query?: StringFieldUpdateOperationsInput | string
+    min_score?: NullableIntFieldUpdateOperationsInput | number | null
+    time_range?: NullableEnumTopTimeRangeFieldUpdateOperationsInput | $Enums.TopTimeRange | null
+    created_at?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type SavedSearchUncheckedUpdateManyWithoutUserInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    research_project_uuid?: NullableStringFieldUpdateOperationsInput | string | null
+    name?: NullableStringFieldUpdateOperationsInput | string | null
+    query?: StringFieldUpdateOperationsInput | string
+    min_score?: NullableIntFieldUpdateOperationsInput | number | null
+    time_range?: NullableEnumTopTimeRangeFieldUpdateOperationsInput | $Enums.TopTimeRange | null
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
@@ -40972,6 +47429,10 @@ export namespace Prisma {
     posts_total?: number
     comments_processed?: number
     comments_total?: number
+    prompt_tokens?: number
+    completion_tokens?: number
+    estimated_cost_usd?: number | null
+    actual_cost_usd?: number | null
     error_message?: string | null
     started_at?: Date | string | null
     completed_at?: Date | string | null
@@ -41042,6 +47503,8 @@ export namespace Prisma {
     content: string
     confidence_score?: number | null
     supporting_count?: number
+    sentiment?: $Enums.SentimentLabel | null
+    sentiment_score?: number | null
     metadata?: NullableJsonNullValueInput | InputJsonValue
     created_at?: Date | string
     updated_at?: Date | string
@@ -41080,6 +47543,17 @@ export namespace Prisma {
     id?: string
     user_uuid: string
     knowledge_insight_uuid: string
+    collection_uuid?: string | null
+    created_at?: Date | string
+  }
+
+  export type SavedSearchCreateManyResearch_projectInput = {
+    id?: string
+    user_uuid: string
+    name?: string | null
+    query: string
+    min_score?: number | null
+    time_range?: $Enums.TopTimeRange | null
     created_at?: Date | string
   }
 
@@ -41165,6 +47639,10 @@ export namespace Prisma {
     posts_total?: IntFieldUpdateOperationsInput | number
     comments_processed?: IntFieldUpdateOperationsInput | number
     comments_total?: IntFieldUpdateOperationsInput | number
+    prompt_tokens?: IntFieldUpdateOperationsInput | number
+    completion_tokens?: IntFieldUpdateOperationsInput | number
+    estimated_cost_usd?: NullableFloatFieldUpdateOperationsInput | number | null
+    actual_cost_usd?: NullableFloatFieldUpdateOperationsInput | number | null
     error_message?: NullableStringFieldUpdateOperationsInput | string | null
     started_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     completed_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -41174,6 +47652,7 @@ export namespace Prisma {
     batch_submissions?: BatchSubmissionUpdateManyWithoutAnalysis_jobNestedInput
     knowledge_chunks?: KnowledgeChunkUpdateManyWithoutAnalysis_jobNestedInput
     knowledge_insights?: KnowledgeInsightUpdateManyWithoutAnalysis_jobNestedInput
+    job_events?: JobEventUpdateManyWithoutAnalysis_jobNestedInput
   }
 
   export type AnalysisJobUncheckedUpdateWithoutResearch_projectInput = {
@@ -41185,6 +47664,10 @@ export namespace Prisma {
     posts_total?: IntFieldUpdateOperationsInput | number
     comments_processed?: IntFieldUpdateOperationsInput | number
     comments_total?: IntFieldUpdateOperationsInput | number
+    prompt_tokens?: IntFieldUpdateOperationsInput | number
+    completion_tokens?: IntFieldUpdateOperationsInput | number
+    estimated_cost_usd?: NullableFloatFieldUpdateOperationsInput | number | null
+    actual_cost_usd?: NullableFloatFieldUpdateOperationsInput | number | null
     error_message?: NullableStringFieldUpdateOperationsInput | string | null
     started_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     completed_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -41193,6 +47676,7 @@ export namespace Prisma {
     batch_submissions?: BatchSubmissionUncheckedUpdateManyWithoutAnalysis_jobNestedInput
     knowledge_chunks?: KnowledgeChunkUncheckedUpdateManyWithoutAnalysis_jobNestedInput
     knowledge_insights?: KnowledgeInsightUncheckedUpdateManyWithoutAnalysis_jobNestedInput
+    job_events?: JobEventUncheckedUpdateManyWithoutAnalysis_jobNestedInput
   }
 
   export type AnalysisJobUncheckedUpdateManyWithoutResearch_projectInput = {
@@ -41204,6 +47688,10 @@ export namespace Prisma {
     posts_total?: IntFieldUpdateOperationsInput | number
     comments_processed?: IntFieldUpdateOperationsInput | number
     comments_total?: IntFieldUpdateOperationsInput | number
+    prompt_tokens?: IntFieldUpdateOperationsInput | number
+    completion_tokens?: IntFieldUpdateOperationsInput | number
+    estimated_cost_usd?: NullableFloatFieldUpdateOperationsInput | number | null
+    actual_cost_usd?: NullableFloatFieldUpdateOperationsInput | number | null
     error_message?: NullableStringFieldUpdateOperationsInput | string | null
     started_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     completed_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -41404,6 +47892,8 @@ export namespace Prisma {
     content?: StringFieldUpdateOperationsInput | string
     confidence_score?: NullableFloatFieldUpdateOperationsInput | number | null
     supporting_count?: IntFieldUpdateOperationsInput | number
+    sentiment?: NullableEnumSentimentLabelFieldUpdateOperationsInput | $Enums.SentimentLabel | null
+    sentiment_score?: NullableFloatFieldUpdateOperationsInput | number | null
     metadata?: NullableJsonNullValueInput | InputJsonValue
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
     updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -41424,6 +47914,8 @@ export namespace Prisma {
     content?: StringFieldUpdateOperationsInput | string
     confidence_score?: NullableFloatFieldUpdateOperationsInput | number | null
     supporting_count?: IntFieldUpdateOperationsInput | number
+    sentiment?: NullableEnumSentimentLabelFieldUpdateOperationsInput | $Enums.SentimentLabel | null
+    sentiment_score?: NullableFloatFieldUpdateOperationsInput | number | null
     metadata?: NullableJsonNullValueInput | InputJsonValue
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
     updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -41442,6 +47934,8 @@ export namespace Prisma {
     content?: StringFieldUpdateOperationsInput | string
     confidence_score?: NullableFloatFieldUpdateOperationsInput | number | null
     supporting_count?: IntFieldUpdateOperationsInput | number
+    sentiment?: NullableEnumSentimentLabelFieldUpdateOperationsInput | $Enums.SentimentLabel | null
+    sentiment_score?: NullableFloatFieldUpdateOperationsInput | number | null
     metadata?: NullableJsonNullValueInput | InputJsonValue
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
     updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -41543,12 +48037,14 @@ export namespace Prisma {
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
     user?: UserUpdateOneRequiredWithoutSaved_insightsNestedInput
     knowledge_insight?: KnowledgeInsightUpdateOneRequiredWithoutSaved_insightsNestedInput
+    collection?: SavedInsightCollectionUpdateOneWithoutSaved_insightsNestedInput
   }
 
   export type SavedInsightUncheckedUpdateWithoutResearch_projectInput = {
     id?: StringFieldUpdateOperationsInput | string
     user_uuid?: StringFieldUpdateOperationsInput | string
     knowledge_insight_uuid?: StringFieldUpdateOperationsInput | string
+    collection_uuid?: NullableStringFieldUpdateOperationsInput | string | null
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
@@ -41556,6 +48052,37 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     user_uuid?: StringFieldUpdateOperationsInput | string
     knowledge_insight_uuid?: StringFieldUpdateOperationsInput | string
+    collection_uuid?: NullableStringFieldUpdateOperationsInput | string | null
+    created_at?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type SavedSearchUpdateWithoutResearch_projectInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: NullableStringFieldUpdateOperationsInput | string | null
+    query?: StringFieldUpdateOperationsInput | string
+    min_score?: NullableIntFieldUpdateOperationsInput | number | null
+    time_range?: NullableEnumTopTimeRangeFieldUpdateOperationsInput | $Enums.TopTimeRange | null
+    created_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    user?: UserUpdateOneRequiredWithoutSaved_searchesNestedInput
+  }
+
+  export type SavedSearchUncheckedUpdateWithoutResearch_projectInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    user_uuid?: StringFieldUpdateOperationsInput | string
+    name?: NullableStringFieldUpdateOperationsInput | string | null
+    query?: StringFieldUpdateOperationsInput | string
+    min_score?: NullableIntFieldUpdateOperationsInput | number | null
+    time_range?: NullableEnumTopTimeRangeFieldUpdateOperationsInput | $Enums.TopTimeRange | null
+    created_at?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type SavedSearchUncheckedUpdateManyWithoutResearch_projectInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    user_uuid?: StringFieldUpdateOperationsInput | string
+    name?: NullableStringFieldUpdateOperationsInput | string | null
+    query?: StringFieldUpdateOperationsInput | string
+    min_score?: NullableIntFieldUpdateOperationsInput | number | null
+    time_range?: NullableEnumTopTimeRangeFieldUpdateOperationsInput | $Enums.TopTimeRange | null
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
@@ -41566,6 +48093,9 @@ export namespace Prisma {
     request_file_id?: string | null
     response_file_id?: string | null
     error_file_id?: string | null
+    prompt_tokens?: number
+    completion_tokens?: number
+    cost_usd?: number | null
     submitted_at?: Date | string | null
     completed_at?: Date | string | null
     created_at?: Date | string
@@ -41593,9 +48123,20 @@ export namespace Prisma {
     content: string
     confidence_score?: number | null
     supporting_count?: number
+    sentiment?: $Enums.SentimentLabel | null
+    sentiment_score?: number | null
     metadata?: NullableJsonNullValueInput | InputJsonValue
     created_at?: Date | string
     updated_at?: Date | string
+  }
+
+  export type JobEventCreateManyAnalysis_jobInput = {
+    id?: string
+    step: string
+    message: string
+    level?: $Enums.JobEventLevel
+    metadata?: NullableJsonNullValueInput | InputJsonValue
+    created_at?: Date | string
   }
 
   export type BatchSubmissionUpdateWithoutAnalysis_jobInput = {
@@ -41605,6 +48146,9 @@ export namespace Prisma {
     request_file_id?: NullableStringFieldUpdateOperationsInput | string | null
     response_file_id?: NullableStringFieldUpdateOperationsInput | string | null
     error_file_id?: NullableStringFieldUpdateOperationsInput | string | null
+    prompt_tokens?: IntFieldUpdateOperationsInput | number
+    completion_tokens?: IntFieldUpdateOperationsInput | number
+    cost_usd?: NullableFloatFieldUpdateOperationsInput | number | null
     submitted_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     completed_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -41618,6 +48162,9 @@ export namespace Prisma {
     request_file_id?: NullableStringFieldUpdateOperationsInput | string | null
     response_file_id?: NullableStringFieldUpdateOperationsInput | string | null
     error_file_id?: NullableStringFieldUpdateOperationsInput | string | null
+    prompt_tokens?: IntFieldUpdateOperationsInput | number
+    completion_tokens?: IntFieldUpdateOperationsInput | number
+    cost_usd?: NullableFloatFieldUpdateOperationsInput | number | null
     submitted_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     completed_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -41631,6 +48178,9 @@ export namespace Prisma {
     request_file_id?: NullableStringFieldUpdateOperationsInput | string | null
     response_file_id?: NullableStringFieldUpdateOperationsInput | string | null
     error_file_id?: NullableStringFieldUpdateOperationsInput | string | null
+    prompt_tokens?: IntFieldUpdateOperationsInput | number
+    completion_tokens?: IntFieldUpdateOperationsInput | number
+    cost_usd?: NullableFloatFieldUpdateOperationsInput | number | null
     submitted_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     completed_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -41684,6 +48234,8 @@ export namespace Prisma {
     content?: StringFieldUpdateOperationsInput | string
     confidence_score?: NullableFloatFieldUpdateOperationsInput | number | null
     supporting_count?: IntFieldUpdateOperationsInput | number
+    sentiment?: NullableEnumSentimentLabelFieldUpdateOperationsInput | $Enums.SentimentLabel | null
+    sentiment_score?: NullableFloatFieldUpdateOperationsInput | number | null
     metadata?: NullableJsonNullValueInput | InputJsonValue
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
     updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -41704,6 +48256,8 @@ export namespace Prisma {
     content?: StringFieldUpdateOperationsInput | string
     confidence_score?: NullableFloatFieldUpdateOperationsInput | number | null
     supporting_count?: IntFieldUpdateOperationsInput | number
+    sentiment?: NullableEnumSentimentLabelFieldUpdateOperationsInput | $Enums.SentimentLabel | null
+    sentiment_score?: NullableFloatFieldUpdateOperationsInput | number | null
     metadata?: NullableJsonNullValueInput | InputJsonValue
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
     updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -41722,9 +48276,38 @@ export namespace Prisma {
     content?: StringFieldUpdateOperationsInput | string
     confidence_score?: NullableFloatFieldUpdateOperationsInput | number | null
     supporting_count?: IntFieldUpdateOperationsInput | number
+    sentiment?: NullableEnumSentimentLabelFieldUpdateOperationsInput | $Enums.SentimentLabel | null
+    sentiment_score?: NullableFloatFieldUpdateOperationsInput | number | null
     metadata?: NullableJsonNullValueInput | InputJsonValue
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
     updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type JobEventUpdateWithoutAnalysis_jobInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    step?: StringFieldUpdateOperationsInput | string
+    message?: StringFieldUpdateOperationsInput | string
+    level?: EnumJobEventLevelFieldUpdateOperationsInput | $Enums.JobEventLevel
+    metadata?: NullableJsonNullValueInput | InputJsonValue
+    created_at?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type JobEventUncheckedUpdateWithoutAnalysis_jobInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    step?: StringFieldUpdateOperationsInput | string
+    message?: StringFieldUpdateOperationsInput | string
+    level?: EnumJobEventLevelFieldUpdateOperationsInput | $Enums.JobEventLevel
+    metadata?: NullableJsonNullValueInput | InputJsonValue
+    created_at?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type JobEventUncheckedUpdateManyWithoutAnalysis_jobInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    step?: StringFieldUpdateOperationsInput | string
+    message?: StringFieldUpdateOperationsInput | string
+    level?: EnumJobEventLevelFieldUpdateOperationsInput | $Enums.JobEventLevel
+    metadata?: NullableJsonNullValueInput | InputJsonValue
+    created_at?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
   export type CommentCreateManyPostInput = {
@@ -42196,6 +48779,7 @@ export namespace Prisma {
     id?: string
     user_uuid: string
     research_project_uuid: string
+    collection_uuid?: string | null
     created_at?: Date | string
   }
 
@@ -42240,12 +48824,14 @@ export namespace Prisma {
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
     user?: UserUpdateOneRequiredWithoutSaved_insightsNestedInput
     research_project?: ResearchProjectUpdateOneRequiredWithoutSaved_insightsNestedInput
+    collection?: SavedInsightCollectionUpdateOneWithoutSaved_insightsNestedInput
   }
 
   export type SavedInsightUncheckedUpdateWithoutKnowledge_insightInput = {
     id?: StringFieldUpdateOperationsInput | string
     user_uuid?: StringFieldUpdateOperationsInput | string
     research_project_uuid?: StringFieldUpdateOperationsInput | string
+    collection_uuid?: NullableStringFieldUpdateOperationsInput | string | null
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
@@ -42253,6 +48839,7 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     user_uuid?: StringFieldUpdateOperationsInput | string
     research_project_uuid?: StringFieldUpdateOperationsInput | string
+    collection_uuid?: NullableStringFieldUpdateOperationsInput | string | null
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
@@ -42292,6 +48879,8 @@ export namespace Prisma {
     content: string
     confidence_score?: number | null
     supporting_count?: number
+    sentiment?: $Enums.SentimentLabel | null
+    sentiment_score?: number | null
     metadata?: NullableJsonNullValueInput | InputJsonValue
     created_at?: Date | string
     updated_at?: Date | string
@@ -42304,6 +48893,8 @@ export namespace Prisma {
     content?: StringFieldUpdateOperationsInput | string
     confidence_score?: NullableFloatFieldUpdateOperationsInput | number | null
     supporting_count?: IntFieldUpdateOperationsInput | number
+    sentiment?: NullableEnumSentimentLabelFieldUpdateOperationsInput | $Enums.SentimentLabel | null
+    sentiment_score?: NullableFloatFieldUpdateOperationsInput | number | null
     metadata?: NullableJsonNullValueInput | InputJsonValue
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
     updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -42324,6 +48915,8 @@ export namespace Prisma {
     content?: StringFieldUpdateOperationsInput | string
     confidence_score?: NullableFloatFieldUpdateOperationsInput | number | null
     supporting_count?: IntFieldUpdateOperationsInput | number
+    sentiment?: NullableEnumSentimentLabelFieldUpdateOperationsInput | $Enums.SentimentLabel | null
+    sentiment_score?: NullableFloatFieldUpdateOperationsInput | number | null
     metadata?: NullableJsonNullValueInput | InputJsonValue
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
     updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -42342,6 +48935,8 @@ export namespace Prisma {
     content?: StringFieldUpdateOperationsInput | string
     confidence_score?: NullableFloatFieldUpdateOperationsInput | number | null
     supporting_count?: IntFieldUpdateOperationsInput | number
+    sentiment?: NullableEnumSentimentLabelFieldUpdateOperationsInput | $Enums.SentimentLabel | null
+    sentiment_score?: NullableFloatFieldUpdateOperationsInput | number | null
     metadata?: NullableJsonNullValueInput | InputJsonValue
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
     updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -42410,6 +49005,38 @@ export namespace Prisma {
     comment_uuid?: NullableStringFieldUpdateOperationsInput | string | null
     knowledge_insight_uuid?: NullableStringFieldUpdateOperationsInput | string | null
     excerpt?: NullableStringFieldUpdateOperationsInput | string | null
+    created_at?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type SavedInsightCreateManyCollectionInput = {
+    id?: string
+    user_uuid: string
+    research_project_uuid: string
+    knowledge_insight_uuid: string
+    created_at?: Date | string
+  }
+
+  export type SavedInsightUpdateWithoutCollectionInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    created_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    user?: UserUpdateOneRequiredWithoutSaved_insightsNestedInput
+    research_project?: ResearchProjectUpdateOneRequiredWithoutSaved_insightsNestedInput
+    knowledge_insight?: KnowledgeInsightUpdateOneRequiredWithoutSaved_insightsNestedInput
+  }
+
+  export type SavedInsightUncheckedUpdateWithoutCollectionInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    user_uuid?: StringFieldUpdateOperationsInput | string
+    research_project_uuid?: StringFieldUpdateOperationsInput | string
+    knowledge_insight_uuid?: StringFieldUpdateOperationsInput | string
+    created_at?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type SavedInsightUncheckedUpdateManyWithoutCollectionInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    user_uuid?: StringFieldUpdateOperationsInput | string
+    research_project_uuid?: StringFieldUpdateOperationsInput | string
+    knowledge_insight_uuid?: StringFieldUpdateOperationsInput | string
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 

@@ -159,7 +159,10 @@ exports.Prisma.ResearchProjectScalarFieldEnum = {
   posts_analyzed: 'posts_analyzed',
   comments_analyzed: 'comments_analyzed',
   created_at: 'created_at',
-  updated_at: 'updated_at'
+  updated_at: 'updated_at',
+  sentiment_positive_pct: 'sentiment_positive_pct',
+  sentiment_neutral_pct: 'sentiment_neutral_pct',
+  sentiment_negative_pct: 'sentiment_negative_pct'
 };
 
 exports.Prisma.ResearchSourceScalarFieldEnum = {
@@ -209,6 +212,10 @@ exports.Prisma.AnalysisJobScalarFieldEnum = {
   posts_total: 'posts_total',
   comments_processed: 'comments_processed',
   comments_total: 'comments_total',
+  prompt_tokens: 'prompt_tokens',
+  completion_tokens: 'completion_tokens',
+  estimated_cost_usd: 'estimated_cost_usd',
+  actual_cost_usd: 'actual_cost_usd',
   error_message: 'error_message',
   started_at: 'started_at',
   completed_at: 'completed_at',
@@ -224,10 +231,23 @@ exports.Prisma.BatchSubmissionScalarFieldEnum = {
   request_file_id: 'request_file_id',
   response_file_id: 'response_file_id',
   error_file_id: 'error_file_id',
+  prompt_tokens: 'prompt_tokens',
+  completion_tokens: 'completion_tokens',
+  cost_usd: 'cost_usd',
   submitted_at: 'submitted_at',
   completed_at: 'completed_at',
   created_at: 'created_at',
   updated_at: 'updated_at'
+};
+
+exports.Prisma.JobEventScalarFieldEnum = {
+  id: 'id',
+  analysis_job_uuid: 'analysis_job_uuid',
+  step: 'step',
+  message: 'message',
+  level: 'level',
+  metadata: 'metadata',
+  created_at: 'created_at'
 };
 
 exports.Prisma.PostScalarFieldEnum = {
@@ -310,6 +330,8 @@ exports.Prisma.KnowledgeInsightScalarFieldEnum = {
   content: 'content',
   confidence_score: 'confidence_score',
   supporting_count: 'supporting_count',
+  sentiment: 'sentiment',
+  sentiment_score: 'sentiment_score',
   metadata: 'metadata',
   created_at: 'created_at',
   updated_at: 'updated_at'
@@ -367,6 +389,26 @@ exports.Prisma.SavedInsightScalarFieldEnum = {
   user_uuid: 'user_uuid',
   research_project_uuid: 'research_project_uuid',
   knowledge_insight_uuid: 'knowledge_insight_uuid',
+  collection_uuid: 'collection_uuid',
+  created_at: 'created_at'
+};
+
+exports.Prisma.SavedInsightCollectionScalarFieldEnum = {
+  id: 'id',
+  user_uuid: 'user_uuid',
+  name: 'name',
+  created_at: 'created_at',
+  updated_at: 'updated_at'
+};
+
+exports.Prisma.SavedSearchScalarFieldEnum = {
+  id: 'id',
+  user_uuid: 'user_uuid',
+  research_project_uuid: 'research_project_uuid',
+  name: 'name',
+  query: 'query',
+  min_score: 'min_score',
+  time_range: 'time_range',
   created_at: 'created_at'
 };
 
@@ -467,6 +509,12 @@ exports.BatchSubmissionStatus = exports.$Enums.BatchSubmissionStatus = {
   CANCELLED: 'CANCELLED'
 };
 
+exports.JobEventLevel = exports.$Enums.JobEventLevel = {
+  INFO: 'INFO',
+  WARNING: 'WARNING',
+  ERROR: 'ERROR'
+};
+
 exports.InsightType = exports.$Enums.InsightType = {
   KEY_INSIGHT: 'KEY_INSIGHT',
   PROBLEM: 'PROBLEM',
@@ -481,6 +529,12 @@ exports.InsightType = exports.$Enums.InsightType = {
   TREND: 'TREND',
   RECOMMENDATION: 'RECOMMENDATION',
   ARGUMENT: 'ARGUMENT'
+};
+
+exports.SentimentLabel = exports.$Enums.SentimentLabel = {
+  POSITIVE: 'POSITIVE',
+  NEUTRAL: 'NEUTRAL',
+  NEGATIVE: 'NEGATIVE'
 };
 
 exports.ConversationMode = exports.$Enums.ConversationMode = {
@@ -503,6 +557,7 @@ exports.Prisma.ModelName = {
   AnalysisConfiguration: 'AnalysisConfiguration',
   AnalysisJob: 'AnalysisJob',
   BatchSubmission: 'BatchSubmission',
+  JobEvent: 'JobEvent',
   Post: 'Post',
   Comment: 'Comment',
   KnowledgeChunk: 'KnowledgeChunk',
@@ -513,7 +568,9 @@ exports.Prisma.ModelName = {
   Conversation: 'Conversation',
   ConversationMessage: 'ConversationMessage',
   MessageCitation: 'MessageCitation',
-  SavedInsight: 'SavedInsight'
+  SavedInsight: 'SavedInsight',
+  SavedInsightCollection: 'SavedInsightCollection',
+  SavedSearch: 'SavedSearch'
 };
 
 /**

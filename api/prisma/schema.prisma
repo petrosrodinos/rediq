@@ -89,6 +89,12 @@ enum BatchSubmissionStatus {
   CANCELLED
 }
 
+enum JobEventLevel {
+  INFO
+  WARNING
+  ERROR
+}
+
 enum InsightType {
   KEY_INSIGHT
   PROBLEM
@@ -103,6 +109,12 @@ enum InsightType {
   TREND
   RECOMMENDATION
   ARGUMENT
+}
+
+enum SentimentLabel {
+  POSITIVE
+  NEUTRAL
+  NEGATIVE
 }
 
 enum ConversationMode {
@@ -130,10 +142,12 @@ model User {
   created_at DateTime @default(now())
   updated_at DateTime @updatedAt
 
-  password_reset_tokens PasswordResetToken[]
-  research_projects     ResearchProject[]
-  conversations         Conversation[]
-  saved_insights        SavedInsight[]
+  password_reset_tokens     PasswordResetToken[]
+  research_projects         ResearchProject[]
+  conversations             Conversation[]
+  saved_insights            SavedInsight[]
+  saved_insight_collections SavedInsightCollection[]
+  saved_searches            SavedSearch[]
 
   @@index([email])
   @@index([phone])
@@ -186,6 +200,11 @@ model ResearchProject {
   created_at        DateTime       @default(now())
   updated_at        DateTime       @updatedAt
 
+  // Cached sentiment mix across this project's knowledge insights, refreshed on synthesis.
+  sentiment_positive_pct Float?
+  sentiment_neutral_pct  Float?
+  sentiment_negative_pct Float?
+
   user User @relation(fields: [user_uuid], references: [id], onDelete: Cascade)
 
   source                  ResearchSource?
@@ -199,6 +218,7 @@ model ResearchProject {
   embeddings              Embedding[]
   conversations           Conversation[]
   saved_insights          SavedInsight[]
+  saved_searches          SavedSearch[]
 
   @@index([user_uuid])
   @@index([status])
@@ -269,6 +289,13 @@ model AnalysisJob {
   comments_processed Int     @default(0)
   comments_total     Int     @default(0)
 
+  // AI cost/token observability (Section 26/29 of the product spec), aggregated across
+  // both standard calls and any batch submissions belonging to this job.
+  prompt_tokens      Int    @default(0)
+  completion_tokens  Int    @default(0)
+  estimated_cost_usd Float?
+  actual_cost_usd    Float?
+
   error_message String?
   started_at    DateTime?
   completed_at  DateTime?
@@ -281,6 +308,7 @@ model AnalysisJob {
   batch_submissions  BatchSubmission[]
   knowledge_chunks   KnowledgeChunk[]
   knowledge_insights KnowledgeInsight[]
+  job_events         JobEvent[]
 
   @@index([research_project_uuid])
   @@index([status])
@@ -297,6 +325,10 @@ model BatchSubmission {
   response_file_id String?
   error_file_id    String?
 
+  prompt_tokens     Int    @default(0)
+  completion_tokens Int    @default(0)
+  cost_usd          Float?
+
   submitted_at DateTime?
   completed_at DateTime?
   created_at   DateTime  @default(now())
@@ -307,6 +339,24 @@ model BatchSubmission {
   @@index([analysis_job_uuid])
   @@index([status])
   @@map("batch_submissions")
+}
+
+// Timestamped pipeline events for a job: powers the live progress log during a run
+// and gives admins per-step drill-down/error visibility after the fact (Section 12, 30).
+model JobEvent {
+  id                String        @id @default(uuid())
+  analysis_job_uuid String
+  step              String
+  message           String
+  level             JobEventLevel @default(INFO)
+  metadata          Json?
+  created_at        DateTime      @default(now())
+
+  analysis_job AnalysisJob @relation(fields: [analysis_job_uuid], references: [id], onDelete: Cascade)
+
+  @@index([analysis_job_uuid])
+  @@index([created_at])
+  @@map("job_events")
 }
 
 // ---------------------------------------------------------------------------
@@ -443,7 +493,7 @@ model Embedding {
 }
 
 model KnowledgeInsight {
-  id                    String      @id @default(uuid())
+  id                    String          @id @default(uuid())
   research_project_uuid String
   analysis_job_uuid     String?
   topic_uuid            String?
@@ -451,10 +501,12 @@ model KnowledgeInsight {
   title                 String
   content               String
   confidence_score      Float?
-  supporting_count      Int         @default(0)
+  supporting_count      Int             @default(0)
+  sentiment             SentimentLabel?
+  sentiment_score       Float?
   metadata              Json?
-  created_at            DateTime    @default(now())
-  updated_at            DateTime    @updatedAt
+  created_at            DateTime        @default(now())
+  updated_at            DateTime        @updatedAt
 
   research_project ResearchProject @relation(fields: [research_project_uuid], references: [id], onDelete: Cascade)
   analysis_job     AnalysisJob?    @relation(fields: [analysis_job_uuid], references: [id], onDelete: SetNull)
@@ -566,14 +618,52 @@ model SavedInsight {
   user_uuid              String
   research_project_uuid  String
   knowledge_insight_uuid String
+  collection_uuid        String?
   created_at             DateTime @default(now())
 
-  user              User             @relation(fields: [user_uuid], references: [id], onDelete: Cascade)
-  research_project  ResearchProject  @relation(fields: [research_project_uuid], references: [id], onDelete: Cascade)
-  knowledge_insight KnowledgeInsight @relation(fields: [knowledge_insight_uuid], references: [id], onDelete: Cascade)
+  user              User                    @relation(fields: [user_uuid], references: [id], onDelete: Cascade)
+  research_project  ResearchProject         @relation(fields: [research_project_uuid], references: [id], onDelete: Cascade)
+  knowledge_insight KnowledgeInsight        @relation(fields: [knowledge_insight_uuid], references: [id], onDelete: Cascade)
+  collection        SavedInsightCollection? @relation(fields: [collection_uuid], references: [id], onDelete: SetNull)
 
   @@unique([user_uuid, knowledge_insight_uuid])
   @@index([user_uuid])
   @@index([research_project_uuid])
+  @@index([collection_uuid])
   @@map("saved_insights")
+}
+
+// A user-defined folder ("Pricing", "Product strategy", ...) for organizing saved insights.
+model SavedInsightCollection {
+  id         String   @id @default(uuid())
+  user_uuid  String
+  name       String
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
+
+  user           User           @relation(fields: [user_uuid], references: [id], onDelete: Cascade)
+  saved_insights SavedInsight[]
+
+  @@unique([user_uuid, name])
+  @@index([user_uuid])
+  @@map("saved_insight_collections")
+}
+
+// A search query a user chose to keep, optionally scoped to one project (null = all projects).
+model SavedSearch {
+  id                    String        @id @default(uuid())
+  user_uuid             String
+  research_project_uuid String?
+  name                  String?
+  query                 String
+  min_score             Int?
+  time_range            TopTimeRange?
+  created_at            DateTime      @default(now())
+
+  user             User             @relation(fields: [user_uuid], references: [id], onDelete: Cascade)
+  research_project ResearchProject? @relation(fields: [research_project_uuid], references: [id], onDelete: Cascade)
+
+  @@index([user_uuid])
+  @@index([research_project_uuid])
+  @@map("saved_searches")
 }

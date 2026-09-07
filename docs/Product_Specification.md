@@ -368,6 +368,14 @@ For example:
 
 Every number should have a source reference.
 
+This is distinct from the aggregate dataset analytics described in Section 15 (comment volume over time, score distribution, top contributors). Both should be presented in the Statistics view: the extracted, cited numbers are part of the knowledge report itself, while the dataset analytics describe the underlying evidence set.
+
+## Sentiment Overview
+
+Alongside Key Insights, provide a lightweight sentiment read of the analyzed content: an overall positive/neutral/negative split for the project, and a sentiment breakdown per frequently mentioned product/tool (Section "Products, Tools & Services").
+
+Sentiment is a supporting signal, not a replacement for Consensus/Disagreements — it should never be presented without the ability to drill into the insights and citations behind it.
+
 ---
 
 
@@ -453,7 +461,7 @@ It should:
 
 If a question cannot be answered from the analyzed content, say so instead of using unrelated external knowledge.
 
-Optionally provide a separate mode where the user explicitly allows external web knowledge, but keep this separate from the Reddit-grounded mode.
+Optionally provide a separate mode where the user explicitly allows external web knowledge, but keep this separate from the Reddit-grounded mode. When this mode is offered, the conversation UI must expose an explicit, visible control for switching a given conversation between grounded-only and external-allowed — it must never be an implicit or hidden default.
 
 ---
 
@@ -524,6 +532,7 @@ Allow users to:
 - Update an analysis
 - Export results
 - Continue asking questions
+- Save an insight into a named collection (e.g. "Pricing", "Product strategy") for easier retrieval later, and filter Saved Insights by collection
 
 ---
 
@@ -566,6 +575,8 @@ Example:
 
 When `processingMode` is `batch`, the "Extracting knowledge" and "Synthesizing" steps are replaced by a single "Awaiting batch completion" state once the batch is submitted to OpenAI. Progress during this state should show the batch submission time and, if available, the OpenAI batch status (validating, in progress, finalizing) rather than a granular item count, since individual request progress is not observable mid-batch.
 
+In addition to the coarse status and counters above, the job should emit a timestamped event log (fetch completed, comment tree expanded, batch started, rate limit hit and resumed, error encountered, etc.). This log powers a live "what is happening right now" feed on the progress page, and doubles as the per-job drill-down admins use to diagnose a failed or stuck analysis (Section 30).
+
 ---
 
 
@@ -593,6 +604,8 @@ Search results should display:
 - Post title
 - Subreddit
 - Reddit link
+
+Users should be able to save a search (its query text plus any active filters) for later reuse, either scoped to the current project or across all of a user's projects.
 
 ---
 
@@ -664,8 +677,13 @@ Suggested tabs:
 - Opinions
 - Products
 - Statistics
+- FAQ
 - Sources
 - AI Assistant
+
+The Key Insights tab should visibly distinguish insight type (key insight, trend, argument, recommendation, contradiction, etc.) rather than presenting every insight identically — trends and arguments are extracted categories in their own right (Section 1) and need to be recognizable in the UI, even if they share a tab with other insight types rather than each getting a dedicated page.
+
+The FAQ tab shows the automatically generated questions and answers described in Section 6, each with its own citations.
 
 The AI Assistant should be available as a persistent panel or dedicated tab.
 
@@ -725,10 +743,15 @@ At minimum, consider entities such as:
 - ConversationMessage
 - Embedding
 - SavedInsight
+- SavedInsightCollection
+- SavedSearch
+- JobEvent
 
 Design relationships appropriately.
 
 `AnalysisConfiguration` should include a `processingMode: 'standard' | 'batch'` field (see Section 22). When an `AnalysisJob` runs in batch mode, it should be linked to one or more `BatchSubmission` records tracking the OpenAI batch id, submission/completion timestamps, status, and request/response file references, so a job can be resumed or reconciled if the worker restarts while a batch is in flight.
+
+`AnalysisJob` (and `BatchSubmission`, for batch-mode jobs) should track prompt/completion token counts and estimated/actual cost, so the cost and token observability required by Sections 26 and 29 has somewhere to live. `JobEvent` records the timestamped pipeline log described in Section 12. `KnowledgeInsight` should carry an optional sentiment label/score, and `ResearchProject` a cached sentiment mix, to support Section 6's Sentiment Overview. `SavedInsight` may optionally belong to a `SavedInsightCollection` (a user-named folder) so insights can be organized as described in Section 11. `SavedSearch` stores a reusable query, optionally scoped to a project, as described in Section 13.
 
 The system should support multiple users from the beginning.
 
@@ -921,9 +944,8 @@ Allow users to export their research.
 
 At minimum:
 
-- Markdown
-- PDF
-- JSON
+- PDF, for the full knowledge report
+- CSV, for the raw source list (Section 16)
 
 The exported report should preserve source links.
 
@@ -1055,7 +1077,7 @@ Include:
 
 - Users
 - Research projects
-- Analysis jobs
+- Analysis jobs, with drill-down into a job's event log for debugging failed or stuck runs
 - AI usage
 - Token consumption
 - Estimated costs
