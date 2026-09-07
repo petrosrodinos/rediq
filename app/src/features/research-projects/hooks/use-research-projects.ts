@@ -3,6 +3,7 @@ import { toast } from "@/hooks/use-toast";
 import {
     createResearchProject,
     deleteResearchProject,
+    detectResearchSource,
     getResearchProject,
     getResearchProjects,
     recalculateResearchProjectSentiment,
@@ -69,6 +70,23 @@ export const useUpdateResearchProject = () => {
         onError: (error: Error) => {
             toast({
                 title: "Could not update research project",
+                description: error.message,
+                duration: 3000,
+                variant: "error",
+            });
+        },
+    });
+};
+
+// Search-as-you-act, triggered by the "Detect source" button rather than
+// auto-fetched, so it's modeled as a mutation. No success toast (the detected
+// result renders inline) but errors still surface feedback per the rules.
+export const useDetectResearchSource = () => {
+    return useMutation({
+        mutationFn: (url: string) => detectResearchSource(url),
+        onError: (error: Error) => {
+            toast({
+                title: "Could not detect source",
                 description: error.message,
                 duration: 3000,
                 variant: "error",

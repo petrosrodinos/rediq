@@ -1,5 +1,6 @@
 import { BadgeCheck, ChevronsUpDown, CreditCard, LogOut } from "lucide-react";
 import { Link } from "react-router-dom";
+import { Routes } from "@/routes/routes";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuGroup, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
 import { SidebarMenu, SidebarMenuButton, SidebarMenuItem, useSidebar } from "@/components/ui/sidebar";
@@ -49,13 +50,13 @@ export function NavUser() {
             <DropdownMenuSeparator />
             <DropdownMenuGroup>
               <DropdownMenuItem asChild>
-                <Link to="/console/account/profile">
+                <Link to={Routes.dashboard.settings_tab("profile")}>
                   <BadgeCheck />
                   Account
                 </Link>
               </DropdownMenuItem>
               <DropdownMenuItem asChild>
-                <Link to="/console/billing/subscription">
+                <Link to={Routes.dashboard.settings_tab("account")}>
                   <CreditCard />
                   Billing
                 </Link>

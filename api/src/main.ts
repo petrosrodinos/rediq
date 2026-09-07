@@ -16,8 +16,8 @@ async function bootstrap() {
   );
 
   const swaggerConfig = new DocumentBuilder()
-    .setTitle('Appointly API')
-    .setDescription('The Appointly API documentation')
+    .setTitle('Threadline API')
+    .setDescription('The Threadline API documentation')
     .setVersion('1.0')
     .addBearerAuth()
     .build();
@@ -44,6 +44,6 @@ async function bootstrap() {
     ],
   });
 
-  await app.listen(3000);
+  await app.listen(process.env.PORT ?? 3000);
 }
 bootstrap();

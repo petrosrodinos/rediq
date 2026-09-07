@@ -8,6 +8,7 @@ Using:
 - `api/prisma/schema.prisma`
 - The current frontend application and its existing pages, components, routes, navigation, and UI patterns
 - and the rules at: [AGENTS.md](http://AGENTS.md)
+- and the app\docs\mockup.html
 
 create and maintain a complete, implementation-ready frontend documentation system **and** a master implementation progress roadmap.
 

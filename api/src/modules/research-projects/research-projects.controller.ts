@@ -20,6 +20,10 @@ import {
   ResearchProjectsQuerySchema,
   ResearchProjectsQueryType,
 } from './dto/research-projects-query.schema';
+import {
+  DetectSourceQuerySchema,
+  DetectSourceQueryType,
+} from './dto/detect-source-query.schema';
 
 @ApiTags('research-projects')
 @Controller('research-projects')
@@ -50,6 +54,19 @@ export class ResearchProjectsController {
     query: ResearchProjectsQueryType,
   ) {
     return this.researchProjectsService.findAll(userId, query);
+  }
+
+  @Get('detect-source')
+  @ApiOperation({
+    summary:
+      'Preview a Reddit URL (subreddit or thread) before creating a research project',
+  })
+  @ApiResponse({ status: 200, description: 'Source metadata detected' })
+  detectSource(
+    @Query(new ZodValidationPipe(DetectSourceQuerySchema))
+    query: DetectSourceQueryType,
+  ) {
+    return this.researchProjectsService.detectSource(query.url);
   }
 
   @Get(':id')

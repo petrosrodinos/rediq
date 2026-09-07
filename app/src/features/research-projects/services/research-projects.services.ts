@@ -2,6 +2,7 @@ import axiosInstance from "@/config/api/axios";
 import { ApiRoutes } from "@/config/api/routes";
 import type {
     CreateResearchProjectDto,
+    DetectSourceResponse,
     ResearchProject,
     ResearchProjectListResponse,
     ResearchProjectQueryType,
@@ -55,6 +56,15 @@ export const deleteResearchProject = async (id: string): Promise<ResearchProject
         return response.data;
     } catch (error) {
         throw new Error("Failed to delete research project. Please try again.");
+    }
+};
+
+export const detectResearchSource = async (url: string): Promise<DetectSourceResponse> => {
+    try {
+        const response = await axiosInstance.get(ApiRoutes.research_projects.detect_source, { params: { url } });
+        return response.data;
+    } catch (error) {
+        throw new Error("Failed to detect the source for this URL. Please try again.");
     }
 };
 

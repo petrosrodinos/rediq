@@ -82,3 +82,19 @@ export interface ResearchProjectListResponse {
     data: ResearchProject[];
     pagination: Pagination;
 }
+
+export interface DetectSourceResponse {
+    platform: "REDDIT";
+    source_type: SourceTypeType;
+    community: string;
+    is_public: boolean;
+    error?: string | null;
+    title?: string | null;
+    body_preview?: string | null;
+    author?: string | null;
+    score?: number | null;
+    post_count?: number | null;
+    comment_count?: number | null;
+    posted_at?: string | null;
+    flairs?: string[];
+}

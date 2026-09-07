@@ -1,6 +1,6 @@
 import { BadGatewayException, Injectable, Logger } from '@nestjs/common';
 import axios, { AxiosError } from 'axios';
-import { PostSortOrder, TopTimeRange } from 'generated/prisma';
+import { PostSortOrder, SourceType, TopTimeRange } from 'generated/prisma';
 import { RedditConfig } from '../config/reddit.config';
 import { parseRedditUrl } from '../utils/reddit-url.utils';
 import {
@@ -8,6 +8,7 @@ import {
   FetchSubredditPostsOptions,
   RawRedditComment,
   RawRedditPost,
+  RedditDetectSourceResult,
   RedditUrlInfo,
 } from '../interfaces/reddit.interfaces';
 
@@ -41,6 +42,105 @@ export class RedditService {
 
   parseUrl(url: string): RedditUrlInfo {
     return parseRedditUrl(url);
+  }
+
+  /**
+   * Interactive metadata preview for the "detect source" step, before a
+   * ResearchProject is created. Deliberately does not use the retrying
+   * `request()` helper below: a single failed attempt here should surface a
+   * fast, classified result (public/private/not-found) to the user instead of
+   * retrying with backoff, which `request()` does for the resilient
+   * background ingestion pipeline.
+   */
+  async detectSource(url: string): Promise<RedditDetectSourceResult> {
+    const urlInfo = parseRedditUrl(url);
+
+    if (urlInfo.sourceType === SourceType.THREAD) {
+      const result = await this.detectRequest<any[]>(
+        `https://www.reddit.com/r/${encodeURIComponent(urlInfo.community)}/comments/${encodeURIComponent(urlInfo.externalPostId ?? '')}.json`,
+      );
+
+      if (result.errorMessage || !result.data) {
+        return {
+          sourceType: urlInfo.sourceType,
+          community: urlInfo.community,
+          isPublic: false,
+          error:
+            result.errorMessage ?? 'Reddit did not return any data for this post.',
+        };
+      }
+
+      const postData = result.data?.[0]?.data?.children?.[0]?.data;
+      if (!postData) {
+        return {
+          sourceType: urlInfo.sourceType,
+          community: urlInfo.community,
+          isPublic: false,
+          error:
+            'This post could not be found. It may have been deleted, or the link is out of date.',
+        };
+      }
+
+      return {
+        sourceType: urlInfo.sourceType,
+        community: urlInfo.community,
+        isPublic: true,
+        title: postData.title || undefined,
+        bodyPreview: this.previewText(postData.selftext),
+        author: postData.author === '[deleted]' ? undefined : postData.author,
+        score: typeof postData.score === 'number' ? postData.score : undefined,
+        postCount: 1,
+        commentCount:
+          typeof postData.num_comments === 'number'
+            ? postData.num_comments
+            : undefined,
+        postedAt: postData.created_utc
+          ? new Date(postData.created_utc * 1000)
+          : undefined,
+        flairs: postData.link_flair_text ? [postData.link_flair_text] : [],
+      };
+    }
+
+    const about = await this.detectRequest<any>(
+      `https://www.reddit.com/r/${encodeURIComponent(urlInfo.community)}/about.json`,
+    );
+
+    if (about.errorMessage || !about.data || about.data.data?.subreddit_type === 'private') {
+      return {
+        sourceType: urlInfo.sourceType,
+        community: urlInfo.community,
+        isPublic: false,
+        error: about.errorMessage ?? 'This subreddit is private or quarantined.',
+      };
+    }
+
+    const aboutData = about.data.data;
+    const hot = await this.detectRequest<any>(
+      `https://www.reddit.com/r/${encodeURIComponent(urlInfo.community)}/hot.json`,
+      { limit: 10 },
+    );
+
+    const posts = hot.data
+      ? (hot.data?.data?.children ?? [])
+          .filter((child: any) => child.kind === 't3')
+          .map((child: any) => child.data)
+      : [];
+    const flairs = Array.from(
+      new Set(
+        posts
+          .map((post: any) => post.link_flair_text)
+          .filter((flair: unknown): flair is string => !!flair),
+      ),
+    ).slice(0, 6) as string[];
+
+    return {
+      sourceType: urlInfo.sourceType,
+      community: urlInfo.community,
+      isPublic: true,
+      title: aboutData.title || undefined,
+      bodyPreview: this.previewText(aboutData.public_description),
+      flairs,
+    };
   }
 
   async fetchSubredditPosts(
@@ -171,6 +271,49 @@ export class RedditService {
           options,
         );
       }
+    }
+  }
+
+  private previewText(text: string | undefined | null): string | undefined {
+    if (!text || text === '[deleted]' || text === '[removed]') return undefined;
+    return text.length > 280 ? `${text.slice(0, 280)}…` : text;
+  }
+
+  private async detectRequest<T>(
+    url: string,
+    params: Record<string, string | number> = {},
+  ): Promise<{ data: T | null; errorMessage: string | null }> {
+    try {
+      const response = await axios.get<T>(url, {
+        params,
+        headers: { 'User-Agent': this.redditConfig.getUserAgent() },
+        timeout: 8000,
+      });
+      return { data: response.data, errorMessage: null };
+    } catch (error) {
+      const axiosError = error as AxiosError;
+      const status = axiosError.response?.status;
+
+      if (status === 403 || status === 401) {
+        return {
+          data: null,
+          errorMessage: 'This subreddit is private or quarantined.',
+        };
+      }
+      if (status === 404) {
+        return {
+          data: null,
+          errorMessage:
+            'This subreddit or post could not be found. It may have been banned, deleted, or the link is out of date.',
+        };
+      }
+
+      this.logger.warn(`Reddit detect-source request failed: ${axiosError.message}`);
+      return {
+        data: null,
+        errorMessage:
+          'Reddit could not be reached right now. Please try again in a moment.',
+      };
     }
   }
 

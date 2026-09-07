@@ -26,6 +26,7 @@ export const ApiRoutes = {
         prefix: "/research-projects",
         by_id: (id: string) => `/research-projects/${id}`,
         recalculate_sentiment: (id: string) => `/research-projects/${id}/sentiment/recalculate`,
+        detect_source: "/research-projects/detect-source",
     },
     analysis_configurations: {
         by_research_project: (research_project_id: string) => `/research-projects/${research_project_id}/analysis-configurations`,

@@ -57,6 +57,32 @@ export class ResearchProjectsService {
     });
   }
 
+  /**
+   * Live Reddit metadata preview for the "detect source" step, before a
+   * ResearchProject is created. `is_public: false` (with a human-readable
+   * `error`) signals an inaccessible/quarantined/missing source — the caller
+   * should render that as a friendly error state, not a failed request.
+   */
+  async detectSource(url: string) {
+    const result = await this.redditService.detectSource(url);
+
+    return {
+      platform: 'REDDIT' as const,
+      source_type: result.sourceType,
+      community: result.community,
+      is_public: result.isPublic,
+      error: result.error ?? null,
+      title: result.title ?? null,
+      body_preview: result.bodyPreview ?? null,
+      author: result.author ?? null,
+      score: result.score ?? null,
+      post_count: result.postCount ?? null,
+      comment_count: result.commentCount ?? null,
+      posted_at: result.postedAt ? result.postedAt.toISOString() : null,
+      flairs: result.flairs ?? [],
+    };
+  }
+
   async findAll(userId: string, query: ResearchProjectsQueryType) {
     const where = {
       user_uuid: userId,

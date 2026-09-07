@@ -136,12 +136,17 @@ export class AiService {
     }
 
     async embedText(text: string): Promise<number[]> {
-        const embeddingModel = openai.embedding('text-embedding-3-small');
-        const { embedding } = await embed({
-            model: embeddingModel,
-            value: text,
-        });
-        return embedding;
+        try {
+            const embeddingModel = openai.embedding('text-embedding-3-small');
+            const { embedding } = await embed({
+                model: embeddingModel,
+                value: text,
+            });
+            return embedding;
+        } catch (error) {
+            this.logger.error(`Error generating embedding: ${error.message}`);
+            throw new Error('Failed to generate embedding. Please try again.');
+        }
     }
 
 

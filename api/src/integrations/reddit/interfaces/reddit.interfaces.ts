@@ -50,3 +50,18 @@ export interface FetchPostWithCommentsOptions {
   maxDepth?: number;
   minCommentScore?: number;
 }
+
+export interface RedditDetectSourceResult {
+  sourceType: SourceType;
+  community: string;
+  isPublic: boolean;
+  error?: string;
+  title?: string;
+  bodyPreview?: string;
+  author?: string;
+  score?: number;
+  postCount?: number;
+  commentCount?: number;
+  postedAt?: Date;
+  flairs?: string[];
+}
