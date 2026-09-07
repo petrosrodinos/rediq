@@ -1,8 +1,8 @@
-import { adminLoginToAccount, refreshAccountToken, signIn, signUp } from "../services/auth";
+import { adminLoginToAccount, forgotPassword, refreshAccountToken, resetPassword, signIn, signUp, waitlist } from "../services/auth";
 import { useMutation } from "@tanstack/react-query";
 import { useAuthStore } from "@/stores/auth";
 import { useNavigate } from "react-router-dom";
-import type { SignInUser, SignUpUser } from "../interfaces/auth.interface";
+import type { ForgotPasswordDto, ResetPasswordDto, SignInUser, SignUpUser, WaitlistDto } from "../interfaces/auth.interface";
 import { Routes } from "@/routes/routes";
 import type { LoggedInUser } from "@/features/user/interfaces/user.interface";
 import { toast } from "@/hooks/use-toast";
@@ -98,6 +98,72 @@ export function useAdminLoginToAccount() {
             toast({
                 title: "Could not admin login to account",
                 description: error.message,
+                duration: 3000,
+                variant: "error",
+            });
+        },
+    });
+}
+
+export function useForgotPassword() {
+    return useMutation({
+        mutationFn: (data: ForgotPasswordDto) => forgotPassword(data),
+        onSuccess: (data) => {
+            toast({
+                title: "Reset email sent",
+                description: data.message,
+                duration: 3000,
+            });
+        },
+        onError: (error: any) => {
+            toast({
+                title: "Could not send reset email",
+                description: error?.message || "An unexpected error occurred",
+                duration: 3000,
+                variant: "error",
+            });
+        },
+    });
+}
+
+export function useResetPassword() {
+    const navigate = useNavigate();
+
+    return useMutation({
+        mutationFn: (data: ResetPasswordDto) => resetPassword(data),
+        onSuccess: (data) => {
+            toast({
+                title: "Password reset",
+                description: data.message,
+                duration: 3000,
+            });
+            navigate(Routes.auth.sign_in);
+        },
+        onError: (error: any) => {
+            toast({
+                title: "Could not reset password",
+                description: error?.message || "An unexpected error occurred",
+                duration: 3000,
+                variant: "error",
+            });
+        },
+    });
+}
+
+export function useWaitlist() {
+    return useMutation({
+        mutationFn: (data: WaitlistDto) => waitlist(data),
+        onSuccess: (data) => {
+            toast({
+                title: "You're on the waitlist",
+                description: data.message,
+                duration: 3000,
+            });
+        },
+        onError: (error: any) => {
+            toast({
+                title: "Could not join the waitlist",
+                description: error?.message || "An unexpected error occurred",
                 duration: 3000,
                 variant: "error",
             });

@@ -1,6 +1,6 @@
 import { formatAuthUser } from "../utils/auth.utils";
 import axiosInstance from "@/config/api/axios";
-import type { SignInUser, SignUpUser } from "../interfaces/auth.interface";
+import type { ForgotPasswordDto, ResetPasswordDto, SignInUser, SignUpUser, WaitlistDto } from "../interfaces/auth.interface";
 import { ApiRoutes } from "@/config/api/routes";
 import type { LoggedInUser } from "@/features/user/interfaces/user.interface";
 
@@ -53,35 +53,30 @@ export const adminLoginToAccount = async (account_uuid: string): Promise<LoggedI
     }
 };
 
-// export const forgotPassword = async (email: string) => {
-//     try {
+export const forgotPassword = async (dto: ForgotPasswordDto): Promise<{ message: string }> => {
+    try {
+        const response = await axiosInstance.post(ApiRoutes.auth.email.forgot_password, dto);
+        return response.data;
+    } catch (error) {
+        throw new Error("Failed to send password reset email. Please try again.");
+    }
+};
 
-//     } catch (error) {
-//         console.error("Error sending reset password email:", error);
-//         throw error;
-//     }
-// };
+export const resetPassword = async (dto: ResetPasswordDto): Promise<{ message: string }> => {
+    try {
+        const response = await axiosInstance.post(ApiRoutes.auth.email.reset_password, dto);
+        return response.data;
+    } catch (error) {
+        throw new Error("Failed to reset password. Please try again.");
+    }
+};
 
-// export const resetPassword = async (password: string) => {
-//     try {
-
-//     } catch (error) {
-//         console.error("Error resetting password:", error);
-//         throw error;
-//     }
-// };
-
-// export const updatePassword = async (
-//     email: string,
-//     old_password: string,
-//     password: string,
-// ) => {
-//     try {
-
-//     } catch (error) {
-//         console.error("Error updating password:", error);
-//         throw error;
-//     }
-// };
-
+export const waitlist = async (dto: WaitlistDto): Promise<{ message: string; code: string }> => {
+    try {
+        const response = await axiosInstance.post(ApiRoutes.auth.email.waitlist, dto);
+        return response.data;
+    } catch (error) {
+        throw new Error("Failed to join the waitlist. Please try again.");
+    }
+};
 
