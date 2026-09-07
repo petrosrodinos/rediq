@@ -2,6 +2,7 @@ import { BadGatewayException, Injectable, Logger } from '@nestjs/common';
 import axios, { AxiosError } from 'axios';
 import { PostSortOrder, SourceType, TopTimeRange } from 'generated/prisma';
 import { RedditConfig } from '../config/reddit.config';
+import { RedditOAuthService } from './reddit-oauth.service';
 import { parseRedditUrl } from '../utils/reddit-url.utils';
 import {
   FetchPostWithCommentsOptions,
@@ -33,12 +34,40 @@ const MAX_LISTING_PAGES = 20;
 const LISTING_PAGE_SIZE = 100;
 const MAX_RETRIES = 2;
 const RETRY_BASE_DELAY_MS = 500;
+const UNAUTHENTICATED_HOST = 'https://www.reddit.com';
+const OAUTH_HOST = 'https://oauth.reddit.com';
 
 @Injectable()
 export class RedditService {
   private readonly logger = new Logger(RedditService.name);
 
-  constructor(private readonly redditConfig: RedditConfig) {}
+  constructor(
+    private readonly redditConfig: RedditConfig,
+    private readonly redditOAuth: RedditOAuthService,
+  ) {}
+
+  /**
+   * Resolves the host + auth header to use for a request. When OAuth
+   * credentials are configured, every request goes through oauth.reddit.com
+   * with a bearer token (far higher, stable rate limits); otherwise falls
+   * back to the public, unauthenticated www.reddit.com endpoints.
+   */
+  private async resolveRequestContext(): Promise<{
+    host: string;
+    headers: Record<string, string>;
+  }> {
+    const userAgent = this.redditConfig.getUserAgent();
+
+    if (!this.redditConfig.hasOAuthCredentials()) {
+      return { host: UNAUTHENTICATED_HOST, headers: { 'User-Agent': userAgent } };
+    }
+
+    const accessToken = await this.redditOAuth.getAccessToken();
+    return {
+      host: OAUTH_HOST,
+      headers: { 'User-Agent': userAgent, Authorization: `Bearer ${accessToken}` },
+    };
+  }
 
   parseUrl(url: string): RedditUrlInfo {
     return parseRedditUrl(url);
@@ -57,7 +86,7 @@ export class RedditService {
 
     if (urlInfo.sourceType === SourceType.THREAD) {
       const result = await this.detectRequest<any[]>(
-        `https://www.reddit.com/r/${encodeURIComponent(urlInfo.community)}/comments/${encodeURIComponent(urlInfo.externalPostId ?? '')}.json`,
+        `/r/${encodeURIComponent(urlInfo.community)}/comments/${encodeURIComponent(urlInfo.externalPostId ?? '')}.json`,
       );
 
       if (result.errorMessage || !result.data) {
@@ -102,7 +131,7 @@ export class RedditService {
     }
 
     const about = await this.detectRequest<any>(
-      `https://www.reddit.com/r/${encodeURIComponent(urlInfo.community)}/about.json`,
+      `/r/${encodeURIComponent(urlInfo.community)}/about.json`,
     );
 
     if (about.errorMessage || !about.data || about.data.data?.subreddit_type === 'private') {
@@ -116,7 +145,7 @@ export class RedditService {
 
     const aboutData = about.data.data;
     const hot = await this.detectRequest<any>(
-      `https://www.reddit.com/r/${encodeURIComponent(urlInfo.community)}/hot.json`,
+      `/r/${encodeURIComponent(urlInfo.community)}/hot.json`,
       { limit: 10 },
     );
 
@@ -164,7 +193,7 @@ export class RedditService {
 
     while (posts.length < options.limit && page < MAX_LISTING_PAGES) {
       const response = await this.request<any>(
-        `https://www.reddit.com/r/${encodeURIComponent(community)}/${sort}.json`,
+        `/r/${encodeURIComponent(community)}/${sort}.json`,
         { ...params, ...(after ? { after } : {}) },
       );
 
@@ -204,7 +233,7 @@ export class RedditService {
     if (options.maxDepth) params.depth = options.maxDepth;
 
     const response = await this.request<any[]>(
-      `https://www.reddit.com/r/${encodeURIComponent(community)}/comments/${encodeURIComponent(postId)}.json`,
+      `/r/${encodeURIComponent(community)}/comments/${encodeURIComponent(postId)}.json`,
       params,
     );
 
@@ -280,13 +309,16 @@ export class RedditService {
   }
 
   private async detectRequest<T>(
-    url: string,
+    path: string,
     params: Record<string, string | number> = {},
   ): Promise<{ data: T | null; errorMessage: string | null }> {
+    const usingOAuth = this.redditConfig.hasOAuthCredentials();
+
     try {
-      const response = await axios.get<T>(url, {
-        params,
-        headers: { 'User-Agent': this.redditConfig.getUserAgent() },
+      const { host, headers } = await this.resolveRequestContext();
+      const response = await axios.get<T>(`${host}${path}`, {
+        params: { ...params, raw_json: 1 },
+        headers,
         timeout: 8000,
       });
       return { data: response.data, errorMessage: null };
@@ -294,27 +326,52 @@ export class RedditService {
       const axiosError = error as AxiosError;
       const status = axiosError.response?.status;
 
-      if (status === 403 || status === 401) {
-        return {
-          data: null,
-          errorMessage: 'This subreddit is private or quarantined.',
-        };
-      }
-      if (status === 404) {
-        return {
-          data: null,
-          errorMessage:
-            'This subreddit or post could not be found. It may have been banned, deleted, or the link is out of date.',
-        };
+      // A 401 against oauth.reddit.com means our token expired/was revoked,
+      // not that the content is private — retry once with a fresh token.
+      if (status === 401 && usingOAuth) {
+        this.redditOAuth.invalidateToken();
+        try {
+          const { host, headers } = await this.resolveRequestContext();
+          const response = await axios.get<T>(`${host}${path}`, {
+            params: { ...params, raw_json: 1 },
+            headers,
+            timeout: 8000,
+          });
+          return { data: response.data, errorMessage: null };
+        } catch (retryError) {
+          return this.classifyDetectError(retryError as AxiosError);
+        }
       }
 
-      this.logger.warn(`Reddit detect-source request failed: ${axiosError.message}`);
+      return this.classifyDetectError(axiosError);
+    }
+  }
+
+  private classifyDetectError(
+    axiosError: AxiosError,
+  ): { data: null; errorMessage: string } {
+    const status = axiosError.response?.status;
+
+    if (status === 403 || status === 401) {
+      return {
+        data: null,
+        errorMessage: 'This subreddit is private or quarantined.',
+      };
+    }
+    if (status === 404) {
       return {
         data: null,
         errorMessage:
-          'Reddit could not be reached right now. Please try again in a moment.',
+          'This subreddit or post could not be found. It may have been banned, deleted, or the link is out of date.',
       };
     }
+
+    this.logger.warn(`Reddit detect-source request failed: ${axiosError.message}`);
+    return {
+      data: null,
+      errorMessage:
+        'Reddit could not be reached right now. Please try again in a moment.',
+    };
   }
 
   private normalizeCommentBody(body: string | undefined): string | null {
@@ -350,18 +407,18 @@ export class RedditService {
   }
 
   private async request<T>(
-    url: string,
+    path: string,
     params: Record<string, string | number>,
   ): Promise<T> {
+    const usingOAuth = this.redditConfig.hasOAuthCredentials();
     let lastError: unknown;
 
     for (let attempt = 0; attempt <= MAX_RETRIES; attempt++) {
       try {
-        const response = await axios.get<T>(url, {
-          params,
-          headers: {
-            'User-Agent': this.redditConfig.getUserAgent(),
-          },
+        const { host, headers } = await this.resolveRequestContext();
+        const response = await axios.get<T>(`${host}${path}`, {
+          params: { ...params, raw_json: 1 },
+          headers,
           timeout: 15000,
         });
 
@@ -370,7 +427,16 @@ export class RedditService {
         lastError = error;
         const axiosError = error as AxiosError;
         const status = axiosError.response?.status;
+
+        // A 401 from oauth.reddit.com means the cached token expired/was
+        // revoked, not that the content is unavailable — always worth one
+        // retry with a freshly-fetched token, regardless of attempt count.
+        if (status === 401 && usingOAuth) {
+          this.redditOAuth.invalidateToken();
+        }
+
         const isRetryable =
+          (status === 401 && usingOAuth) ||
           !status ||
           status >= 500 ||
           status === 429 ||

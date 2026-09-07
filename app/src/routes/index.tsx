@@ -18,6 +18,7 @@ import SavedInsightsPage from "@/pages/saved-insights";
 import SearchPage from "@/pages/search";
 import AssistantPage from "@/pages/assistant";
 import SettingsPage from "@/pages/settings";
+import AboutPage from "@/pages/about";
 import { RoleTypes } from "@/features/user/interfaces/user.interface";
 import { Routes as RoutePaths } from "@/routes/routes";
 
@@ -70,6 +71,8 @@ export default function AppRoutes() {
         <Route path="assistant" element={<AssistantPage />} />
         <Route path="settings" element={<SettingsPage />} />
       </Route>
+
+      <Route path={RoutePaths.about} element={<AboutPage />} />
 
       <Route path="/" element={<Navigate to="/auth/sign-in" replace />} />
 

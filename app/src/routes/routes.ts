@@ -1,4 +1,5 @@
 export const Routes = {
+    about: "/about",
     auth: {
         sign_in: "/auth/sign-in",
         sign_up: "/auth/sign-up",
