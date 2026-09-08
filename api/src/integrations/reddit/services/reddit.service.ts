@@ -3,6 +3,8 @@ import axios, { AxiosError } from 'axios';
 import { PostSortOrder, SourceType, TopTimeRange } from 'generated/prisma';
 import { RedditConfig } from '../config/reddit.config';
 import { RedditOAuthService } from './reddit-oauth.service';
+import { BrightDataConfig } from '../config/bright-data.config';
+import { BrightDataRedditService } from './bright-data-reddit.service';
 import { parseRedditUrl } from '../utils/reddit-url.utils';
 import {
   FetchPostWithCommentsOptions,
@@ -44,6 +46,8 @@ export class RedditService {
   constructor(
     private readonly redditConfig: RedditConfig,
     private readonly redditOAuth: RedditOAuthService,
+    private readonly brightDataConfig: BrightDataConfig,
+    private readonly brightDataReddit: BrightDataRedditService,
   ) {}
 
   /**
@@ -59,13 +63,19 @@ export class RedditService {
     const userAgent = this.redditConfig.getUserAgent();
 
     if (!this.redditConfig.hasOAuthCredentials()) {
-      return { host: UNAUTHENTICATED_HOST, headers: { 'User-Agent': userAgent } };
+      return {
+        host: UNAUTHENTICATED_HOST,
+        headers: { 'User-Agent': userAgent },
+      };
     }
 
     const accessToken = await this.redditOAuth.getAccessToken();
     return {
       host: OAUTH_HOST,
-      headers: { 'User-Agent': userAgent, Authorization: `Bearer ${accessToken}` },
+      headers: {
+        'User-Agent': userAgent,
+        Authorization: `Bearer ${accessToken}`,
+      },
     };
   }
 
@@ -82,6 +92,10 @@ export class RedditService {
    * background ingestion pipeline.
    */
   async detectSource(url: string): Promise<RedditDetectSourceResult> {
+    if (this.brightDataConfig.hasCredentials()) {
+      return this.brightDataReddit.detectSource(url);
+    }
+
     const urlInfo = parseRedditUrl(url);
 
     if (urlInfo.sourceType === SourceType.THREAD) {
@@ -95,7 +109,8 @@ export class RedditService {
           community: urlInfo.community,
           isPublic: false,
           error:
-            result.errorMessage ?? 'Reddit did not return any data for this post.',
+            result.errorMessage ??
+            'Reddit did not return any data for this post.',
         };
       }
 
@@ -134,12 +149,17 @@ export class RedditService {
       `/r/${encodeURIComponent(urlInfo.community)}/about.json`,
     );
 
-    if (about.errorMessage || !about.data || about.data.data?.subreddit_type === 'private') {
+    if (
+      about.errorMessage ||
+      !about.data ||
+      about.data.data?.subreddit_type === 'private'
+    ) {
       return {
         sourceType: urlInfo.sourceType,
         community: urlInfo.community,
         isPublic: false,
-        error: about.errorMessage ?? 'This subreddit is private or quarantined.',
+        error:
+          about.errorMessage ?? 'This subreddit is private or quarantined.',
       };
     }
 
@@ -176,6 +196,10 @@ export class RedditService {
     community: string,
     options: FetchSubredditPostsOptions,
   ): Promise<RawRedditPost[]> {
+    if (this.brightDataConfig.hasCredentials()) {
+      return this.brightDataReddit.fetchSubredditPosts(community, options);
+    }
+
     const sort = SORT_MAP[options.sort] || 'hot';
     const params: Record<string, string | number> = {
       limit: LISTING_PAGE_SIZE,
@@ -228,6 +252,14 @@ export class RedditService {
     postId: string,
     options: FetchPostWithCommentsOptions,
   ): Promise<{ post: RawRedditPost; comments: RawRedditComment[] }> {
+    if (this.brightDataConfig.hasCredentials()) {
+      return this.brightDataReddit.fetchPostWithComments(
+        community,
+        postId,
+        options,
+      );
+    }
+
     const params: Record<string, string | number> = {};
     if (options.maxComments) params.limit = options.maxComments;
     if (options.maxDepth) params.depth = options.maxDepth;
@@ -347,9 +379,10 @@ export class RedditService {
     }
   }
 
-  private classifyDetectError(
-    axiosError: AxiosError,
-  ): { data: null; errorMessage: string } {
+  private classifyDetectError(axiosError: AxiosError): {
+    data: null;
+    errorMessage: string;
+  } {
     const status = axiosError.response?.status;
 
     if (status === 403 || status === 401) {
@@ -366,7 +399,9 @@ export class RedditService {
       };
     }
 
-    this.logger.warn(`Reddit detect-source request failed: ${axiosError.message}`);
+    this.logger.warn(
+      `Reddit detect-source request failed: ${axiosError.message}`,
+    );
     return {
       data: null,
       errorMessage:

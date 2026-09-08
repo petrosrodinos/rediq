@@ -9,7 +9,9 @@ export class RedditConfig {
 
   constructor(private readonly configService: ConfigService) {
     if (this.hasOAuthCredentials()) {
-      this.logger.log('Reddit OAuth credentials configured; using oauth.reddit.com');
+      this.logger.log(
+        'Reddit OAuth credentials configured; using oauth.reddit.com',
+      );
     } else {
       this.logger.warn(
         'REDDIT_CLIENT_ID/REDDIT_CLIENT_SECRET are not configured; falling back to unauthenticated www.reddit.com requests (low, unreliable rate limits)',

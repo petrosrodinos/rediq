@@ -49,7 +49,10 @@ export class RedditOAuthService {
     }
 
     try {
-      const response = await axios.post<{ access_token: string; expires_in: number }>(
+      const response = await axios.post<{
+        access_token: string;
+        expires_in: number;
+      }>(
         'https://www.reddit.com/api/v1/access_token',
         new URLSearchParams({ grant_type: 'client_credentials' }).toString(),
         {
@@ -73,7 +76,9 @@ export class RedditOAuthService {
     } catch (error) {
       this.cachedToken = null;
       const message = error instanceof Error ? error.message : 'Unknown error';
-      this.logger.error(`Failed to obtain a Reddit OAuth access token: ${message}`);
+      this.logger.error(
+        `Failed to obtain a Reddit OAuth access token: ${message}`,
+      );
       throw new Error('Failed to authenticate with Reddit.');
     }
   }
