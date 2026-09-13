@@ -14,7 +14,7 @@ import { useIsMobile } from "@/hooks/use-mobile";
 
 const SIDEBAR_COOKIE_NAME = "sidebar:state";
 const SIDEBAR_COOKIE_MAX_AGE = 60 * 60 * 24 * 7;
-const SIDEBAR_WIDTH = "16rem";
+const SIDEBAR_WIDTH = "252px";
 const SIDEBAR_WIDTH_MOBILE = "18rem";
 const SIDEBAR_WIDTH_ICON = "3rem";
 const SIDEBAR_KEYBOARD_SHORTCUT = "b";
@@ -275,7 +275,7 @@ const SidebarContent = React.forwardRef<HTMLDivElement, React.ComponentProps<"di
 SidebarContent.displayName = "SidebarContent";
 
 const SidebarGroup = React.forwardRef<HTMLDivElement, React.ComponentProps<"div">>(({ className, ...props }, ref) => {
-  return <div ref={ref} data-sidebar="group" className={cn("relative flex w-full min-w-0 flex-col pl-2 pr-2", className)} {...props} />;
+  return <div ref={ref} data-sidebar="group" className={cn("relative flex w-full min-w-0 flex-col px-4", className)} {...props} />;
 });
 SidebarGroup.displayName = "SidebarGroup";
 

@@ -1,11 +1,5 @@
 import type { RoleType } from "@/features/user/interfaces/user.interface";
 
-interface Team {
-  name: string;
-  logo: React.ElementType;
-  plan: string;
-}
-
 interface BaseNavItem {
   title: string;
   badge?: string;
@@ -31,7 +25,6 @@ interface NavGroup {
 }
 
 interface SidebarData {
-  teams: Team[];
   navGroups: NavGroup[];
 }
 

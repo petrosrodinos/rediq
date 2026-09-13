@@ -16,7 +16,7 @@ const SettingsPage: FC = () => {
   const tab: SettingsTab = isSettingsTab(searchParams.get("tab")) ? (searchParams.get("tab") as SettingsTab) : "profile";
 
   return (
-    <div className="mx-auto max-w-[860px] space-y-5">
+    <div className="mx-auto w-full max-w-[860px] space-y-5">
       <div>
         <h1 className="text-2xl font-bold tracking-tight">Settings</h1>
         <p className="text-sm text-muted-foreground">Manage your profile, plan, usage and security.</p>
@@ -30,7 +30,7 @@ const SettingsPage: FC = () => {
           setSearchParams(next, { replace: true });
         }}
       >
-        <TabsList className="w-full justify-start overflow-x-auto sm:w-auto">
+        <TabsList className="grid w-full grid-cols-4">
           <TabsTrigger value="profile">Profile</TabsTrigger>
           <TabsTrigger value="account">Account</TabsTrigger>
           <TabsTrigger value="usage">Usage</TabsTrigger>

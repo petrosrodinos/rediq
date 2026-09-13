@@ -1,18 +1,18 @@
 import type { ReactNode } from "react";
 import { ChevronRight } from "lucide-react";
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible";
-import { SidebarGroup, SidebarGroupLabel, SidebarMenu, SidebarMenuButton, SidebarMenuItem, SidebarMenuSub, SidebarMenuSubButton, SidebarMenuSubItem, useSidebar } from "@/components/ui/sidebar";
-import { Badge } from "@/components/ui/badge";
+import { SidebarGroup, SidebarMenu, SidebarMenuButton, SidebarMenuItem, SidebarMenuSub, SidebarMenuSubButton, SidebarMenuSubItem, useSidebar } from "@/components/ui/sidebar";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuTrigger } from "../ui/dropdown-menu";
 import { type NavCollapsible, type NavItem, type NavLink, type NavGroup } from "./types";
+import { cn } from "@/lib/utils";
 import { Link, useLocation } from "react-router-dom";
 
 export function NavGroup({ title, items }: NavGroup) {
   const { state } = useSidebar();
   const location = useLocation();
   return (
-    <SidebarGroup>
-      <SidebarGroupLabel>{title}</SidebarGroupLabel>
+    <SidebarGroup className={cn(title !== "Console" && "mt-3")}>
+      {title === "Active project" && <div className="px-1 pb-1.5 pt-2 text-[10px] tracking-wide text-white/35">{title}</div>}
       <SidebarMenu>
         {items.map((item: any) => {
           const key = `${item.title}-${item.url}`;
@@ -28,13 +28,15 @@ export function NavGroup({ title, items }: NavGroup) {
   );
 }
 
-const NavBadge = ({ children }: { children: ReactNode }) => <Badge className="rounded-full px-1 py-0 text-xs">{children}</Badge>;
+const NavBadge = ({ children }: { children: ReactNode }) => <span className="ml-auto shrink-0 font-mono text-[10px] text-white/35">{children}</span>;
 
 const SidebarMenuLink = ({ item, href }: { item: NavLink; href: string }) => {
   const { setOpenMobile } = useSidebar();
+  const isActive = checkIsActive(href, item);
   return (
     <SidebarMenuItem>
-      <SidebarMenuButton asChild isActive={checkIsActive(href, item)} tooltip={item.title}>
+      {isActive && <span className="absolute -left-[7px] top-1/2 h-[17px] w-[3px] -translate-y-1/2 rounded-full bg-flame" />}
+      <SidebarMenuButton asChild isActive={isActive} tooltip={item.title}>
         <Link to={item.url} onClick={() => setOpenMobile(false)}>
           {item.icon && <item.icon />}
           <span>{item.title}</span>

@@ -1,8 +1,8 @@
 import { Folder, MessageSquareText } from "lucide-react";
+import { Link } from "react-router-dom";
 import { Sidebar, SidebarContent, SidebarFooter, SidebarHeader, SidebarRail } from "@/components/ui/sidebar";
 import { NavGroup } from "@/components/layout/nav-group";
 import { NavUser } from "@/components/layout/nav-user";
-import { TeamSwitcher } from "@/components/layout/team-switcher";
 import { sidebarData } from "./data/sidebar-data";
 import type { NavGroup as NavGroupType } from "./types";
 import { RoleTypes, type RoleType } from "@/features/user/interfaces/user.interface";
@@ -11,6 +11,7 @@ import { useActiveProjectStore } from "@/stores/active-project";
 import { Routes } from "@/routes/routes";
 import { useGetResearchProjects } from "@/features/research-projects/hooks/use-research-projects";
 import { useGetSavedInsights } from "@/features/saved-insights/hooks/use-saved-insights";
+import { environments } from "@/config/environments";
 
 export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
   const { role } = useAuthStore();
@@ -61,16 +62,29 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
   });
 
   return (
-    <Sidebar collapsible="icon" variant="floating" {...props}>
+    <Sidebar {...props}>
       <SidebarHeader>
-        <TeamSwitcher teams={sidebarData.teams} />
+        <Link to={Routes.dashboard.root} className="flex items-center gap-2.5 px-4 pb-1 pt-2">
+          <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-[10px] bg-flame shadow-[0_2px_10px_-2px_rgba(255,69,0,0.65)]">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#fff" strokeWidth="2.4" strokeLinecap="round">
+              <path d="M4 18V7" />
+              <path d="M10 18V4" />
+              <path d="M16 18v-8" />
+              <path d="M22 18v-3" />
+            </svg>
+          </div>
+          <div className="min-w-0 leading-tight">
+            <div className="truncate font-display text-[15px] font-semibold tracking-tight text-white">{environments.APP_NAME}</div>
+            <div className="truncate text-[11px] text-white/40">Reddit research</div>
+          </div>
+        </Link>
       </SidebarHeader>
       <SidebarContent>
         {visibleGroups.map((group) => (
           <NavGroup key={group.title} {...group} />
         ))}
       </SidebarContent>
-      <SidebarFooter>
+      <SidebarFooter className="px-4 pb-4 pt-2">
         <NavUser />
       </SidebarFooter>
       <SidebarRail />

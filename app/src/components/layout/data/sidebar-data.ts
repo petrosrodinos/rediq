@@ -4,28 +4,19 @@ import {
   IconUser,
 } from "@tabler/icons-react";
 import {
-  Command,
   LayoutDashboard,
-  Sparkles,
-  FolderSearch,
+  Plus,
+  AlignLeft,
   Bookmark,
   Search,
-  MessageCircleQuestion,
+  MessageSquare,
   Settings,
 } from "lucide-react";
 import { type SidebarData } from "../types";
 import { Routes } from "@/routes/routes";
 import { RoleTypes } from "@/features/user/interfaces/user.interface";
-import { environments } from "@/config/environments";
 
 export const sidebarData: SidebarData = {
-  teams: [
-    {
-      name: environments.APP_NAME,
-      logo: Command,
-      plan: "Reddit research",
-    },
-  ],
   navGroups: [
     {
       title: "Console",
@@ -38,12 +29,12 @@ export const sidebarData: SidebarData = {
         {
           title: "New analysis",
           url: Routes.dashboard.new_analysis,
-          icon: Sparkles,
+          icon: Plus,
         },
         {
           title: "My research",
           url: Routes.dashboard.research,
-          icon: FolderSearch,
+          icon: AlignLeft,
         },
         {
           title: "Saved insights",
@@ -58,7 +49,7 @@ export const sidebarData: SidebarData = {
         {
           title: "AI assistant",
           url: Routes.dashboard.assistant,
-          icon: MessageCircleQuestion,
+          icon: MessageSquare,
         },
       ],
     },

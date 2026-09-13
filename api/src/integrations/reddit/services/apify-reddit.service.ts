@@ -63,7 +63,11 @@ export class ApifyRedditService {
         ? Math.min(options.limit * 3, 50000)
         : options.limit;
 
-    const items = await this.client.runSyncGetDatasetItems({
+    // Async trigger+poll, not run-sync: a full subreddit scrape can take
+    // well beyond Apify's server-side sync window. This runs inside an
+    // already-async background ingestion job (see `RedditIngestionService`),
+    // so nobody is waiting on it live.
+    const items = await this.client.runAndWaitForItems({
       startUrls: [{ url: listingUrl }],
       maxPostsCount,
       includeNSFW: !!options.includeNsfw,
@@ -86,7 +90,10 @@ export class ApifyRedditService {
   ): Promise<{ post: RawRedditPost; comments: RawRedditComment[] }> {
     const postUrl = `https://www.reddit.com/r/${encodeURIComponent(community)}/comments/${encodeURIComponent(postId)}/`;
 
-    const items = await this.client.runSyncGetDatasetItems({
+    // Async trigger+poll: a heavily-commented post can take minutes to fully
+    // crawl, well beyond run-sync's server-side window (same reasoning as
+    // `fetchSubredditPosts` above).
+    const items = await this.client.runAndWaitForItems({
       startUrls: [{ url: postUrl }],
       crawlCommentsPerPost: true,
       maxCommentsPerPost: options.maxComments ?? 200,

@@ -8,8 +8,8 @@ export default function AdminLayout() {
     <SidebarProvider>
       <AppSidebar />
       <SidebarInset>
-        <Header fixed />
-        <div className="flex flex-1 flex-col gap-4 p-4 pt-0">
+        <Header />
+        <div className="canvas-tex flex flex-1 flex-col gap-4 px-4 py-7 sm:px-7">
           <Outlet />
         </div>
       </SidebarInset>
