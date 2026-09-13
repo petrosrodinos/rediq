@@ -64,7 +64,7 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
   return (
     <Sidebar {...props}>
       <SidebarHeader>
-        <Link to={Routes.dashboard.root} className="flex items-center gap-2.5 px-4 pb-1 pt-2">
+        <Link to={Routes.home} className="flex items-center gap-2.5 px-4 pb-1 pt-2">
           <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-[10px] bg-flame shadow-[0_2px_10px_-2px_rgba(255,69,0,0.65)]">
             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#fff" strokeWidth="2.4" strokeLinecap="round">
               <path d="M4 18V7" />

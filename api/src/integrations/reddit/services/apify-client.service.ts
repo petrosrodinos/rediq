@@ -63,7 +63,12 @@ export class ApifyClientService {
     }
   }
 
-  /** Starts an async actor run and returns its run info (id + dataset id) without waiting. */
+  /**
+   * Starts an async actor run and returns its run info (id + dataset id) without waiting.
+   * 60s timeout: Apify's `/runs` trigger endpoint has been observed taking well over 15s to
+   * respond under load (confirmed via live testing), and this only runs inside the already-async
+   * background ingestion pipeline (see `runAndWaitForItems`), so nobody is waiting on it live.
+   */
   async runActor(input: ApifyRedditActorInput): Promise<ApifyRunInfo> {
     try {
       const response = await axios.post<{ data: ApifyRunInfo }>(
@@ -72,7 +77,7 @@ export class ApifyClientService {
         {
           params: this.tokenParam(),
           headers: { 'Content-Type': 'application/json' },
-          timeout: 15000,
+          timeout: 60000,
         },
       );
       return response.data.data;
