@@ -1,0 +1,616 @@
+{
+  "openapi": "3.0.1",
+  "info": {
+    "version": "0.0",
+    "x-build-id": "IZsJzUUyMwgdA9zAN"
+  },
+  "servers": [
+    {
+      "url": "https://api.apify.com/v2"
+    }
+  ],
+  "paths": {
+    "/acts/harshmaur~reddit-scraper/run-sync-get-dataset-items": {
+      "post": {
+        "operationId": "run-sync-get-dataset-items-harshmaur-reddit-scraper",
+        "x-openai-isConsequential": false,
+        "summary": "Executes an Actor, waits for its completion, and returns Actor's dataset items in response.",
+        "tags": [
+          "Run Actor"
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/inputSchema"
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "token",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "Enter your Apify token here"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/acts/harshmaur~reddit-scraper/runs": {
+      "post": {
+        "operationId": "runs-sync-harshmaur-reddit-scraper",
+        "x-openai-isConsequential": false,
+        "summary": "Executes an Actor and returns information about the initiated run in response.",
+        "tags": [
+          "Run Actor"
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/inputSchema"
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "token",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "Enter your Apify token here"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/runsResponseSchema"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/acts/harshmaur~reddit-scraper/run-sync": {
+      "post": {
+        "operationId": "run-sync-harshmaur-reddit-scraper",
+        "x-openai-isConsequential": false,
+        "summary": "Executes an Actor, waits for completion, and returns the OUTPUT from Key-value store in response.",
+        "tags": [
+          "Run Actor"
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/inputSchema"
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "token",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "Enter your Apify token here"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "searchTerms": {
+            "title": "Search Keywords",
+            "type": "array",
+            "description": "Enter one or more keywords to search Reddit (e.g. \"best laptops 2025\", \"AI news\"). Each keyword runs as a separate search. Free Apify plans search the first 40 keywords per run (paid plans are unlimited) — extra keywords are skipped and noted in the run log. Leave empty if you only want to scrape Direct URLs below.",
+            "default": [],
+            "items": {
+              "type": "string"
+            }
+          },
+          "searchPosts": {
+            "title": "Search for posts",
+            "type": "boolean",
+            "description": "Include posts in keyword search results.",
+            "default": true
+          },
+          "searchComments": {
+            "title": "Search for comments",
+            "type": "boolean",
+            "description": "Include comments in keyword search results.",
+            "default": false
+          },
+          "searchCommunities": {
+            "title": "Search for communities",
+            "type": "boolean",
+            "description": "Include communities (subreddits) in keyword search results.",
+            "default": false
+          },
+          "withinCommunity": {
+            "title": "Limit search to ONE community",
+            "type": "string",
+            "description": "Restrict keyword search to a single subreddit. Accepts a bare name (developers), r/developers, or a full subreddit URL. Leave empty to search all of Reddit. Only applies to Search Keywords.",
+            "default": ""
+          },
+          "searchSort": {
+            "title": "Sort search results by",
+            "enum": [
+              "",
+              "relevance",
+              "hot",
+              "top",
+              "new",
+              "comments"
+            ],
+            "type": "string",
+            "description": "Controls how keyword search results are ranked. Only applies to Search Keywords, not Direct URLs.",
+            "default": "new"
+          },
+          "searchTime": {
+            "title": "Time range",
+            "enum": [
+              "all",
+              "hour",
+              "day",
+              "week",
+              "month",
+              "year"
+            ],
+            "type": "string",
+            "description": "Limit keyword search results to posts from a specific time window. Only applies to Search Keywords.",
+            "default": "all"
+          },
+          "startUrls": {
+            "title": "Reddit URLs — posts, comments, profiles, or search pages",
+            "type": "array",
+            "description": "Add one or more Reddit URLs to scrape directly. Supports post URLs, subreddit URLs, user profile URLs, and search page URLs. The Search Keywords options above (sort, time, community filter) do NOT apply to these URLs.",
+            "default": [],
+            "items": {
+              "type": "object",
+              "required": [
+                "url"
+              ],
+              "properties": {
+                "url": {
+                  "type": "string",
+                  "title": "URL of a web page",
+                  "format": "uri"
+                }
+              }
+            }
+          },
+          "fastMode": {
+            "title": "Fast mode for search page URLs (turning off needs 2048 MB)",
+            "type": "boolean",
+            "description": "Speeds up scraping of search page URLs at the cost of some accuracy — some posts may be missed. Disable if you need exact results matching what you see on Reddit. Search Keywords always use fast mode automatically.",
+            "default": true
+          },
+          "subredditUrls": {
+            "title": "Subreddits — names or community links only (not post links)",
+            "type": "array",
+            "description": "Subreddits to scrape in full. Enter subreddit names or links — e.g. `AskReddit`, `r/AskReddit`, or `https://www.reddit.com/r/AskReddit/`. This collects far more posts per subreddit than a standard scrape. It uses more requests, so runs take longer and cost more. Comments are also collected when 'Scrape comments for each post' is enabled — increase Max posts to allow more results per subreddit.",
+            "default": [],
+            "items": {
+              "type": "string"
+            }
+          },
+          "postedAfter": {
+            "title": "Posts created on or after (YYYY-MM-DD)",
+            "type": "string",
+            "description": "Only keep posts created on or after this date (interpreted as 00:00 UTC). When set, results are fetched newest-first (sort=new) and the search Time range is ignored. Reddit caps each listing at ~1,000 posts, so a window behind a very high-volume query may be only partly reachable. Applies to Search Keywords, subreddit URLs, the Full Subreddit Scrape, and user profiles."
+          },
+          "postedBefore": {
+            "title": "Posts created on or before (YYYY-MM-DD)",
+            "type": "string",
+            "description": "Only keep posts created on or before this date (interpreted as the end of that day, 23:59:59 UTC)."
+          },
+          "commentedAfter": {
+            "title": "Comments created on or after (YYYY-MM-DD)",
+            "type": "string",
+            "description": "Only keep comments created on or after this date (UTC). Applies when comments are collected (comment search, or 'Scrape comments for each post')."
+          },
+          "commentedBefore": {
+            "title": "Comments created on or before (YYYY-MM-DD)",
+            "type": "string",
+            "description": "Only keep comments created on or before this date (UTC)."
+          },
+          "onlyWithFlair": {
+            "title": "Only posts that have a flair",
+            "type": "boolean",
+            "description": "When enabled, drop posts with no flair and keep only those that have a flair assigned. Applies to Search Keywords, subreddit URLs, the Full Subreddit Scrape, and user profiles.",
+            "default": false
+          },
+          "crawlCommentsPerPost": {
+            "title": "Scrape comments for each post (slower, much more data)",
+            "type": "boolean",
+            "description": "When enabled, comments will be collected for every post found from both Search Keywords and Direct URLs. This significantly increases run time and data output.",
+            "default": false
+          },
+          "includeNSFW": {
+            "title": "Include NSFW (18+) content",
+            "type": "boolean",
+            "description": "Include posts marked as Not Safe For Work in results. Applies to both Search Keywords and Direct URLs.",
+            "default": false
+          },
+          "maxPostsCount": {
+            "title": "Max posts (total across all inputs)",
+            "minimum": 0,
+            "maximum": 50000,
+            "type": "integer",
+            "description": "Maximum number of posts to save across all search results, subreddit pages, and user profiles. To pull an entire subreddit, use the Full Subreddit Scrape input and raise this limit. Max: 50000.",
+            "default": 50
+          },
+          "maxCommentsCount": {
+            "title": "Max search comments (keyword search only)",
+            "minimum": 0,
+            "type": "integer",
+            "description": "Maximum comments returned per search keyword (when 'Search for comments' is enabled). Does not affect per-post comment scraping.",
+            "default": 400
+          },
+          "maxCommentsPerPost": {
+            "title": "Max comments per post",
+            "minimum": 0,
+            "type": "integer",
+            "description": "Maximum comments to scrape per individual post (when 'Scrape comments for each post' is enabled).",
+            "default": 200
+          },
+          "maxCommunitiesCount": {
+            "title": "Max communities",
+            "minimum": 0,
+            "type": "integer",
+            "description": "Maximum communities returned from keyword search (when 'Search for communities' is enabled).",
+            "default": 2
+          },
+          "aiAnalysis": {
+            "title": "AI Analysis — billed once per result",
+            "type": "boolean",
+            "description": "Adds AI-judged fields to posts and comments: `sentimentLabel` (positive / negative / neutral / mixed / uncertain), `sentimentScore` (-1 to 1), `intent` (question, seeking_recommendation, complaint, praise, purchase_intent, comparison, announcement, self_promotion, discussion), `emotion` (joy, excitement, anger, frustration, sadness, disappointment, fear, surprise, neutral), `entities` (brands, products and companies mentioned), and — for keyword-search results — `relevanceScore` (0 to 1). Posts also receive a `contentCategory`. The model understands Reddit slang and sarcasm; bot and moderator boilerplate is labelled `uncertain` free of charge. Each analyzed result is billed once as an `analyzed_item` event — see the Pricing tab. Requires a paid Apify plan and is ignored on free plans.",
+            "default": false
+          },
+          "customLabels": {
+            "title": "Custom AI Labels — includes AI Analysis",
+            "type": "object",
+            "description": "Define your own labels as `{\"label_name\": \"plain-language instruction\"}` and the AI evaluates each one on every analyzed post and comment, returning them under `customLabels` on each result. Example: `{\"mentions_pricing\": \"true if the text complains about pricing or cost\", \"competitor\": \"name the competing product mentioned, or none\"}`. Up to 5 labels; names must be short identifiers (letters, digits, underscore). Each label evaluated on each result is billed as one `custom_label` event — 3 labels on 1,000 results = 3,000 events. An evaluation that finds nothing (an empty/null answer, when your instruction allows it) is still an evaluation and is charged; nothing is charged for results the AI could not process. Setting custom labels enables the full AI Analysis on the same items — each labeled result is also billed once as an `analyzed_item`. Paid add-on: requires a paid Apify plan; ignored on free plans.",
+            "default": {}
+          },
+          "mcpConnector": {
+            "title": "Send results to an app (MCP connector)",
+            "type": "string",
+            "description": "Pick an authorized MCP connector (Slack, Notion, GitHub, Airtable, Supabase, …) to receive the scraped posts. This is the recommended, secure path — your credentials stay in Apify and are never exposed to this actor (Apify's proxy injects them). Leave empty to scrape only. Create connectors under Settings → API & Integrations → MCP connectors, or inline here."
+          },
+          "mcpMode": {
+            "title": "Delivery mode",
+            "enum": [
+              "perPost",
+              "summary"
+            ],
+            "type": "string",
+            "description": "perPost: send one message/record per scraped post. summary: send a single digest of the whole run.",
+            "default": "perPost"
+          },
+          "mcpTarget": {
+            "title": "Target page / database / repo",
+            "type": "string",
+            "description": "Where to write — the destination ID the tool needs: a Notion database/page ID, a Google Sheet ID, a Slack channel, or owner/repo. Leave blank for connectors that post to a default location. Advanced shapes go in Arguments JSON below."
+          },
+          "mcpComments": {
+            "title": "How to deliver comments",
+            "enum": [
+              "ignore",
+              "bundle",
+              "separate"
+            ],
+            "type": "string",
+            "description": "When 'Scrape comments for each post' is on, choose how comments reach your app. Ignore: send posts only (comments still saved to the dataset). Bundle: attach each post's top comments inside its message. Separate: send each top comment as its own message/record.",
+            "default": "ignore"
+          },
+          "mcpCommentsPerPost": {
+            "title": "Top comments per post",
+            "minimum": 1,
+            "maximum": 50,
+            "type": "integer",
+            "description": "How many top comments (by score) to include per post when bundling or sending comments. Requires 'Scrape comments for each post'.",
+            "default": 5
+          },
+          "mcpMessage": {
+            "title": "Message template",
+            "type": "string",
+            "description": "Template for each message. Use {{field}} placeholders from ANY post field — common ones: {{title}}, {{body}}, {{postUrl}}, {{authorName}}, {{score}}, {{upVotes}}, {{commentsCount}}, {{communityName}}, {{flair}}, {{createdAt}}. Nested/array fields work via dot or [index] paths: {{mediaAssets.0.url}}, {{galleryImages[0]}}, {{media.reddit_video.fallback_url}}. (Full field list in the README.) Missing fields render empty.",
+            "default": "**{{title}}**\n{{postUrl}}"
+          },
+          "mcpTool": {
+            "title": "Tool override (advanced)",
+            "type": "string",
+            "description": "Force a specific tool name on the connector (e.g. send_message, create_page, append_row). Leave empty to auto-detect the connector's write/notify tool."
+          },
+          "mcpArguments": {
+            "title": "Tool arguments override (advanced)",
+            "type": "object",
+            "description": "Extra/override arguments merged into each tool call as JSON — e.g. {\"channel\": \"#reddit\"} for Slack. {{field}} placeholders work inside string values too, so you can nest live data into any shape the tool needs — e.g. Notion: {\"properties\": {\"Title\": {\"title\": [{\"text\": {\"content\": \"{{title}}\"}}]}, \"Link\": {\"url\": \"{{postUrl}}\"}}}. Use it to satisfy required fields or fully control the payload."
+          },
+          "mcpMaxItems": {
+            "title": "Max posts to send",
+            "minimum": 1,
+            "maximum": 1000,
+            "type": "integer",
+            "description": "Safety cap on how many posts are piped to the connector per run (perPost mode). Protects against flooding the destination.",
+            "default": 50
+          },
+          "mcpServerUrl": {
+            "title": "MCP server URL (dev / diagnostic)",
+            "type": "string",
+            "description": "Advanced/testing only. Connect directly to a raw MCP server URL, bypassing the MCP Connector above. For real use prefer a connector — with a connector your credentials stay in Apify and are never seen by this actor. When set, this overrides the connector."
+          },
+          "mcpServerToken": {
+            "title": "MCP server token (dev / diagnostic)",
+            "type": "string",
+            "description": "Bearer token for the dev MCP server URL above. Note: a token entered here IS visible to the actor at runtime — for production use an MCP Connector instead, so credentials never leave Apify. Ignored unless the URL is set."
+          },
+          "proxy": {
+            "title": "Proxy configuration",
+            "type": "object",
+            "description": "Either use Apify proxy, or provide your own proxy servers.",
+            "default": {
+              "useApifyProxy": true,
+              "apifyProxyGroups": [
+                "RESIDENTIAL"
+              ]
+            }
+          }
+        }
+      },
+      "runsResponseSchema": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "type": "object",
+            "properties": {
+              "id": {
+                "type": "string"
+              },
+              "actId": {
+                "type": "string"
+              },
+              "userId": {
+                "type": "string"
+              },
+              "startedAt": {
+                "type": "string",
+                "format": "date-time",
+                "example": "2025-01-08T00:00:00.000Z"
+              },
+              "finishedAt": {
+                "type": "string",
+                "format": "date-time",
+                "example": "2025-01-08T00:00:00.000Z"
+              },
+              "status": {
+                "type": "string",
+                "example": "READY"
+              },
+              "meta": {
+                "type": "object",
+                "properties": {
+                  "origin": {
+                    "type": "string",
+                    "example": "API"
+                  },
+                  "userAgent": {
+                    "type": "string"
+                  }
+                }
+              },
+              "stats": {
+                "type": "object",
+                "properties": {
+                  "inputBodyLen": {
+                    "type": "integer",
+                    "example": 2000
+                  },
+                  "rebootCount": {
+                    "type": "integer",
+                    "example": 0
+                  },
+                  "restartCount": {
+                    "type": "integer",
+                    "example": 0
+                  },
+                  "resurrectCount": {
+                    "type": "integer",
+                    "example": 0
+                  },
+                  "computeUnits": {
+                    "type": "integer",
+                    "example": 0
+                  }
+                }
+              },
+              "options": {
+                "type": "object",
+                "properties": {
+                  "build": {
+                    "type": "string",
+                    "example": "latest"
+                  },
+                  "timeoutSecs": {
+                    "type": "integer",
+                    "example": 300
+                  },
+                  "memoryMbytes": {
+                    "type": "integer",
+                    "example": 1024
+                  },
+                  "diskMbytes": {
+                    "type": "integer",
+                    "example": 2048
+                  }
+                }
+              },
+              "buildId": {
+                "type": "string"
+              },
+              "defaultKeyValueStoreId": {
+                "type": "string"
+              },
+              "defaultDatasetId": {
+                "type": "string"
+              },
+              "defaultRequestQueueId": {
+                "type": "string"
+              },
+              "buildNumber": {
+                "type": "string",
+                "example": "1.0.0"
+              },
+              "containerUrl": {
+                "type": "string"
+              },
+              "usage": {
+                "type": "object",
+                "properties": {
+                  "ACTOR_COMPUTE_UNITS": {
+                    "type": "integer",
+                    "example": 0
+                  },
+                  "DATASET_READS": {
+                    "type": "integer",
+                    "example": 0
+                  },
+                  "DATASET_WRITES": {
+                    "type": "integer",
+                    "example": 0
+                  },
+                  "KEY_VALUE_STORE_READS": {
+                    "type": "integer",
+                    "example": 0
+                  },
+                  "KEY_VALUE_STORE_WRITES": {
+                    "type": "integer",
+                    "example": 1
+                  },
+                  "KEY_VALUE_STORE_LISTS": {
+                    "type": "integer",
+                    "example": 0
+                  },
+                  "REQUEST_QUEUE_READS": {
+                    "type": "integer",
+                    "example": 0
+                  },
+                  "REQUEST_QUEUE_WRITES": {
+                    "type": "integer",
+                    "example": 0
+                  },
+                  "DATA_TRANSFER_INTERNAL_GBYTES": {
+                    "type": "integer",
+                    "example": 0
+                  },
+                  "DATA_TRANSFER_EXTERNAL_GBYTES": {
+                    "type": "integer",
+                    "example": 0
+                  },
+                  "PROXY_RESIDENTIAL_TRANSFER_GBYTES": {
+                    "type": "integer",
+                    "example": 0
+                  },
+                  "PROXY_SERPS": {
+                    "type": "integer",
+                    "example": 0
+                  }
+                }
+              },
+              "usageTotalUsd": {
+                "type": "number",
+                "example": 0.00005
+              },
+              "usageUsd": {
+                "type": "object",
+                "properties": {
+                  "ACTOR_COMPUTE_UNITS": {
+                    "type": "integer",
+                    "example": 0
+                  },
+                  "DATASET_READS": {
+                    "type": "integer",
+                    "example": 0
+                  },
+                  "DATASET_WRITES": {
+                    "type": "integer",
+                    "example": 0
+                  },
+                  "KEY_VALUE_STORE_READS": {
+                    "type": "integer",
+                    "example": 0
+                  },
+                  "KEY_VALUE_STORE_WRITES": {
+                    "type": "number",
+                    "example": 0.00005
+                  },
+                  "KEY_VALUE_STORE_LISTS": {
+                    "type": "integer",
+                    "example": 0
+                  },
+                  "REQUEST_QUEUE_READS": {
+                    "type": "integer",
+                    "example": 0
+                  },
+                  "REQUEST_QUEUE_WRITES": {
+                    "type": "integer",
+                    "example": 0
+                  },
+                  "DATA_TRANSFER_INTERNAL_GBYTES": {
+                    "type": "integer",
+                    "example": 0
+                  },
+                  "DATA_TRANSFER_EXTERNAL_GBYTES": {
+                    "type": "integer",
+                    "example": 0
+                  },
+                  "PROXY_RESIDENTIAL_TRANSFER_GBYTES": {
+                    "type": "integer",
+                    "example": 0
+                  },
+                  "PROXY_SERPS": {
+                    "type": "integer",
+                    "example": 0
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

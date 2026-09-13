@@ -1,11 +1,17 @@
 import { BadGatewayException, Injectable, Logger } from '@nestjs/common';
 import axios, { AxiosError } from 'axios';
-import { PostSortOrder, SourceType, TopTimeRange } from 'generated/prisma';
+import { SourceType } from 'generated/prisma';
 import { RedditConfig } from '../config/reddit.config';
 import { RedditOAuthService } from './reddit-oauth.service';
 import { BrightDataConfig } from '../config/bright-data.config';
 import { BrightDataRedditService } from './bright-data-reddit.service';
-import { parseRedditUrl } from '../utils/reddit-url.utils';
+import { ApifyConfig } from '../config/apify.config';
+import { ApifyRedditService } from './apify-reddit.service';
+import {
+  parseRedditUrl,
+  SORT_MAP,
+  TIME_RANGE_MAP,
+} from '../utils/reddit-url.utils';
 import {
   FetchPostWithCommentsOptions,
   FetchSubredditPostsOptions,
@@ -14,23 +20,6 @@ import {
   RedditDetectSourceResult,
   RedditUrlInfo,
 } from '../interfaces/reddit.interfaces';
-
-const SORT_MAP: Record<PostSortOrder, string> = {
-  [PostSortOrder.HOT]: 'hot',
-  [PostSortOrder.TOP]: 'top',
-  [PostSortOrder.NEW]: 'new',
-  [PostSortOrder.RISING]: 'rising',
-  [PostSortOrder.CONTROVERSIAL]: 'controversial',
-};
-
-const TIME_RANGE_MAP: Record<TopTimeRange, string> = {
-  [TopTimeRange.HOUR]: 'hour',
-  [TopTimeRange.DAY]: 'day',
-  [TopTimeRange.WEEK]: 'week',
-  [TopTimeRange.MONTH]: 'month',
-  [TopTimeRange.YEAR]: 'year',
-  [TopTimeRange.ALL]: 'all',
-};
 
 const MAX_LISTING_PAGES = 20;
 const LISTING_PAGE_SIZE = 100;
@@ -48,6 +37,8 @@ export class RedditService {
     private readonly redditOAuth: RedditOAuthService,
     private readonly brightDataConfig: BrightDataConfig,
     private readonly brightDataReddit: BrightDataRedditService,
+    private readonly apifyConfig: ApifyConfig,
+    private readonly apifyReddit: ApifyRedditService,
   ) {}
 
   /**
@@ -92,6 +83,9 @@ export class RedditService {
    * background ingestion pipeline.
    */
   async detectSource(url: string): Promise<RedditDetectSourceResult> {
+    if (this.apifyConfig.hasCredentials()) {
+      return this.apifyReddit.detectSource(url);
+    }
     if (this.brightDataConfig.hasCredentials()) {
       return this.brightDataReddit.detectSource(url);
     }
@@ -196,6 +190,9 @@ export class RedditService {
     community: string,
     options: FetchSubredditPostsOptions,
   ): Promise<RawRedditPost[]> {
+    if (this.apifyConfig.hasCredentials()) {
+      return this.apifyReddit.fetchSubredditPosts(community, options);
+    }
     if (this.brightDataConfig.hasCredentials()) {
       return this.brightDataReddit.fetchSubredditPosts(community, options);
     }
@@ -252,6 +249,9 @@ export class RedditService {
     postId: string,
     options: FetchPostWithCommentsOptions,
   ): Promise<{ post: RawRedditPost; comments: RawRedditComment[] }> {
+    if (this.apifyConfig.hasCredentials()) {
+      return this.apifyReddit.fetchPostWithComments(community, postId, options);
+    }
     if (this.brightDataConfig.hasCredentials()) {
       return this.brightDataReddit.fetchPostWithComments(
         community,

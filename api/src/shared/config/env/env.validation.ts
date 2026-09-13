@@ -39,6 +39,8 @@ const EnvSchema = z.object({
     REDDIT_CLIENT_SECRET: z.string().optional(),
     REDDIT_USER_AGENT: z.string().optional(),
     BRIGHT_DATA_API_TOKEN: z.string().optional(),
+    APIFY_API_TOKEN: z.string().optional(),
+    APIFY_REDDIT_ACTOR_ID: z.string().optional(),
     BULL_BOARD_USER: z.string().optional(),
     BULL_BOARD_PASSWORD: z.string().optional(),
 });

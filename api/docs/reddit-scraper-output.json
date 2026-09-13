@@ -1,0 +1,1304 @@
+{
+    "type": "object",
+    "properties": {
+      "dataType": {
+        "type": [
+          "string",
+          "null"
+        ],
+        "description": "Item kind: 'post', 'comment', 'community' or 'user_profile'. Filter on this column.",
+        "example": "post"
+      },
+      "id": {
+        "type": [
+          "string",
+          "null"
+        ],
+        "description": "Reddit ID. Posts, communities and users carry the fullname (t3_/t5_/t2_ prefix); comments carry the bare comment ID.",
+        "example": "t3_1abcd2e"
+      },
+      "parsedId": {
+        "type": [
+          "string",
+          "null"
+        ],
+        "description": "Bare Reddit ID without the type prefix; null on comments (their id is already bare).",
+        "example": "1abcd2e"
+      },
+      "url": {
+        "type": [
+          "string",
+          "null"
+        ],
+        "description": "Reddit URL of a comment or community. Posts carry postUrl and user profiles carry profileUrl.",
+        "example": "https://www.reddit.com/r/technology/comments/1abcd2e/reddit_api_changes/kx1abc2/"
+      },
+      "crawledAt": {
+        "type": [
+          "string",
+          "null"
+        ],
+        "description": "ISO 8601 timestamp of when this item was scraped.",
+        "example": "2026-09-10T08:15:22.000Z"
+      },
+      "searchTerm": {
+        "type": [
+          "string",
+          "null"
+        ],
+        "description": "Search term that produced this item; absent on items scraped from direct URL targets.",
+        "example": "openai"
+      },
+      "title": {
+        "type": [
+          "string",
+          "null"
+        ],
+        "description": "Post or community title.",
+        "example": "Reddit API changes megathread"
+      },
+      "body": {
+        "type": [
+          "string",
+          "null"
+        ],
+        "description": "Post or comment body as Reddit markdown (empty for link posts).",
+        "example": "Has anyone tried the new endpoint?"
+      },
+      "bodyHtml": {
+        "type": [
+          "string",
+          "null"
+        ],
+        "description": "Original HTML body of the post or comment.",
+        "example": "<div class=\"md\"><p>Has anyone tried the new endpoint?</p></div>"
+      },
+      "authorName": {
+        "type": [
+          "string",
+          "null"
+        ],
+        "description": "Username of the author.",
+        "example": "spez"
+      },
+      "authorId": {
+        "type": [
+          "string",
+          "null"
+        ],
+        "description": "Author fullname (t2_ prefix) on posts. On comments this holds the comment's own fullname (t1_ prefix, legacy) — use authorFullname for the author.",
+        "example": "t2_1w72"
+      },
+      "parsedAuthorId": {
+        "type": [
+          "string",
+          "null"
+        ],
+        "description": "Bare author ID on posts; bare comment ID on comments (legacy).",
+        "example": "1w72"
+      },
+      "communityName": {
+        "type": [
+          "string",
+          "null"
+        ],
+        "description": "Subreddit the post belongs to, with the r/ prefix.",
+        "example": "r/technology"
+      },
+      "communityId": {
+        "type": [
+          "string",
+          "null"
+        ],
+        "description": "Subreddit fullname (t5_ prefix).",
+        "example": "t5_2qh16"
+      },
+      "parsedCommunityId": {
+        "type": [
+          "string",
+          "null"
+        ],
+        "description": "Bare subreddit ID.",
+        "example": "2qh16"
+      },
+      "parsedCommunityName": {
+        "type": [
+          "string",
+          "null"
+        ],
+        "description": "Subreddit name without the r/ prefix.",
+        "example": "technology"
+      },
+      "upVotes": {
+        "type": [
+          "integer",
+          "null"
+        ],
+        "description": "Post score (upvotes minus downvotes) at crawl time.",
+        "example": 1532
+      },
+      "commentsCount": {
+        "type": [
+          "integer",
+          "null"
+        ],
+        "description": "Number of comments on the post.",
+        "example": 214
+      },
+      "postUrl": {
+        "type": [
+          "string",
+          "null"
+        ],
+        "description": "Permalink of the post.",
+        "example": "https://www.reddit.com/r/technology/comments/1abcd2e/reddit_api_changes/"
+      },
+      "createdAt": {
+        "type": [
+          "string",
+          "null"
+        ],
+        "description": "ISO 8601 creation time of the post, community or user account.",
+        "example": "2026-09-09T14:02:11.000Z"
+      },
+      "postType": {
+        "type": [
+          "string",
+          "null"
+        ],
+        "description": "Reddit post_hint passed through: 'text' (default), 'self', 'link', 'image', 'hosted:video' or 'rich:video'.",
+        "example": "text"
+      },
+      "flair": {
+        "type": [
+          "string",
+          "null"
+        ],
+        "description": "Link flair text, if the post has one.",
+        "example": "Discussion"
+      },
+      "contentUrl": {
+        "type": [
+          "string",
+          "null"
+        ],
+        "description": "URL the post links to (external link, image or video).",
+        "example": "https://example.com/article"
+      },
+      "images": {
+        "type": [
+          "array",
+          "null"
+        ],
+        "items": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "description": "Preview image URLs attached to the post.",
+        "example": [
+          "https://preview.redd.it/abc.jpg"
+        ]
+      },
+      "score": {
+        "type": [
+          "integer",
+          "null"
+        ],
+        "description": "Net score as reported by Reddit.",
+        "example": 1532
+      },
+      "upvoteRatio": {
+        "type": [
+          "number",
+          "null"
+        ],
+        "description": "Share of votes that were upvotes, 0–1.",
+        "example": 0.94
+      },
+      "over18": {
+        "type": [
+          "boolean",
+          "null"
+        ],
+        "description": "True when the post is marked NSFW.",
+        "example": false
+      },
+      "isSelf": {
+        "type": [
+          "boolean",
+          "null"
+        ],
+        "description": "True for text (self) posts.",
+        "example": true
+      },
+      "isVideo": {
+        "type": [
+          "boolean",
+          "null"
+        ],
+        "description": "True when the post hosts a Reddit video.",
+        "example": false
+      },
+      "isGallery": {
+        "type": [
+          "boolean",
+          "null"
+        ],
+        "description": "True for multi-image gallery posts.",
+        "example": false
+      },
+      "spoiler": {
+        "type": [
+          "boolean",
+          "null"
+        ],
+        "description": "True when the post is tagged as a spoiler.",
+        "example": false
+      },
+      "locked": {
+        "type": [
+          "boolean",
+          "null"
+        ],
+        "description": "True when comments are locked.",
+        "example": false
+      },
+      "hidden": {
+        "type": [
+          "boolean",
+          "null"
+        ],
+        "description": "True when the post is hidden.",
+        "example": false
+      },
+      "archived": {
+        "type": [
+          "boolean",
+          "null"
+        ],
+        "description": "True when the post is archived (no new votes or comments).",
+        "example": false
+      },
+      "pinned": {
+        "type": [
+          "boolean",
+          "null"
+        ],
+        "description": "True when pinned on the author's profile.",
+        "example": false
+      },
+      "stickied": {
+        "type": [
+          "boolean",
+          "null"
+        ],
+        "description": "True when stickied by moderators.",
+        "example": false
+      },
+      "edited": {
+        "type": [
+          "boolean",
+          "null"
+        ],
+        "description": "True when the post or comment was edited after posting.",
+        "example": false
+      },
+      "editedAt": {
+        "type": [
+          "string",
+          "null"
+        ],
+        "description": "ISO 8601 time of the last edit, or null."
+      },
+      "distinguished": {
+        "type": [
+          "string",
+          "null"
+        ],
+        "description": "'moderator', 'admin' or null for a regular author."
+      },
+      "scoreHidden": {
+        "type": [
+          "boolean",
+          "null"
+        ],
+        "description": "True while Reddit hides the score.",
+        "example": false
+      },
+      "isOriginalContent": {
+        "type": [
+          "boolean",
+          "null"
+        ],
+        "description": "True when tagged OC.",
+        "example": false
+      },
+      "numCrossposts": {
+        "type": [
+          "integer",
+          "null"
+        ],
+        "description": "Number of times the post was crossposted.",
+        "example": 3
+      },
+      "totalAwardsReceived": {
+        "type": [
+          "integer",
+          "null"
+        ],
+        "description": "Total awards on the item.",
+        "example": 0
+      },
+      "gilded": {
+        "type": [
+          "integer",
+          "null"
+        ],
+        "description": "Number of gold awards.",
+        "example": 0
+      },
+      "domain": {
+        "type": [
+          "string",
+          "null"
+        ],
+        "description": "Domain of the linked content (e.g. 'self.technology' or 'youtube.com').",
+        "example": "self.technology"
+      },
+      "thumbnail": {
+        "type": [
+          "string",
+          "null"
+        ],
+        "description": "Thumbnail URL; null when Reddit returns a placeholder such as 'self' or 'default'.",
+        "example": "https://external-preview.redd.it/abc.jpeg?width=140&height=78"
+      },
+      "urlOverriddenByDest": {
+        "type": [
+          "string",
+          "null"
+        ],
+        "description": "Destination URL for link posts."
+      },
+      "subredditSubscribers": {
+        "type": [
+          "integer",
+          "null"
+        ],
+        "description": "Subscriber count of the post's subreddit.",
+        "example": 17800000
+      },
+      "authorFlairText": {
+        "type": [
+          "string",
+          "null"
+        ],
+        "description": "Author's user flair in the subreddit."
+      },
+      "authorPremium": {
+        "type": [
+          "boolean",
+          "null"
+        ],
+        "description": "True when the author has Reddit Premium.",
+        "example": false
+      },
+      "numDuplicates": {
+        "type": [
+          "integer",
+          "null"
+        ],
+        "description": "Number of other posts linking to the same URL.",
+        "example": 0
+      },
+      "removedByCategory": {
+        "type": [
+          "string",
+          "null"
+        ],
+        "description": "Why the post was removed ('moderator', 'automod_filtered', 'deleted', …) or null if live."
+      },
+      "removedBy": {
+        "type": [
+          "string",
+          "null"
+        ],
+        "description": "Moderator who removed the post; only visible to moderators, usually null."
+      },
+      "bannedBy": {
+        "type": [
+          "string",
+          "null"
+        ],
+        "description": "Moderator who banned the post; only visible to moderators, usually null."
+      },
+      "removalReason": {
+        "type": [
+          "string",
+          "null"
+        ],
+        "description": "Removal reason shown by moderators, usually null."
+      },
+      "modReasonTitle": {
+        "type": [
+          "string",
+          "null"
+        ],
+        "description": "Moderator reason title, usually null."
+      },
+      "isRobotIndexable": {
+        "type": [
+          "boolean",
+          "null"
+        ],
+        "description": "False when Reddit asks search engines not to index the post.",
+        "example": true
+      },
+      "mediaType": {
+        "type": [
+          "string",
+          "null"
+        ],
+        "description": "Detected media kind: 'gallery', 'video', 'image', 'text' or 'link'.",
+        "example": "text"
+      },
+      "hasMedia": {
+        "type": [
+          "boolean",
+          "null"
+        ],
+        "description": "True when the post carries any media.",
+        "example": false
+      },
+      "galleryCount": {
+        "type": [
+          "integer",
+          "null"
+        ],
+        "description": "Number of items in a gallery post.",
+        "example": 0
+      },
+      "galleryImages": {
+        "type": [
+          "array",
+          "null"
+        ],
+        "items": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "description": "Direct URLs of gallery images in display order.",
+        "example": []
+      },
+      "mediaAssets": {
+        "type": [
+          "array",
+          "null"
+        ],
+        "items": {
+          "type": "object"
+        },
+        "description": "Gallery assets with mediaId, url, mimeType, width and height.",
+        "example": []
+      },
+      "videoUrl": {
+        "type": [
+          "string",
+          "null"
+        ],
+        "description": "Direct URL of the Reddit-hosted video."
+      },
+      "media": {
+        "type": [
+          "object",
+          "null"
+        ],
+        "description": "Raw Reddit 'media' object."
+      },
+      "secureMedia": {
+        "type": [
+          "object",
+          "null"
+        ],
+        "description": "Raw Reddit 'secure_media' object."
+      },
+      "mediaMetadata": {
+        "type": [
+          "object",
+          "null"
+        ],
+        "description": "Raw Reddit 'media_metadata' object for galleries."
+      },
+      "galleryData": {
+        "type": [
+          "object",
+          "null"
+        ],
+        "description": "Raw Reddit 'gallery_data' object."
+      },
+      "ageHours": {
+        "type": [
+          "number",
+          "null"
+        ],
+        "description": "Hours between creation and crawl.",
+        "example": 18.3
+      },
+      "scorePerHour": {
+        "type": [
+          "number",
+          "null"
+        ],
+        "description": "Score divided by age in hours.",
+        "example": 83.7
+      },
+      "commentsPerHour": {
+        "type": [
+          "number",
+          "null"
+        ],
+        "description": "Comments divided by age in hours.",
+        "example": 11.7
+      },
+      "engagementTotal": {
+        "type": [
+          "integer",
+          "null"
+        ],
+        "description": "Score plus comment count.",
+        "example": 1746
+      },
+      "commentToScoreRatio": {
+        "type": [
+          "number",
+          "null"
+        ],
+        "description": "Comments divided by score.",
+        "example": 0.14
+      },
+      "isHighEngagement": {
+        "type": [
+          "boolean",
+          "null"
+        ],
+        "description": "True when score plus comment count is at least 100.",
+        "example": true
+      },
+      "titleLength": {
+        "type": [
+          "integer",
+          "null"
+        ],
+        "description": "Character count of the title.",
+        "example": 29
+      },
+      "bodyLength": {
+        "type": [
+          "integer",
+          "null"
+        ],
+        "description": "Character count of the plain-text body.",
+        "example": 34
+      },
+      "wordCount": {
+        "type": [
+          "integer",
+          "null"
+        ],
+        "description": "Word count of title plus body for posts, body only for comments.",
+        "example": 6
+      },
+      "outboundUrlHost": {
+        "type": [
+          "string",
+          "null"
+        ],
+        "description": "Hostname of the outbound link, if any."
+      },
+      "commentUpVotes": {
+        "type": [
+          "integer",
+          "null"
+        ],
+        "description": "Comment score.",
+        "example": 87
+      },
+      "commentCreatedAt": {
+        "type": [
+          "string",
+          "null"
+        ],
+        "description": "ISO 8601 creation time of the comment.",
+        "example": "2026-09-09T15:40:03.000Z"
+      },
+      "postId": {
+        "type": [
+          "string",
+          "null"
+        ],
+        "description": "Fullname of the parent post (t3_ prefix).",
+        "example": "t3_1abcd2e"
+      },
+      "parsedPostId": {
+        "type": [
+          "string",
+          "null"
+        ],
+        "description": "Bare ID of the parent post.",
+        "example": "1abcd2e"
+      },
+      "postTitle": {
+        "type": [
+          "string",
+          "null"
+        ],
+        "description": "Title of the parent post.",
+        "example": "Reddit API changes megathread"
+      },
+      "postUpVotes": {
+        "type": [
+          "integer",
+          "null"
+        ],
+        "description": "Score of the parent post.",
+        "example": 1532
+      },
+      "postCommentsCount": {
+        "type": [
+          "integer",
+          "null"
+        ],
+        "description": "Comment count of the parent post.",
+        "example": 214
+      },
+      "postCreatedAt": {
+        "type": [
+          "string",
+          "null"
+        ],
+        "description": "ISO 8601 creation time of the parent post.",
+        "example": "2026-09-09T14:02:11.000Z"
+      },
+      "subredditName": {
+        "type": [
+          "string",
+          "null"
+        ],
+        "description": "Subreddit the comment belongs to, without prefix.",
+        "example": "technology"
+      },
+      "subredditId": {
+        "type": [
+          "string",
+          "null"
+        ],
+        "description": "Subreddit fullname (t5_ prefix).",
+        "example": "t5_2qh16"
+      },
+      "parsedSubredditId": {
+        "type": [
+          "string",
+          "null"
+        ],
+        "description": "Bare subreddit ID.",
+        "example": "2qh16"
+      },
+      "parentId": {
+        "type": [
+          "string",
+          "null"
+        ],
+        "description": "Fullname of the parent item: t3_ for top-level comments, t1_ for replies.",
+        "example": "t3_1abcd2e"
+      },
+      "parsedParentId": {
+        "type": [
+          "string",
+          "null"
+        ],
+        "description": "Bare parent ID.",
+        "example": "1abcd2e"
+      },
+      "parentKind": {
+        "type": [
+          "string",
+          "null"
+        ],
+        "description": "'post' for top-level comments, 'comment' for replies.",
+        "example": "post"
+      },
+      "authorFullname": {
+        "type": [
+          "string",
+          "null"
+        ],
+        "description": "Author fullname (t2_ prefix), null for deleted accounts.",
+        "example": "t2_1w72"
+      },
+      "depth": {
+        "type": [
+          "integer",
+          "null"
+        ],
+        "description": "Nesting depth; 0 is a top-level comment.",
+        "example": 0
+      },
+      "controversiality": {
+        "type": [
+          "integer",
+          "null"
+        ],
+        "description": "1 when Reddit flags the comment as controversial.",
+        "example": 0
+      },
+      "isSubmitter": {
+        "type": [
+          "boolean",
+          "null"
+        ],
+        "description": "True when the commenter is the post author (OP).",
+        "example": false
+      },
+      "collapsed": {
+        "type": [
+          "boolean",
+          "null"
+        ],
+        "description": "True when Reddit collapses the comment by default.",
+        "example": false
+      },
+      "collapsedReason": {
+        "type": [
+          "string",
+          "null"
+        ],
+        "description": "Why the comment is collapsed, or null."
+      },
+      "name": {
+        "type": [
+          "string",
+          "null"
+        ],
+        "description": "Subreddit name.",
+        "example": "technology"
+      },
+      "description": {
+        "type": [
+          "string",
+          "null"
+        ],
+        "description": "Full sidebar description as Reddit markdown.",
+        "example": "Subreddit dedicated to the news and discussions about the creation and use of technology."
+      },
+      "descriptionHtml": {
+        "type": [
+          "string",
+          "null"
+        ],
+        "description": "Full sidebar description as HTML.",
+        "example": "<div class=\"md\"><p>Subreddit dedicated to …</p></div>"
+      },
+      "publicDescription": {
+        "type": [
+          "string",
+          "null"
+        ],
+        "description": "Short public description in plain text.",
+        "example": "Subreddit dedicated to the news and discussions about technology."
+      },
+      "publicDescriptionHtml": {
+        "type": [
+          "string",
+          "null"
+        ],
+        "description": "Short public description as HTML.",
+        "example": "<div class=\"md\"><p>Subreddit dedicated to …</p></div>"
+      },
+      "membersCount": {
+        "type": [
+          "integer",
+          "null"
+        ],
+        "description": "Subscriber count.",
+        "example": 17800000
+      },
+      "onlineUsersCount": {
+        "type": [
+          "integer",
+          "null"
+        ],
+        "description": "Users online at crawl time.",
+        "example": 4210
+      },
+      "communityIcon": {
+        "type": [
+          "string",
+          "null"
+        ],
+        "description": "Community icon URL.",
+        "example": "https://styles.redditmedia.com/t5_2qh16/styles/communityIcon.png"
+      },
+      "bannerImage": {
+        "type": [
+          "string",
+          "null"
+        ],
+        "description": "Banner image URL."
+      },
+      "nsfw": {
+        "type": [
+          "boolean",
+          "null"
+        ],
+        "description": "True for 18+ communities.",
+        "example": false
+      },
+      "subredditType": {
+        "type": [
+          "string",
+          "null"
+        ],
+        "description": "'public', 'restricted', 'private', 'archived' or 'gold_restricted'.",
+        "example": "public"
+      },
+      "submissionType": {
+        "type": [
+          "string",
+          "null"
+        ],
+        "description": "Allowed submissions: 'any', 'link' or 'self'.",
+        "example": "any"
+      },
+      "restrictPosting": {
+        "type": [
+          "boolean",
+          "null"
+        ],
+        "description": "True when posting is restricted to approved users.",
+        "example": false
+      },
+      "restrictCommenting": {
+        "type": [
+          "boolean",
+          "null"
+        ],
+        "description": "True when commenting is restricted.",
+        "example": false
+      },
+      "advertiserCategory": {
+        "type": [
+          "string",
+          "null"
+        ],
+        "description": "Reddit advertiser category.",
+        "example": "Technology"
+      },
+      "lang": {
+        "type": [
+          "string",
+          "null"
+        ],
+        "description": "Primary language code.",
+        "example": "en"
+      },
+      "linkFlairEnabled": {
+        "type": [
+          "boolean",
+          "null"
+        ],
+        "description": "True when link flair is enabled.",
+        "example": true
+      },
+      "wikiEnabled": {
+        "type": [
+          "boolean",
+          "null"
+        ],
+        "description": "True when the subreddit wiki is enabled.",
+        "example": true
+      },
+      "headerTitle": {
+        "type": [
+          "string",
+          "null"
+        ],
+        "description": "Header hover text."
+      },
+      "submitText": {
+        "type": [
+          "string",
+          "null"
+        ],
+        "description": "Submission guidance text shown when posting.",
+        "example": ""
+      },
+      "quarantine": {
+        "type": [
+          "boolean",
+          "null"
+        ],
+        "description": "True when the subreddit is quarantined.",
+        "example": false
+      },
+      "allowImages": {
+        "type": [
+          "boolean",
+          "null"
+        ],
+        "description": "True when image posts are allowed.",
+        "example": true
+      },
+      "allowVideos": {
+        "type": [
+          "boolean",
+          "null"
+        ],
+        "description": "True when video posts are allowed.",
+        "example": true
+      },
+      "allowVideogifs": {
+        "type": [
+          "boolean",
+          "null"
+        ],
+        "description": "True when video GIFs are allowed.",
+        "example": true
+      },
+      "allowGalleries": {
+        "type": [
+          "boolean",
+          "null"
+        ],
+        "description": "True when gallery posts are allowed.",
+        "example": true
+      },
+      "allowPolls": {
+        "type": [
+          "boolean",
+          "null"
+        ],
+        "description": "True when polls are allowed.",
+        "example": true
+      },
+      "spoilersEnabled": {
+        "type": [
+          "boolean",
+          "null"
+        ],
+        "description": "True when spoiler tagging is enabled.",
+        "example": true
+      },
+      "originalContentTagEnabled": {
+        "type": [
+          "boolean",
+          "null"
+        ],
+        "description": "True when the OC tag is enabled.",
+        "example": false
+      },
+      "suggestedCommentSort": {
+        "type": [
+          "string",
+          "null"
+        ],
+        "description": "Default comment sort set by moderators, or null."
+      },
+      "whitelistStatus": {
+        "type": [
+          "string",
+          "null"
+        ],
+        "description": "Reddit ads whitelist status.",
+        "example": "all_ads"
+      },
+      "rules": {
+        "type": [
+          "array",
+          "null"
+        ],
+        "items": {
+          "type": "object"
+        },
+        "description": "Subreddit rules with shortName, description, descriptionHtml, kind, violationReason, priority and createdAt.",
+        "example": [
+          {
+            "shortName": "No spam",
+            "kind": "all",
+            "priority": 0
+          }
+        ]
+      },
+      "username": {
+        "type": [
+          "string",
+          "null"
+        ],
+        "description": "Reddit username.",
+        "example": "spez"
+      },
+      "totalKarma": {
+        "type": [
+          "integer",
+          "null"
+        ],
+        "description": "Total karma.",
+        "example": 850000
+      },
+      "linkKarma": {
+        "type": [
+          "integer",
+          "null"
+        ],
+        "description": "Post karma.",
+        "example": 200000
+      },
+      "commentKarma": {
+        "type": [
+          "integer",
+          "null"
+        ],
+        "description": "Comment karma.",
+        "example": 600000
+      },
+      "awardeeKarma": {
+        "type": [
+          "integer",
+          "null"
+        ],
+        "description": "Karma from awards received.",
+        "example": 30000
+      },
+      "awarderKarma": {
+        "type": [
+          "integer",
+          "null"
+        ],
+        "description": "Karma from awards given.",
+        "example": 20000
+      },
+      "isGold": {
+        "type": [
+          "boolean",
+          "null"
+        ],
+        "description": "True when the user has Reddit Premium.",
+        "example": true
+      },
+      "isMod": {
+        "type": [
+          "boolean",
+          "null"
+        ],
+        "description": "True when the user moderates at least one subreddit.",
+        "example": true
+      },
+      "isEmployee": {
+        "type": [
+          "boolean",
+          "null"
+        ],
+        "description": "True for Reddit employees.",
+        "example": true
+      },
+      "hasVerifiedEmail": {
+        "type": [
+          "boolean",
+          "null"
+        ],
+        "description": "True when the email is verified.",
+        "example": true
+      },
+      "verified": {
+        "type": [
+          "boolean",
+          "null"
+        ],
+        "description": "True when the account is verified.",
+        "example": true
+      },
+      "iconImg": {
+        "type": [
+          "string",
+          "null"
+        ],
+        "description": "Avatar image URL.",
+        "example": "https://styles.redditmedia.com/t5_abc/styles/profileIcon.png"
+      },
+      "snoovatarImg": {
+        "type": [
+          "string",
+          "null"
+        ],
+        "description": "Snoovatar image URL."
+      },
+      "acceptFollowers": {
+        "type": [
+          "boolean",
+          "null"
+        ],
+        "description": "True when the user or community accepts followers.",
+        "example": true
+      },
+      "bio": {
+        "type": [
+          "string",
+          "null"
+        ],
+        "description": "Profile bio text."
+      },
+      "followersCount": {
+        "type": [
+          "integer",
+          "null"
+        ],
+        "description": "Number of followers.",
+        "example": 12000
+      },
+      "bannerImg": {
+        "type": [
+          "string",
+          "null"
+        ],
+        "description": "Profile banner URL."
+      },
+      "isNsfw": {
+        "type": [
+          "boolean",
+          "null"
+        ],
+        "description": "True when the profile is marked NSFW.",
+        "example": false
+      },
+      "previousNames": {
+        "type": [
+          "array",
+          "null"
+        ],
+        "items": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "description": "Previous usernames, if any.",
+        "example": []
+      },
+      "profileTitle": {
+        "type": [
+          "string",
+          "null"
+        ],
+        "description": "Profile display title.",
+        "example": "spez"
+      },
+      "profileDescription": {
+        "type": [
+          "string",
+          "null"
+        ],
+        "description": "Profile description."
+      },
+      "profileVisibility": {
+        "type": [
+          "string",
+          "null"
+        ],
+        "description": "Profile visibility (Reddit 'subreddit_type' of the user page).",
+        "example": "user"
+      },
+      "hideFromRobots": {
+        "type": [
+          "boolean",
+          "null"
+        ],
+        "description": "True when the profile opts out of search indexing.",
+        "example": false
+      },
+      "profileUrl": {
+        "type": [
+          "string",
+          "null"
+        ],
+        "description": "URL of the user profile.",
+        "example": "https://www.reddit.com/user/spez/"
+      },
+      "sentimentLabel": {
+        "type": [
+          "string",
+          "null"
+        ],
+        "description": "AI sentiment: 'positive', 'negative', 'neutral', 'mixed' or 'uncertain'. Only when AI analysis is enabled.",
+        "example": "positive"
+      },
+      "sentimentScore": {
+        "type": [
+          "number",
+          "null"
+        ],
+        "description": "AI sentiment score from -1 (negative) to 1 (positive).",
+        "example": 0.62
+      },
+      "intent": {
+        "type": [
+          "string",
+          "null"
+        ],
+        "description": "AI intent: question, seeking_recommendation, complaint, praise, purchase_intent, comparison, announcement, self_promotion, discussion or none.",
+        "example": "question"
+      },
+      "emotion": {
+        "type": [
+          "string",
+          "null"
+        ],
+        "description": "AI dominant emotion: joy, excitement, anger, frustration, sadness, disappointment, fear, surprise or neutral.",
+        "example": "excitement"
+      },
+      "entities": {
+        "type": [
+          "array",
+          "null"
+        ],
+        "items": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "description": "AI-extracted brands, products or people mentioned (max 10).",
+        "example": [
+          "Reddit API"
+        ]
+      },
+      "relevanceScore": {
+        "type": [
+          "number",
+          "null"
+        ],
+        "description": "AI relevance of the item to the search term, 0–1. Only set for search results.",
+        "example": 0.88
+      },
+      "contentCategory": {
+        "type": [
+          "string",
+          "null"
+        ],
+        "description": "AI content category, e.g. 'Technology', 'Gaming', 'Finance', 'Help & Support'.",
+        "example": "Technology"
+      },
+      "customLabels": {
+        "type": [
+          "object",
+          "null"
+        ],
+        "description": "Answers to your custom label questions, keyed by label name.",
+        "example": {
+          "is_buyer": "yes"
+        }
+      }
+    }
+  }

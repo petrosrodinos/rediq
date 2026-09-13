@@ -7,6 +7,13 @@ import {
 import { BrightDataClientService } from './bright-data-client.service';
 import { parseRedditUrl } from '../utils/reddit-url.utils';
 import {
+  nullIfDeleted,
+  pick,
+  previewText,
+  toNullableNumber,
+  toNumber,
+} from '../utils/reddit-mapping.utils';
+import {
   FetchPostWithCommentsOptions,
   FetchSubredditPostsOptions,
   RawRedditComment,
@@ -127,7 +134,7 @@ export class BrightDataRedditService {
           community: urlInfo.community,
           isPublic: true,
           title: post.title || undefined,
-          bodyPreview: this.previewText(post.body),
+          bodyPreview: previewText(post.body),
           author: post.author ?? undefined,
           score: post.score,
           postCount: 1,
@@ -165,7 +172,7 @@ export class BrightDataRedditService {
         community: urlInfo.community,
         isPublic: true,
         title: `r/${urlInfo.community}`,
-        bodyPreview: this.previewText(posts[0]?.title),
+        bodyPreview: previewText(posts[0]?.title),
         flairs,
       };
     } catch (error) {
@@ -185,43 +192,32 @@ export class BrightDataRedditService {
     record: Record<string, any>,
     fallbackCommunity: string,
   ): RawRedditPost {
-    const permalink = this.pick(record, ['url', 'post_url', 'permalink']) ?? '';
-    const postedAtRaw = this.pick(record, [
-      'date_posted',
-      'created_at',
-      'posted_at',
-    ]);
+    const permalink = pick(record, ['url', 'post_url', 'permalink']) ?? '';
+    const postedAtRaw = pick(record, ['date_posted', 'created_at', 'posted_at']);
 
     return {
-      external_id: String(this.pick(record, ['post_id', 'id']) ?? ''),
+      external_id: String(pick(record, ['post_id', 'id']) ?? ''),
       community:
-        this.pick(record, ['community_name', 'subreddit']) ?? fallbackCommunity,
-      title: this.pick(record, ['title']) ?? '',
-      author: this.nullIfDeleted(
-        this.pick(record, ['user_posted', 'author', 'username']),
-      ),
-      body: this.nullIfDeleted(
-        this.pick(record, ['description', 'selftext', 'body']),
-      ),
+        pick(record, ['community_name', 'subreddit']) ?? fallbackCommunity,
+      title: pick(record, ['title']) ?? '',
+      author: nullIfDeleted(pick(record, ['user_posted', 'author', 'username'])),
+      body: nullIfDeleted(pick(record, ['description', 'selftext', 'body'])),
       url: permalink,
       permalink,
-      score: this.toNumber(
-        this.pick(record, ['num_upvotes', 'upvotes', 'score']),
+      score: toNumber(pick(record, ['num_upvotes', 'upvotes', 'score'])),
+      upvote_ratio: toNullableNumber(pick(record, ['upvote_ratio'])),
+      num_comments: toNumber(
+        pick(record, ['num_comments', 'number_of_comments']),
       ),
-      upvote_ratio: this.toNullableNumber(this.pick(record, ['upvote_ratio'])),
-      num_comments: this.toNumber(
-        this.pick(record, ['num_comments', 'number_of_comments']),
-      ),
-      flair: this.pick(record, ['tag', 'flair', 'link_flair_text']) ?? null,
-      is_nsfw: !!this.pick(record, [
+      flair: pick(record, ['tag', 'flair', 'link_flair_text']) ?? null,
+      is_nsfw: !!pick(record, [
         'is_not_safe_for_work_post',
         'over_18',
         'is_nsfw',
         'nsfw',
       ]),
-      is_deleted: this.pick(record, ['user_posted', 'author']) === '[deleted]',
-      is_removed:
-        this.pick(record, ['description', 'selftext']) === '[removed]',
+      is_deleted: pick(record, ['user_posted', 'author']) === '[deleted]',
+      is_removed: pick(record, ['description', 'selftext']) === '[removed]',
       posted_at: postedAtRaw ? new Date(postedAtRaw) : new Date(0),
     };
   }
@@ -232,7 +228,7 @@ export class BrightDataRedditService {
   ): RawRedditComment[] {
     const byId = new Map<string, Record<string, any>>();
     for (const record of records) {
-      const id = String(this.pick(record, ['comment_id', 'id']) ?? '');
+      const id = String(pick(record, ['comment_id', 'id']) ?? '');
       if (id) byId.set(id, record);
     }
 
@@ -240,15 +236,15 @@ export class BrightDataRedditService {
       record: Record<string, any>,
       seen = new Set<string>(),
     ): number => {
-      const explicitDepth = this.pick(record, ['depth', 'level']);
+      const explicitDepth = pick(record, ['depth', 'level']);
       if (typeof explicitDepth === 'number') return explicitDepth;
 
-      const parentId = this.pick(record, [
+      const parentId = pick(record, [
         'parent_comment_id',
         'parent_id',
         'parentId',
       ]);
-      const id = String(this.pick(record, ['comment_id', 'id']) ?? '');
+      const id = String(pick(record, ['comment_id', 'id']) ?? '');
       if (!parentId || !byId.has(String(parentId)) || seen.has(id)) return 0;
 
       seen.add(id);
@@ -260,9 +256,7 @@ export class BrightDataRedditService {
     for (const record of records) {
       if (options.maxComments && comments.length >= options.maxComments) break;
 
-      const score = this.toNumber(
-        this.pick(record, ['num_upvotes', 'upvotes', 'score']),
-      );
+      const score = toNumber(pick(record, ['num_upvotes', 'upvotes', 'score']));
       if (
         typeof options.minCommentScore === 'number' &&
         score < options.minCommentScore
@@ -273,79 +267,34 @@ export class BrightDataRedditService {
       if (typeof options.maxDepth === 'number' && depth > options.maxDepth)
         continue;
 
-      const parentIdRaw = this.pick(record, [
+      const parentIdRaw = pick(record, [
         'parent_comment_id',
         'parent_id',
         'parentId',
       ]);
-      const body = this.nullIfDeleted(
-        this.pick(record, ['comment', 'body', 'text']),
-      );
+      const body = nullIfDeleted(pick(record, ['comment', 'body', 'text']));
 
       comments.push({
-        external_id: String(this.pick(record, ['comment_id', 'id']) ?? ''),
+        external_id: String(pick(record, ['comment_id', 'id']) ?? ''),
         parent_external_id:
           parentIdRaw && byId.has(String(parentIdRaw))
             ? String(parentIdRaw)
             : null,
-        author: this.nullIfDeleted(
-          this.pick(record, ['user_posted', 'author', 'username']),
-        ),
+        author: nullIfDeleted(pick(record, ['user_posted', 'author', 'username'])),
         body,
         score,
         depth,
-        permalink: this.pick(record, ['url', 'permalink']) ?? '',
-        is_deleted:
-          this.pick(record, ['user_posted', 'author']) === '[deleted]',
+        permalink: pick(record, ['url', 'permalink']) ?? '',
+        is_deleted: pick(record, ['user_posted', 'author']) === '[deleted]',
         is_removed:
-          body === null &&
-          this.pick(record, ['comment', 'body']) === '[removed]',
+          body === null && pick(record, ['comment', 'body']) === '[removed]',
         posted_at: (() => {
-          const raw = this.pick(record, [
-            'date_posted',
-            'created_at',
-            'posted_at',
-          ]);
+          const raw = pick(record, ['date_posted', 'created_at', 'posted_at']);
           return raw ? new Date(raw) : new Date(0);
         })(),
       });
     }
 
     return comments;
-  }
-
-  private pick(record: Record<string, any>, keys: string[]): any {
-    for (const key of keys) {
-      if (
-        record[key] !== undefined &&
-        record[key] !== null &&
-        record[key] !== ''
-      ) {
-        return record[key];
-      }
-    }
-    return undefined;
-  }
-
-  private nullIfDeleted(value: unknown): string | null {
-    if (typeof value !== 'string' || !value) return null;
-    if (value === '[deleted]' || value === '[removed]') return null;
-    return value;
-  }
-
-  private toNumber(value: unknown): number {
-    const n = Number(value);
-    return Number.isFinite(n) ? n : 0;
-  }
-
-  private toNullableNumber(value: unknown): number | null {
-    if (value === undefined || value === null) return null;
-    const n = Number(value);
-    return Number.isFinite(n) ? n : null;
-  }
-
-  private previewText(text: string | undefined | null): string | undefined {
-    if (!text) return undefined;
-    return text.length > 280 ? `${text.slice(0, 280)}…` : text;
   }
 }
