@@ -152,4 +152,60 @@ export class AnalysisJobsService {
       include: ANALYSIS_JOB_INCLUDE,
     });
   }
+
+  async retry(userId: string, id: string) {
+    const job = await this.findOne(userId, id);
+
+    if (job.status !== AnalysisStatus.FAILED) {
+      throw new ConflictException(
+        `Cannot retry a job that is ${job.status.toLowerCase()}`,
+      );
+    }
+
+    // The processor re-runs the pipeline for this same job id from the top
+    // (re-collecting posts/comments is harmless — ingestion upserts by Reddit
+    // id), but knowledge_chunks/knowledge_insights/batch_submissions from the
+    // failed attempt have no dedup and would otherwise pile up as duplicates
+    // alongside the retry's output, so clear them before re-queuing. Post/
+    // comment embeddings are deliberately left alone — embedAndStore skips
+    // ones that already exist, which is what lets retry resume past a partial
+    // embedding run instead of redoing (and re-paying for) finished work.
+    await this.prisma.$transaction([
+      this.prisma.knowledgeChunk.deleteMany({
+        where: { analysis_job_uuid: job.id },
+      }),
+      this.prisma.knowledgeInsight.deleteMany({
+        where: { analysis_job_uuid: job.id },
+      }),
+      this.prisma.batchSubmission.deleteMany({
+        where: { analysis_job_uuid: job.id },
+      }),
+      this.prisma.analysisJob.update({
+        where: { id: job.id },
+        data: {
+          status: AnalysisStatus.PENDING,
+          error_message: null,
+          started_at: null,
+          completed_at: null,
+          current_step: null,
+          posts_processed: 0,
+          posts_total: 0,
+          comments_processed: 0,
+          comments_total: 0,
+          prompt_tokens: 0,
+          completion_tokens: 0,
+        },
+      }),
+      this.prisma.researchProject.update({
+        where: { id: job.research_project_uuid },
+        data: { status: AnalysisStatus.PENDING },
+      }),
+    ]);
+
+    await this.analysisQueue.add(ANALYSIS_JOB_NAME, {
+      analysisJobUuid: job.id,
+    });
+
+    return this.findOne(userId, job.id);
+  }
 }

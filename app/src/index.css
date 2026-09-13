@@ -177,3 +177,28 @@
   background-image: radial-gradient(rgba(22, 22, 26, 0.045) 1px, transparent 1px);
   background-size: 22px 22px;
 }
+
+@keyframes shimmer-sweep {
+  0% {
+    transform: translateX(-120%);
+  }
+  100% {
+    transform: translateX(320%);
+  }
+}
+.animate-shimmer-sweep {
+  animation: shimmer-sweep 1.8s ease-in-out infinite;
+}
+
+@keyframes ring-glow {
+  0%,
+  100% {
+    box-shadow: 0 0 0 0 rgba(255, 69, 0, 0.35);
+  }
+  50% {
+    box-shadow: 0 0 0 6px rgba(255, 69, 0, 0);
+  }
+}
+.animate-ring-glow {
+  animation: ring-glow 2s ease-in-out infinite;
+}

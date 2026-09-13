@@ -54,7 +54,7 @@ export const SearchResultCard: FC<SearchResultCardProps> = ({ result, projectNam
               </Badge>
             </div>
             {asString(source.title) ? <p className="text-sm font-semibold leading-snug">{asString(source.title)}</p> : null}
-            <p className="text-sm leading-relaxed text-foreground/90 line-clamp-3">{result.excerpt || asString(source.content)}</p>
+            <p className="max-h-[4.5rem] overflow-y-auto pr-1 text-sm leading-relaxed text-foreground/90">{result.excerpt || asString(source.content)}</p>
           </div>
         </div>
       </article>
@@ -75,7 +75,7 @@ export const SearchResultCard: FC<SearchResultCardProps> = ({ result, projectNam
               {formatCompactNumber(Math.round(result.score * 100))}% match
             </Badge>
           </div>
-          <p className="text-sm leading-relaxed text-foreground/90 line-clamp-4">{result.excerpt || asString(source.content)}</p>
+          <p className="max-h-24 overflow-y-auto pr-1 text-sm leading-relaxed text-foreground/90">{result.excerpt || asString(source.content)}</p>
         </div>
       </div>
     </article>

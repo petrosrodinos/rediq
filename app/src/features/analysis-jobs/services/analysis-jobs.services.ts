@@ -55,6 +55,15 @@ export const cancelAnalysisJob = async (id: string): Promise<AnalysisJob> => {
     }
 };
 
+export const retryAnalysisJob = async (id: string): Promise<AnalysisJob> => {
+    try {
+        const response = await axiosInstance.post(ApiRoutes.analysis_jobs.retry(id));
+        return response.data;
+    } catch (error) {
+        throw new Error("Failed to retry analysis job. Please try again.");
+    }
+};
+
 export const getAnalysisJobBatchSubmissions = async (
     id: string,
     query?: BatchSubmissionQueryType,

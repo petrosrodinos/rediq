@@ -82,6 +82,13 @@ export class AnalysisJobItemController {
     return this.analysisJobsService.cancel(userId, id);
   }
 
+  @Post(':id/retry')
+  @ApiOperation({ summary: 'Retry a failed analysis job' })
+  @ApiResponse({ status: 200, description: 'Analysis job re-queued' })
+  retry(@CurrentUser('id') userId: string, @Param('id') id: string) {
+    return this.analysisJobsService.retry(userId, id);
+  }
+
   @Get(':id/batch-submissions')
   @ApiOperation({ summary: 'List batch submissions for an analysis job' })
   @ApiResponse({ status: 200, description: 'Batch submissions returned' })

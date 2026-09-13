@@ -20,6 +20,15 @@ export const PIPELINE_STEPS: PipelineStepDefinition[] = [
 
 export type PipelineStepState = "done" | "active" | "pending" | "failed";
 
+/** Rotating flavor text shown for the active step when the job hasn't reported a specific current_step yet. */
+export const STEP_FLAVOR_TEXT: Record<string, string[]> = {
+    collect: ["Fetching posts…", "Pulling in comments…", "Talking to Reddit's API…"],
+    embed: ["Generating embeddings…", "Vectorizing the discussion…", "Mapping meaning to numbers…"],
+    extract: ["Extracting themes…", "Spotting recurring claims…", "Reading between the lines…"],
+    synthesize: ["Synthesizing the report…", "Connecting the dots…", "Drafting the narrative…"],
+    ready: ["Finishing up…"],
+};
+
 export interface PipelineProgressSignal {
     status: AnalysisStatusType;
     posts_processed: number;

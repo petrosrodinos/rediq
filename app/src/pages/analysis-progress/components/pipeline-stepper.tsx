@@ -1,8 +1,10 @@
 import type { FC } from "react";
 import { Check } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { toSafeErrorMessage } from "@/lib/error-message";
 import { Progress } from "@/components/ui/progress";
-import { PIPELINE_STEPS, getPipelineStepStates, type PipelineProgressSignal } from "../utils/pipeline-steps";
+import { PIPELINE_STEPS, STEP_FLAVOR_TEXT, getPipelineStepStates, type PipelineProgressSignal } from "../utils/pipeline-steps";
+import { useCyclingLabel } from "../utils/use-cycling-label";
 
 interface PipelineStepperProps {
   job: PipelineProgressSignal;
@@ -13,6 +15,10 @@ interface PipelineStepperProps {
 
 export const PipelineStepper: FC<PipelineStepperProps> = ({ job, currentStepDetail, activeProgressPct, errorMessage }) => {
   const states = getPipelineStepStates(job);
+  const activeIndex = states.indexOf("active");
+  const activeStepKey = activeIndex >= 0 ? PIPELINE_STEPS[activeIndex].key : "none";
+  const flavorLabel = useCyclingLabel(STEP_FLAVOR_TEXT[activeStepKey] ?? [], activeStepKey);
+  const activeDetail = currentStepDetail || flavorLabel || "Working…";
 
   return (
     <ol className="space-y-0">
@@ -29,7 +35,7 @@ export const PipelineStepper: FC<PipelineStepperProps> = ({ job, currentStepDeta
                 state === "done" && "border-transparent bg-moss",
                 state === "failed" && "border-transparent bg-rose",
                 state === "pending" && "bg-muted",
-                state === "active" && "bg-card",
+                state === "active" && "animate-ring-glow bg-card",
               )}
             >
               {state === "done" ? <Check className="h-3 w-3 text-white" /> : null}
@@ -40,11 +46,13 @@ export const PipelineStepper: FC<PipelineStepperProps> = ({ job, currentStepDeta
               <div className={cn("text-sm font-semibold", state === "pending" && "text-muted-foreground")}>{step.label}</div>
               {state === "active" ? (
                 <>
-                  <div className="mt-0.5 font-mono text-[11px] text-muted-foreground">{currentStepDetail ?? "Working…"}</div>
-                  {typeof activeProgressPct === "number" ? <Progress value={activeProgressPct} className="mt-2 h-1.5 max-w-[280px]" /> : null}
+                  <div key={activeDetail} className="mt-0.5 animate-in font-mono text-[11px] text-muted-foreground fade-in duration-500">
+                    {activeDetail}
+                  </div>
+                  {typeof activeProgressPct === "number" ? <Progress value={activeProgressPct} active className="mt-2 h-1.5 max-w-[280px]" /> : null}
                 </>
               ) : state === "failed" ? (
-                <div className="mt-0.5 text-[11px] text-rose">{errorMessage ?? "This step failed."}</div>
+                <div className="mt-0.5 text-[11px] text-rose">{toSafeErrorMessage(errorMessage, "This step failed.")}</div>
               ) : state === "pending" ? (
                 <div className="mt-0.5 font-mono text-[11px] text-muted-foreground">Waiting</div>
               ) : null}

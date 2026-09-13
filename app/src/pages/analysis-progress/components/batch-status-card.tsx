@@ -37,7 +37,15 @@ export const BatchStatusCard: FC<BatchStatusCardProps> = ({ batches }) => {
         <p className="font-mono text-[11px] text-muted-foreground">Batch id {batches[0]?.openai_batch_id.slice(0, 10)}…</p>
         <div className="grid grid-cols-11 gap-1">
           {batches.map((batch) => (
-            <div key={batch.id} className={cn("h-6 rounded border border-border", cellClassByStatus[batch.status] ?? "bg-muted")} title={batch.status} />
+            <div
+              key={batch.id}
+              className={cn(
+                "h-6 rounded border border-border",
+                cellClassByStatus[batch.status] ?? "bg-muted",
+                batch.status === BatchSubmissionStatus.IN_PROGRESS && "animate-pulse",
+              )}
+              title={batch.status}
+            />
           ))}
         </div>
         <p className="font-mono text-[11px] text-muted-foreground">

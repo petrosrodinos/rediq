@@ -36,6 +36,7 @@ export const ApiRoutes = {
         by_research_project: (research_project_id: string) => `/research-projects/${research_project_id}/analysis-jobs`,
         by_id: (id: string) => `/analysis-jobs/${id}`,
         cancel: (id: string) => `/analysis-jobs/${id}/cancel`,
+        retry: (id: string) => `/analysis-jobs/${id}/retry`,
         batch_submissions: (id: string) => `/analysis-jobs/${id}/batch-submissions`,
         events: (id: string) => `/analysis-jobs/${id}/events`,
     },

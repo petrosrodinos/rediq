@@ -8,6 +8,7 @@ import {
     getAnalysisJobBatchSubmissions,
     getAnalysisJobEvents,
     getAnalysisJobs,
+    retryAnalysisJob,
 } from "../services/analysis-jobs.services";
 import type {
     AnalysisJob,
@@ -90,6 +91,31 @@ export const useCancelAnalysisJob = () => {
         onError: (error: Error) => {
             toast({
                 title: "Could not cancel analysis job",
+                description: error.message,
+                duration: 3000,
+                variant: "error",
+            });
+        },
+    });
+};
+
+export const useRetryAnalysisJob = () => {
+    const queryClient = useQueryClient();
+
+    return useMutation({
+        mutationFn: (id: string) => retryAnalysisJob(id),
+        onSuccess: (data: AnalysisJob) => {
+            queryClient.invalidateQueries({ queryKey: ["analysis-jobs"] });
+            queryClient.invalidateQueries({ queryKey: ["research-projects"] });
+            toast({
+                title: "Analysis job re-queued",
+                description: `The analysis job (${data.id}) is retrying.`,
+                duration: 2000,
+            });
+        },
+        onError: (error: Error) => {
+            toast({
+                title: "Could not retry analysis job",
                 description: error.message,
                 duration: 3000,
                 variant: "error",

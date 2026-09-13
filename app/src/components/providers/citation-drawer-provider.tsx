@@ -4,6 +4,7 @@ import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetDescription, SheetFo
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Skeleton } from "@/components/ui/skeleton";
+import { MarkdownContent } from "@/components/ui/markdown-content";
 import { useGetPost } from "@/features/posts/hooks/use-posts";
 import { useGetComment } from "@/features/comments/hooks/use-comments";
 import { formatRelativeTime } from "@/lib/date";
@@ -116,7 +117,9 @@ const CitationDrawerBody: FC<{ source: CitationSource }> = ({ source }) => {
         </div>
         <div className="min-w-0 space-y-1">
           <p className="truncate text-xs font-medium text-muted-foreground">u/{author ?? "unknown"}</p>
-          <p className="relative border-l-2 border-primary/70 pl-3 text-sm leading-relaxed text-foreground">{body ?? "No excerpt available."}</p>
+          <div className="relative border-l-2 border-primary/70 pl-3">
+            {body ? <MarkdownContent content={body} /> : <p className="text-sm leading-relaxed text-foreground">No excerpt available.</p>}
+          </div>
         </div>
       </div>
 
@@ -164,12 +167,12 @@ export const CitationDrawerProvider: FC<{ children: ReactNode }> = ({ children }
     <CitationDrawerContext.Provider value={value}>
       {children}
       <Sheet open={isOpen} onOpenChange={setIsOpen}>
-        <SheetContent className="w-full sm:max-w-md">
-          <SheetHeader>
+        <SheetContent className="flex h-full w-full flex-col sm:max-w-md">
+          <SheetHeader className="shrink-0">
             <SheetTitle>Source</SheetTitle>
             <SheetDescription>Where this claim comes from, exactly as it was posted.</SheetDescription>
           </SheetHeader>
-          <div className="mt-4">{source ? <CitationDrawerBody source={source} /> : null}</div>
+          <div className="-mr-6 mt-4 flex-1 overflow-y-auto pr-6">{source ? <CitationDrawerBody source={source} /> : null}</div>
         </SheetContent>
       </Sheet>
     </CitationDrawerContext.Provider>

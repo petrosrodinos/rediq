@@ -6,6 +6,7 @@ import { Button } from "@/components/ui/button";
 import { useCitationDrawer, type CitationPostLike, type CitationCommentLike } from "@/components/providers/citation-drawer-provider";
 import { formatRelativeTime } from "@/lib/date";
 import { formatCompactNumber } from "@/lib/format-number";
+import { stripMarkdownToText } from "@/lib/markdown";
 
 interface SourceCardProps {
   kind: "post" | "comment";
@@ -64,7 +65,9 @@ export const SourceCard: FC<SourceCardProps> = ({
 
           {title ? <p className="text-sm font-semibold leading-snug">{title}</p> : null}
 
-          <p className="relative border-l-2 border-primary/60 pl-3 text-sm leading-relaxed text-foreground/90 line-clamp-3">{excerpt}</p>
+          <p className="relative max-h-[4.5rem] overflow-y-auto border-l-2 border-primary/60 pl-3 pr-1 text-sm leading-relaxed text-foreground/90">
+            {stripMarkdownToText(excerpt)}
+          </p>
 
           <div className="flex flex-wrap items-center gap-1.5 pt-1">
             <Badge variant="secondary" className="capitalize">

@@ -1,5 +1,5 @@
 import { Injectable, Logger } from '@nestjs/common';
-import { embed, generateObject, generateText, streamText } from 'ai';
+import { embed, embedMany, generateObject, generateText, streamText } from 'ai';
 import {
     AIGenerateObjectResponse,
     AIGenerateOptions,
@@ -14,6 +14,9 @@ import { calculateAiCost } from '../utils/ai-cost';
 // A hung OpenAI call previously left analysis jobs stuck indefinitely mid-embedding
 // with no error ever thrown, so the pipeline's catch/fail() path never ran.
 const EMBEDDING_TIMEOUT_MS = 30_000;
+// embedMany batches many inputs into far fewer HTTP calls than embedText-per-item,
+// so it can tolerate a longer ceiling per call without stalling the whole pipeline.
+const EMBEDDING_BATCH_TIMEOUT_MS = 60_000;
 
 @Injectable()
 export class AiService {
@@ -154,5 +157,22 @@ export class AiService {
         }
     }
 
+    // One request for many inputs instead of one request per input — besides being
+    // faster outright, it also avoids tripping per-request rate limits that made
+    // embedText-in-a-loop degrade badly partway through larger batches.
+    async embedTexts(texts: string[]): Promise<number[][]> {
+        try {
+            const embeddingModel = openai.embedding('text-embedding-3-small');
+            const { embeddings } = await embedMany({
+                model: embeddingModel,
+                values: texts,
+                abortSignal: AbortSignal.timeout(EMBEDDING_BATCH_TIMEOUT_MS),
+            });
+            return embeddings;
+        } catch (error) {
+            this.logger.error(`Error generating embeddings: ${error.message}`);
+            throw new Error('Failed to generate embeddings. Please try again.');
+        }
+    }
 
 }

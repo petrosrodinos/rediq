@@ -311,11 +311,18 @@ export class AnalysisProcessor extends WorkerHost {
         'Analysis complete',
       );
     } catch (error) {
+      // Full detail (Prisma query text, file paths, stack) goes to the server
+      // log only — the error_message field here is read straight from the
+      // frontend, so it must never carry internals a user shouldn't see.
       this.logger.error(
         `Analysis job ${analysisJobUuid} failed: ${error.message}`,
         error.stack,
       );
-      await this.fail(analysisJobUuid, researchProjectId, error.message);
+      await this.fail(
+        analysisJobUuid,
+        researchProjectId,
+        'The analysis ran into an unexpected error and could not finish. You can retry it — if it keeps failing, contact support.',
+      );
     }
   }
 
