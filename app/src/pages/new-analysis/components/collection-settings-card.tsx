@@ -9,99 +9,111 @@ import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group";
 import { PostSortOrderFormOptions } from "@/config/constants/dropdowns/research-projects/post-sort-order-form.options";
 import { TopTimeRangeFormOptions } from "@/config/constants/dropdowns/research-projects/top-time-range-form.options";
 import { ProcessingModeFormOptions, getProcessingModeDescription } from "@/config/constants/dropdowns/research-projects/processing-mode-form.options";
+import { SourceType, type SourceTypeType } from "@/features/research-projects/interfaces/research-projects.interfaces";
 import type { NewAnalysisFormValues } from "../validation-schemas/new-analysis.schema";
 
 interface CollectionSettingsCardProps {
   control: Control<NewAnalysisFormValues>;
   processingMode: NewAnalysisFormValues["processing_mode"];
+  sourceType?: SourceTypeType | null;
 }
 
-export const CollectionSettingsCard: FC<CollectionSettingsCardProps> = ({ control, processingMode }) => {
+export const CollectionSettingsCard: FC<CollectionSettingsCardProps> = ({ control, processingMode, sourceType }) => {
+  const isThread = sourceType === SourceType.THREAD;
+
   return (
     <Card className="p-5 sm:p-6">
       <h3 className="text-[15px] font-semibold">Collection settings</h3>
-      <p className="mt-1 text-[13px] text-muted-foreground">Wider collection means better coverage and a longer run.</p>
+      <p className="mt-1 text-[13px] text-muted-foreground">
+        {isThread
+          ? "This is a single thread, so only the comment filters below apply."
+          : "Wider collection means better coverage and a longer run."}
+      </p>
 
       <CardContent className="grid gap-5 p-0 pt-5 sm:grid-cols-2">
-        <FormField
-          control={control}
-          name="max_posts"
-          render={({ field }) => (
-            <FormItem>
-              <div className="flex items-baseline justify-between">
-                <FormLabel>Posts to collect</FormLabel>
-                <span className="font-mono text-xs">{field.value}</span>
-              </div>
-              <FormControl>
-                <Slider min={10} max={500} step={10} value={[field.value]} onValueChange={([v]) => field.onChange(v)} />
-              </FormControl>
-            </FormItem>
-          )}
-        />
+        {!isThread && (
+          <>
+            <FormField
+              control={control}
+              name="max_posts"
+              render={({ field }) => (
+                <FormItem>
+                  <div className="flex items-baseline justify-between">
+                    <FormLabel>Posts to collect</FormLabel>
+                    <span className="font-mono text-xs">{field.value}</span>
+                  </div>
+                  <FormControl>
+                    <Slider min={10} max={500} step={10} value={[field.value]} onValueChange={([v]) => field.onChange(v)} />
+                  </FormControl>
+                </FormItem>
+              )}
+            />
 
-        <FormField
-          control={control}
-          name="max_comments_per_post"
-          render={({ field }) => (
-            <FormItem>
-              <div className="flex items-baseline justify-between">
-                <FormLabel>Comments per post</FormLabel>
-                <span className="font-mono text-xs">{field.value}</span>
-              </div>
-              <FormControl>
-                <Slider min={5} max={200} step={5} value={[field.value]} onValueChange={([v]) => field.onChange(v)} />
-              </FormControl>
-            </FormItem>
-          )}
-        />
+            <FormField
+              control={control}
+              name="max_comments_per_post"
+              render={({ field }) => (
+                <FormItem>
+                  <div className="flex items-baseline justify-between">
+                    <FormLabel>Comments per post</FormLabel>
+                    <span className="font-mono text-xs">{field.value}</span>
+                  </div>
+                  <FormControl>
+                    <Slider min={5} max={200} step={5} value={[field.value]} onValueChange={([v]) => field.onChange(v)} />
+                  </FormControl>
+                </FormItem>
+              )}
+            />
 
-        <FormField
-          control={control}
-          name="sort_order"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>Sort posts by</FormLabel>
-              <Select value={field.value} onValueChange={field.onChange}>
-                <FormControl>
-                  <SelectTrigger>
-                    <SelectValue />
-                  </SelectTrigger>
-                </FormControl>
-                <SelectContent>
-                  {PostSortOrderFormOptions.map((option) => (
-                    <SelectItem key={option.id} value={option.id}>
-                      {option.label}
-                    </SelectItem>
-                  ))}
-                </SelectContent>
-              </Select>
-            </FormItem>
-          )}
-        />
+            <FormField
+              control={control}
+              name="sort_order"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Sort posts by</FormLabel>
+                  <Select value={field.value} onValueChange={field.onChange}>
+                    <FormControl>
+                      <SelectTrigger>
+                        <SelectValue />
+                      </SelectTrigger>
+                    </FormControl>
+                    <SelectContent>
+                      {PostSortOrderFormOptions.map((option) => (
+                        <SelectItem key={option.id} value={option.id}>
+                          {option.label}
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+                </FormItem>
+              )}
+            />
 
-        <FormField
-          control={control}
-          name="top_time_range"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>Time range (for Top)</FormLabel>
-              <Select value={field.value} onValueChange={field.onChange}>
-                <FormControl>
-                  <SelectTrigger>
-                    <SelectValue />
-                  </SelectTrigger>
-                </FormControl>
-                <SelectContent>
-                  {TopTimeRangeFormOptions.map((option) => (
-                    <SelectItem key={option.id} value={option.id}>
-                      {option.label}
-                    </SelectItem>
-                  ))}
-                </SelectContent>
-              </Select>
-            </FormItem>
-          )}
-        />
+            <FormField
+              control={control}
+              name="top_time_range"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Time range (for Top)</FormLabel>
+                  <Select value={field.value} onValueChange={field.onChange}>
+                    <FormControl>
+                      <SelectTrigger>
+                        <SelectValue />
+                      </SelectTrigger>
+                    </FormControl>
+                    <SelectContent>
+                      {TopTimeRangeFormOptions.map((option) => (
+                        <SelectItem key={option.id} value={option.id}>
+                          {option.label}
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+                </FormItem>
+              )}
+            />
+          </>
+        )}
 
         <FormField
           control={control}
@@ -117,18 +129,20 @@ export const CollectionSettingsCard: FC<CollectionSettingsCardProps> = ({ contro
           )}
         />
 
-        <FormField
-          control={control}
-          name="min_post_score"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>Minimum post score</FormLabel>
-              <FormControl>
-                <Input type="number" value={field.value} onChange={(e) => field.onChange(Number(e.target.value))} />
-              </FormControl>
-            </FormItem>
-          )}
-        />
+        {!isThread && (
+          <FormField
+            control={control}
+            name="min_post_score"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Minimum post score</FormLabel>
+                <FormControl>
+                  <Input type="number" value={field.value} onChange={(e) => field.onChange(Number(e.target.value))} />
+                </FormControl>
+              </FormItem>
+            )}
+          />
+        )}
       </CardContent>
 
       <div className="mt-5 border-t border-border pt-5">

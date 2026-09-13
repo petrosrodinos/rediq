@@ -1,10 +1,29 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { PrismaService } from '@/core/databases/prisma/prisma.service';
 import { JobEventsQueryType } from './dto/job-events-query.schema';
+import { JobEventLevel, Prisma } from 'generated/prisma';
 
 @Injectable()
 export class JobEventsService {
   constructor(private readonly prisma: PrismaService) {}
+
+  async record(
+    analysisJobUuid: string,
+    step: string,
+    message: string,
+    level: JobEventLevel = JobEventLevel.INFO,
+    metadata?: Prisma.InputJsonValue,
+  ): Promise<void> {
+    await this.prisma.jobEvent.create({
+      data: {
+        analysis_job_uuid: analysisJobUuid,
+        step,
+        message,
+        level,
+        metadata: metadata ?? undefined,
+      },
+    });
+  }
 
   async findAll(
     userId: string,

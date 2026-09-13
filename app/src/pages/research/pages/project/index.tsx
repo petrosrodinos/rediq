@@ -90,8 +90,7 @@ const ProjectDetailPage: FC = () => {
 
   const handleRerun = async () => {
     if (!latestJob) return;
-    const job = await createJob.mutateAsync({ researchProjectId: projectId, dto: { analysis_configuration_uuid: latestJob.analysis_configuration_uuid } });
-    navigate(Routes.dashboard.analysis_job(job.id));
+    await createJob.mutateAsync({ researchProjectId: projectId, dto: { analysis_configuration_uuid: latestJob.analysis_configuration_uuid } });
   };
 
   if (project.isLoading) {

@@ -55,6 +55,7 @@ export const useCreateAnalysisJob = () => {
             createAnalysisJob(researchProjectId, dto),
         onSuccess: () => {
             queryClient.invalidateQueries({ queryKey: ["analysis-jobs"] });
+            queryClient.invalidateQueries({ queryKey: ["research-projects"] });
             toast({
                 title: "Analysis job started",
                 description: "The analysis job was created and queued successfully.",
@@ -79,6 +80,7 @@ export const useCancelAnalysisJob = () => {
         mutationFn: (id: string) => cancelAnalysisJob(id),
         onSuccess: (data: AnalysisJob) => {
             queryClient.invalidateQueries({ queryKey: ["analysis-jobs"] });
+            queryClient.invalidateQueries({ queryKey: ["research-projects"] });
             toast({
                 title: "Analysis job cancelled",
                 description: `The analysis job (${data.id}) was cancelled successfully.`,

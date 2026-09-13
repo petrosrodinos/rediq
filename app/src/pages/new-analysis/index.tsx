@@ -1,4 +1,4 @@
-import { useEffect, useMemo, type FC } from "react";
+import { useEffect, useMemo, useRef, useState, type FC } from "react";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -6,16 +6,18 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
+import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { DetectedSourceCard } from "./components/detected-source-card";
 import { CollectionSettingsCard } from "./components/collection-settings-card";
 import { AdvancedFiltersCard } from "./components/advanced-filters-card";
 import { newAnalysisDefaultValues, newAnalysisSchema, type NewAnalysisFormValues } from "./validation-schemas/new-analysis.schema";
-import { suggestAnalysisName } from "./utils/reddit-url.utils";
-import { useCreateResearchProject } from "@/features/research-projects/hooks/use-research-projects";
+import { suggestAnalysisName, parseRedditUrl } from "./utils/reddit-url.utils";
+import { useCreateResearchProject, useDetectResearchSource } from "@/features/research-projects/hooks/use-research-projects";
 import { useCreateAnalysisJob } from "@/features/analysis-jobs/hooks/use-analysis-jobs";
 import { getAnalysisConfigurations } from "@/features/analysis-configurations/services/analysis-configurations.services";
 import { Routes } from "@/routes/routes";
 import { toast } from "@/hooks/use-toast";
+import { SourceType, type SourceTypeType } from "@/features/research-projects/interfaces/research-projects.interfaces";
 
 const QUICK_FILLS = ["https://reddit.com/r/vandwellers", "https://reddit.com/r/bookkeeping"];
 
@@ -28,11 +30,43 @@ const NewAnalysisPage: FC = () => {
     defaultValues: { ...newAnalysisDefaultValues, url: searchParams.get("url") ?? "" },
   });
 
+  const [isConfirmOpen, setConfirmOpen] = useState(false);
+
   const url = form.watch("url");
   const maxPosts = form.watch("max_posts");
   const maxCommentsPerPost = form.watch("max_comments_per_post");
   const maxComments = form.watch("max_comments");
+  const sortOrder = form.watch("sort_order");
   const processingMode = form.watch("processing_mode");
+
+  const detectSource = useDetectResearchSource();
+  const lastDetectedUrlRef = useRef<string | null>(null);
+
+  // Detection is a real, billed Apify request. Only clear a stale result
+  // when the URL changes underneath it (so filters never stay scoped to a
+  // URL no longer in the box) — never re-fetch automatically. Fetching only
+  // ever happens from the "Detect source" button inside DetectedSourceCard.
+  useEffect(() => {
+    if (lastDetectedUrlRef.current !== url) {
+      lastDetectedUrlRef.current = url;
+      detectSource.reset();
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [url]);
+
+  // Whether a URL points at a subreddit or one specific post is fully
+  // knowable from its syntax alone (a `/comments/` segment) — free, instant,
+  // no Apify call. Filters must react to THIS, not to the paid detect
+  // result, so they're correct the instant a URL is pasted. Once a real
+  // detection succeeds, prefer its (authoritative, confirmed-public) value;
+  // otherwise fall back to the structural guess.
+  const structuralSourceType = useMemo<SourceTypeType | null>(() => {
+    const { community, isThread } = parseRedditUrl(url);
+    if (!community) return null;
+    return isThread ? SourceType.THREAD : SourceType.COMMUNITY;
+  }, [url]);
+
+  const sourceType = detectSource.data?.is_public ? detectSource.data.source_type : structuralSourceType;
 
   useEffect(() => {
     const prefilledUrl = searchParams.get("url");
@@ -45,12 +79,31 @@ const NewAnalysisPage: FC = () => {
   const createProject = useCreateResearchProject();
   const createJob = useCreateAnalysisJob();
 
-  const estimate = useMemo(() => {
-    const comments = Math.min(maxPosts * maxCommentsPerPost, maxComments || Infinity);
-    const minMinutes = Math.max(2, Math.round(comments / 1800));
-    const maxMinutes = minMinutes + 3;
-    return { comments: Math.round(comments), minMinutes, maxMinutes };
-  }, [maxPosts, maxCommentsPerPost, maxComments]);
+  // Pure client-side math over data already in hand (the one detect-source
+  // result, plus the chosen filters) — no additional Apify request. A
+  // subreddit has no exact total available without scraping it in full, so
+  // that case is explicitly labeled as an upper-bound estimate, not a fact.
+  const reviewSummary = useMemo(() => {
+    if (!detectSource.data?.is_public || !sourceType) return null;
+
+    if (sourceType === SourceType.THREAD) {
+      const detected = detectSource.data.comment_count;
+      const cap = maxComments;
+      return {
+        headline:
+          typeof detected === "number"
+            ? `Up to ${Math.min(detected, cap).toLocaleString()} of this thread's ${detected.toLocaleString()} comments`
+            : `Up to ${cap.toLocaleString()} comments`,
+        note: null as string | null,
+      };
+    }
+
+    const upperBound = Math.min(maxPosts * maxCommentsPerPost, maxComments);
+    return {
+      headline: `Up to ${maxPosts.toLocaleString()} posts (sorted by ${sortOrder.toLowerCase()}), ~${upperBound.toLocaleString()} comments at most`,
+      note: `Estimate only — actual volume depends on how active r/${detectSource.data.community} is.`,
+    };
+  }, [detectSource.data, sourceType, maxPosts, maxCommentsPerPost, maxComments, sortOrder]);
 
   const onSubmit = async (values: NewAnalysisFormValues) => {
     try {
@@ -88,8 +141,9 @@ const NewAnalysisPage: FC = () => {
         throw new Error("Could not find the analysis configuration for this project.");
       }
 
-      const job = await createJob.mutateAsync({ researchProjectId: project.id, dto: { analysis_configuration_uuid: configurationId } });
-      navigate(Routes.dashboard.analysis_job(job.id));
+      await createJob.mutateAsync({ researchProjectId: project.id, dto: { analysis_configuration_uuid: configurationId } });
+      setConfirmOpen(false);
+      navigate(Routes.dashboard.project(project.id));
     } catch (error) {
       toast({
         title: "Could not start the analysis",
@@ -101,9 +155,26 @@ const NewAnalysisPage: FC = () => {
 
   const isSubmitting = createProject.isPending || createJob.isPending;
 
+  const handleReviewClick = async () => {
+    if (!parseRedditUrl(form.getValues("url")).community) {
+      toast({ title: "Add a Reddit URL first", variant: "error" });
+      return;
+    }
+    if (!detectSource.data?.is_public) {
+      toast({
+        title: "Detect the source first",
+        description: 'Click "Detect source" above to confirm this URL is reachable before starting.',
+        variant: "error",
+      });
+      return;
+    }
+    const valid = await form.trigger();
+    if (valid) setConfirmOpen(true);
+  };
+
   return (
     <Form {...form}>
-      <form onSubmit={form.handleSubmit(onSubmit)} className="mx-auto max-w-[900px] space-y-5">
+      <form onSubmit={(e) => e.preventDefault()} className="mx-auto max-w-[900px] space-y-5">
         <div>
           <h2 className="font-display text-2xl font-semibold">New analysis</h2>
           <p className="mt-1 text-sm text-muted-foreground">
@@ -168,33 +239,72 @@ const NewAnalysisPage: FC = () => {
               ))}
             </div>
 
-            <DetectedSourceCard url={url} />
+            <DetectedSourceCard
+              url={url}
+              result={detectSource.data}
+              isPending={detectSource.isPending}
+              onDetect={() => detectSource.mutate(url)}
+            />
           </CardContent>
         </Card>
 
-        <CollectionSettingsCard control={form.control} processingMode={processingMode} />
-        <AdvancedFiltersCard control={form.control} />
+        <CollectionSettingsCard control={form.control} processingMode={processingMode} sourceType={sourceType} />
+        <AdvancedFiltersCard control={form.control} sourceType={sourceType} />
 
         <Card className="p-5">
-          <div className="flex flex-col gap-4 sm:flex-row sm:items-center">
-            <div className="min-w-0 flex-1">
-              <div className="font-mono text-[11px] text-muted-foreground">Estimated scope</div>
-              <div className="mt-0.5 font-mono text-[15px] font-semibold">
-                about {estimate.comments.toLocaleString()} comments ·{" "}
-                {processingMode === "BATCH" ? "runs in the background" : `${estimate.minMinutes}–${estimate.maxMinutes} min`}
-              </div>
-            </div>
+          <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+            <p className="text-[13px] text-muted-foreground">
+              Review the detected source and your filters before this creates the project and starts collection.
+            </p>
             <div className="flex gap-2">
               <Button type="button" variant="ghost" onClick={() => navigate(Routes.dashboard.root)}>
                 Cancel
               </Button>
-              <Button type="submit" loading={isSubmitting}>
-                Start analysis
+              <Button type="button" onClick={handleReviewClick}>
+                Review &amp; start
               </Button>
             </div>
           </div>
         </Card>
       </form>
+
+      <Dialog open={isConfirmOpen} onOpenChange={setConfirmOpen}>
+        <DialogContent className="sm:max-w-lg">
+          <DialogHeader>
+            <DialogTitle>Review before starting</DialogTitle>
+            <DialogDescription>This creates the research project and starts the real collection job.</DialogDescription>
+          </DialogHeader>
+
+          <div className="space-y-3 text-sm">
+            <div className="rounded-lg border border-border bg-muted/40 p-3">
+              <div className="font-semibold">{detectSource.data?.title || `r/${detectSource.data?.community}`}</div>
+              <div className="mt-1 font-mono text-[11px] text-muted-foreground">
+                {sourceType === SourceType.THREAD ? "Thread" : "Subreddit"} · r/{detectSource.data?.community}
+              </div>
+            </div>
+
+            {reviewSummary && (
+              <div>
+                <div className="font-medium">{reviewSummary.headline}</div>
+                {reviewSummary.note && <p className="mt-1 text-xs text-muted-foreground">{reviewSummary.note}</p>}
+              </div>
+            )}
+
+            <div className="font-mono text-[11px] text-muted-foreground">
+              Processing mode: {processingMode === "BATCH" ? "Batch (background, lower cost)" : "Standard"}
+            </div>
+          </div>
+
+          <DialogFooter>
+            <Button type="button" variant="outline" onClick={() => setConfirmOpen(false)} disabled={isSubmitting}>
+              Back to edit
+            </Button>
+            <Button type="button" onClick={form.handleSubmit(onSubmit)} loading={isSubmitting}>
+              Start analysis
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
     </Form>
   );
 };

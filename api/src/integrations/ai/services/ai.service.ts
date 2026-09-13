@@ -11,6 +11,10 @@ import { z } from 'zod';
 import { openai } from '@ai-sdk/openai';
 import { calculateAiCost } from '../utils/ai-cost';
 
+// A hung OpenAI call previously left analysis jobs stuck indefinitely mid-embedding
+// with no error ever thrown, so the pipeline's catch/fail() path never ran.
+const EMBEDDING_TIMEOUT_MS = 30_000;
+
 @Injectable()
 export class AiService {
 
@@ -141,6 +145,7 @@ export class AiService {
             const { embedding } = await embed({
                 model: embeddingModel,
                 value: text,
+                abortSignal: AbortSignal.timeout(EMBEDDING_TIMEOUT_MS),
             });
             return embedding;
         } catch (error) {

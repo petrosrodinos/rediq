@@ -1,4 +1,5 @@
 import { Module } from '@nestjs/common';
+import { ScheduleModule } from '@nestjs/schedule';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { MailModule } from './modules/internal/mail/mail.module';
@@ -31,6 +32,7 @@ import { AdminModule } from './modules/admin/admin.module';
 @Module({
   imports: [
     ConfigModule,
+    ScheduleModule.forRoot(),
     MailModule,
     SmsModule,
     AiModule,

@@ -10,8 +10,10 @@ import {
 import {
   AnalysisStatus,
   BatchSubmissionStatus,
+  JobEventLevel,
   ProcessingMode,
 } from 'generated/prisma';
+import { JobEventsService } from '@/modules/analysis-jobs/job-events.service';
 import { RedditIngestionService } from './services/reddit-ingestion.service';
 import { EmbeddingsService } from './services/embeddings.service';
 import { KnowledgeExtractionService } from './services/knowledge-extraction.service';
@@ -29,6 +31,7 @@ export class AnalysisProcessor extends WorkerHost {
     private readonly redditIngestionService: RedditIngestionService,
     private readonly embeddingsService: EmbeddingsService,
     private readonly knowledgeExtractionService: KnowledgeExtractionService,
+    private readonly jobEventsService: JobEventsService,
   ) {
     super();
   }
@@ -301,6 +304,12 @@ export class AnalysisProcessor extends WorkerHost {
           comments_analyzed: rankedComments.length,
         },
       });
+
+      await this.jobEventsService.record(
+        analysisJobUuid,
+        AnalysisStatus.COMPLETED,
+        'Analysis complete',
+      );
     } catch (error) {
       this.logger.error(
         `Analysis job ${analysisJobUuid} failed: ${error.message}`,
@@ -362,7 +371,7 @@ export class AnalysisProcessor extends WorkerHost {
     analysisJobId: string,
     researchProjectId: string,
     status: AnalysisStatus,
-    extra: Record<string, unknown> = {},
+    extra: { current_step?: string } & Record<string, unknown> = {},
   ): Promise<void> {
     await Promise.all([
       this.prisma.analysisJob.update({
@@ -373,6 +382,11 @@ export class AnalysisProcessor extends WorkerHost {
         where: { id: researchProjectId },
         data: { status },
       }),
+      this.jobEventsService.record(
+        analysisJobId,
+        status,
+        extra.current_step ?? status,
+      ),
     ]);
   }
 
@@ -394,6 +408,12 @@ export class AnalysisProcessor extends WorkerHost {
         where: { id: researchProjectId },
         data: { status: AnalysisStatus.FAILED },
       }),
+      this.jobEventsService.record(
+        analysisJobId,
+        AnalysisStatus.FAILED,
+        message,
+        JobEventLevel.ERROR,
+      ),
     ]);
   }
 }

@@ -9,6 +9,7 @@ import { useGetComment } from "@/features/comments/hooks/use-comments";
 import { formatRelativeTime } from "@/lib/date";
 import { formatScoreLabel } from "@/lib/format-number";
 import { toast } from "@/hooks/use-toast";
+import { getRedditUrl } from "@/lib/utils";
 
 export interface CitationPostLike {
   id: string;
@@ -55,8 +56,6 @@ export const useCitationDrawer = (): CitationDrawerContextValue => {
   }
   return context;
 };
-
-const REDDIT_BASE_URL = "https://reddit.com";
 
 const CitationDrawerBody: FC<{ source: CitationSource }> = ({ source }) => {
   const shouldFetchPost = !!source.postUuid && !source.post;
@@ -126,7 +125,7 @@ const CitationDrawerBody: FC<{ source: CitationSource }> = ({ source }) => {
       <SheetFooter className="gap-2 sm:justify-start">
         {permalink ? (
           <Button variant="secondary" size="sm" asChild>
-            <a href={`${REDDIT_BASE_URL}${permalink}`} target="_blank" rel="noreferrer">
+            <a href={getRedditUrl(permalink)} target="_blank" rel="noreferrer">
               <ExternalLink className="h-3.5 w-3.5" />
               View on Reddit
             </a>

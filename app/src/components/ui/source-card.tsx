@@ -1,6 +1,6 @@
 import type { FC } from "react";
 import { ExternalLink, Eye, ArrowBigUp } from "lucide-react";
-import { cn } from "@/lib/utils";
+import { cn, getRedditUrl } from "@/lib/utils";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { useCitationDrawer, type CitationPostLike, type CitationCommentLike } from "@/components/providers/citation-drawer-provider";
@@ -23,8 +23,6 @@ interface SourceCardProps {
   preloadedComment?: CitationCommentLike | null;
   className?: string;
 }
-
-const REDDIT_BASE_URL = "https://reddit.com";
 
 export const SourceCard: FC<SourceCardProps> = ({
   kind,
@@ -96,7 +94,7 @@ export const SourceCard: FC<SourceCardProps> = ({
                 Preview
               </Button>
               <Button type="button" variant="ghost" size="sm" asChild>
-                <a href={`${REDDIT_BASE_URL}${permalink}`} target="_blank" rel="noreferrer">
+                <a href={getRedditUrl(permalink)} target="_blank" rel="noreferrer">
                   <ExternalLink className="h-3.5 w-3.5" />
                   View on Reddit
                 </a>
