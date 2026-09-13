@@ -1,6 +1,7 @@
 import type { FC } from "react";
 import { Bot, Copy } from "lucide-react";
 import { CitationChip } from "@/components/ui/citation-chip";
+import { MarkdownContent } from "@/components/ui/markdown-content";
 import { Button } from "@/components/ui/button";
 import { MessageRoles, type ConversationMessage } from "@/features/conversations/interfaces/conversations.interfaces";
 import { toast } from "@/hooks/use-toast";
@@ -27,7 +28,9 @@ export const MessageBubble: FC<MessageBubbleProps> = ({ message }) => {
         <Bot className="h-4 w-4" />
       </div>
       <div className="min-w-0 max-w-[80%] space-y-2">
-        <div className="rounded-2xl rounded-tl-sm border border-border bg-card px-4 py-2.5 text-sm leading-relaxed">{message.content}</div>
+        <div className="rounded-2xl rounded-tl-sm border border-border bg-card px-4 py-2.5">
+          <MarkdownContent content={message.content} />
+        </div>
         {citations.length > 0 ? (
           <div className="flex flex-wrap items-center gap-1.5">
             {citations.map((citation, index) => (
